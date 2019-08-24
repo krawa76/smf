@@ -1,0 +1,22 @@
+{
+  "name": "kmf",
+  "version": "1.0.0",
+  "description": "Kazuhm Microservice Factory",
+  "main": "./core/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build-prod": "tsc --sourceMap false",
+    "start": "tsc && node ./build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sergey Kravchenko",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@types/node": "^12.7.2",
+    "amqplib": "^0.5.5",
+    "winston": "^3.2.1"
+  }
+}

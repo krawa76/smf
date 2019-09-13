@@ -19,6 +19,17 @@ e.g.
 $ docker build -t kmf --build-arg MODULE=provisioner .
 ```
 
+## Copy module data (optional)
+
+Module's ./data subfolder is copied to /data image folder.
+
+## Run custom script (optional)
+
+Useful for installing extra dependencies.
+Create optional "install.sh" file in a module folder.
+Docker runs it building the module image.
+
+
 ## Sails web app integration
 
 - create a module folder (modules/<new module>).

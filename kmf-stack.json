@@ -1,0 +1,7 @@
+{
+  "name": "kmf demo",
+  "modules": [
+    "demo",
+    "demo-web"
+  ]
+}

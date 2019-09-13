@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch KMF",
-      "program": "${workspaceFolder}/build/core/index.js",
+      "program": "${workspaceFolder}/build/core/index-debug.js",
       "preLaunchTask": "build",
       "skipFiles": [
         "node_modules"

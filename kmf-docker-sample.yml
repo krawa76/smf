@@ -1,0 +1,25 @@
+version: "3.5"
+services:
+  #========== base services ==============================
+  demo:
+    container_name: kmf-demo
+    build:
+      context: .
+      args: ["MODULE=demo"]
+    # depends_on: ["???"]
+    # env_file: ["env/???-1.env", "env/???-2.env"]
+    networks: ["main"]
+  demo-web:
+    container_name: kmf-demo-web
+    build:
+      context: .
+      args: ["MODULE=demo-web"]
+    # depends_on: ["???"]
+    ports: ["1337:1337"]
+    # env_file: ["env/???-1.env", "env/???-2.env"]
+    networks: ["main"]
+  #========== modules ===================================
+
+networks:
+  main:
+    name: kmf

@@ -21,18 +21,32 @@ RUN npm run build-prod
 ##################################################################################################
 FROM node:10.13.0-alpine as prod
 
+ARG MODULE=demo
+ENV MODULE=$MODULE
+
+##################################################################################################
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
+COPY modules/${MODULE}/package.json ./modules/${MODULE}/package.json
+COPY modules/${MODULE}/package-lock.json ./modules/${MODULE}/package-lock.json
 COPY --from=build /app/build .
 
 # ENV NODE_ENV=production NODE_PATH=/app PORT=80
 ENV NODE_ENV=production NODE_PATH=/app
 RUN npm install
+RUN cd ./modules/${MODULE} && npm install
 
 ##################################################################################################
-ARG MODULE=demo
-ENV MODULE=$MODULE
+# (optional) copy module data
+COPY docker-temp.txt ./modules/${MODULE}/data* /data/
+
+##################################################################################################
+# (optional) install module files
+COPY docker-temp.txt ./modules/${MODULE}/install.sh* ./modules/${MODULE}/
+# not sure why "-f..." doesn't work with "chmod" etc., use "if test..." instead
+# RUN [ -f "./modules/${MODULE}/install.sh" ] && chmod +rx ./modules/${MODULE}/install.sh && ./modules/${MODULE}/install.sh
+RUN if test -e "./modules/${MODULE}/install.sh"; then chmod +rx ./modules/${MODULE}/install.sh && ./modules/${MODULE}/install.sh ; fi
 
 ##################################################################################################
 # copy sails web app, if exists

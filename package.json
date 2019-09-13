@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Kazuhm Microservice Factory",
   "main": "./core/index.js",
+  "bin": {
+    "kmf": "./bin/kmf.js"
+  },
   "scripts": {
     "build": "tsc",
     "build-prod": "tsc --sourceMap false",
@@ -17,6 +20,8 @@
   "dependencies": {
     "@types/node": "^12.7.2",
     "amqplib": "^0.5.5",
+    "js-yaml": "^3.13.1",
+    "minio": "^7.0.12",
     "mongoose": "^5.6.11",
     "winston": "^3.2.1"
   }

@@ -1,11 +1,16 @@
-import messageBroker from './services/messageBroker/messageBroker';
-import {Logger} from './services/logger';
 import config from './config';
+import {Logger} from './services/logger';
+import Helper from './services/helper';
+import messageBroker from './services/messageBroker/messageBroker';
+import Minio from './services/minio';
+import {MongoConnection} from './services/mongodb/mongooseConnection';
 
 export default class Core {
   public config        = config;
   public logger        = Logger;
+  public helper        = new Helper();
   public messageBroker = messageBroker;
+  public minio         = null;
 
   public log(message: string) {
     this.logger.debug(message);
@@ -16,28 +21,25 @@ export default class Core {
 
     // template: if (config.<SERVICE_NAME>_ENABLED) await this.start<ServiceName>();
 
-    if (config.MESSAGE_BROKER_ENABLED) await this.startMessageBroker();
+    if (config.MESSAGE_BROKER_ENABLED) await this.initMessageBroker();
+    if (config.MINIO_ENABLED)          await this.initMinio();
+    if (config.MONGODB_ENABLED)        await this.initMongoDb();
 
-    // await this.database();
     this.logger.debug('KMF core started');
   }
 
   //=======================================================================================
-  async startMessageBroker(/* options */) {
+  async initMessageBroker(/* options */) {
     await messageBroker.connect();
     // messageBroker.subscribeAll(options.messageBroker.routes);
   }
 
-  //=======================================================================================
-  /*
-  public async database() {
-    // connect to mongo
-    await MongoConnection.connect();
+  async initMinio() {
+    this.minio = new Minio();
+    this.minio.init();
   }
 
-  public async databaseClose() {
-    // connect to mongo
-    await MongoConnection.disconnect();
+  async initMongoDb() {
+    await MongoConnection.connect();
   }
-  */
 }

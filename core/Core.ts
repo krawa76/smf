@@ -5,7 +5,7 @@ import messageBroker from './services/messageBroker/messageBroker';
 import Minio from './services/minio';
 import {MongoConnection} from './services/mongodb/mongooseConnection';
 
-export default class Core {
+class Core {
   public config        = config;
   public logger        = Logger;
   public helper        = new Helper();
@@ -43,3 +43,5 @@ export default class Core {
     await MongoConnection.connect();
   }
 }
+
+export default new Core();

@@ -1,7 +1,14 @@
 {
   "name": "kmf demo",
-  "modules": [
-    "demo",
-    "demo-web"
-  ]
+  "modules": {
+    "demo-message-broker": {
+      "services": {
+        "rabbitmq-ampq": {
+          "name": "optional",
+          "internal": "true"
+        }
+      }
+    },
+    "demo-web": {}
+  }
 }

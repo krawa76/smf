@@ -15,6 +15,8 @@ RUN npm install -g typescript@3.5.3
 RUN npm install
 RUN cd ./modules/${MODULE} && npm install
 
+COPY core/kmf-core-docker.js ./node_modules/kmf-core.js
+
 ENV NODE_ENV=production
 RUN npm run build-prod
 
@@ -36,6 +38,8 @@ COPY --from=build /app/build .
 ENV NODE_ENV=production NODE_PATH=/app
 RUN npm install
 RUN cd ./modules/${MODULE} && npm install
+
+COPY core/kmf-core-docker.js ./node_modules/kmf-core.js
 
 ##################################################################################################
 # (optional) copy module data

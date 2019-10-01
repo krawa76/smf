@@ -1,5 +1,9 @@
+import core from 'kmf-core';
+
 export default class Main {
-  async run(core) {
+  async run(coreParam) {
+    // coreParam is not used, this is the "import core module" demo
+    
     core.log('demo-message-broker');
 
     await core.messageBroker.subscribe('demo.*');

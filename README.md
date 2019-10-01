@@ -41,3 +41,13 @@ Docker runs it building the module image.
 Root TypeScript build process ignores "web-sails" folders, they are copied separately in Dockerfile.
 TypeScript is added to a Sails app using this instruction:
 https://sailsjs.com/documentation/tutorials/using-type-script 
+
+## Misc
+
+Register local package: $ npm link.
+
+kmf commands:
+```
+kmf up
+kmf down
+```

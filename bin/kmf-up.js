@@ -29,7 +29,8 @@ function up() {
     } 
   }
 
-  for(const module of stacksConfig.modules) {
+  for(const module of Object.keys(stacksConfig.modules)) {
+    console.info(module);
     dockerCompose.services[module] = {
       container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${module}`,
       build: {

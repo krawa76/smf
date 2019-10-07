@@ -51,7 +51,7 @@ function up() {
   //=================================================================================
   console.info('Running Docker Compose...');
 
-  const script = exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} up`);
+  const script = exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} up --build`);
   script.stdout.on('data', data => {
     console.log(data.toString().trim()); 
   });

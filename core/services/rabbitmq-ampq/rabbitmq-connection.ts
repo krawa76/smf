@@ -1,18 +1,8 @@
 import * as amqp from "amqplib";
 import * as fs from "fs";
-import config from "../../legacy.config";
 import { Logger } from "../logger";
 
-export const EXCHANGE_ASSIGNATION = "assignation";
-export const KEY_ASSIGNATION_CREATED = "assignation.event.created";
-export const QUEUE_ASSIGNATIONS_CREATED = "assignations-created";
-export const EXCHANGE_CLIENT = "client";
-export const KEY_CLIENT_OFF = "client.event.off";
-export const KEY_CLIENT_ON = "client.event.on";
-export const QUEUE_CLIENT_OFF = "clients-off";
-export const QUEUE_CLIENT_ON = "clients-on";
-
-export async function getConnection() {
+export async function getConnection(config) {
   const connection = await amqp.connect(
     config.RABBITMQ_URL,
     {

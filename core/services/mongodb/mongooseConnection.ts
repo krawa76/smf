@@ -1,6 +1,6 @@
 import mongoose = require('mongoose');
 import { Logger } from '../logger';
-import config from "../../config";
+import config from "../../legacy.config";
 
 export class MongoConnection {
   static async connect() {

@@ -3,7 +3,7 @@
   "modules": {
     "demo-message-broker": {
       "services": {
-        "rabbitmq-ampq": {
+        "rabbitmq-amqp": {
           "name": "optional",
           "internal": "true"
         }

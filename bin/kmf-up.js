@@ -14,6 +14,35 @@ function up() {
   }
   catch(error) {
     console.error(`File not found: ${config.STACK_CONFIG}`);
+    return;
+  }
+
+  //=================================================================================
+  console.info('Generating env files...');
+
+  fs.mkdirSync(config.STACK_BUILD_ENV_PATH, {recursive: true});
+
+  let stackEnv;
+  try {
+    const data = fs.readFileSync(config.STACK_ENV);
+    stackEnv = JSON.parse(data);
+  }
+  catch(error) {
+    console.error(`File not found: ${config.STACK_ENV}`);
+    return;
+  }
+
+  for(const module of Object.keys(stackEnv.modules)) {
+    createEnvFile(`${config.STACK_BUILD_ENV_PATH}/module.${module}.env`, stackEnv.modules[module]);
+  }
+  
+  for(const service of Object.keys(stackEnv.services)) {
+    if (stackEnv.services[service].start) {
+      createEnvFile(`${config.STACK_BUILD_ENV_PATH}/service.${service}.start.env`, stackEnv.services[service].start);
+    }
+    if (stackEnv.services[service].connect) {
+      createEnvFile(`${config.STACK_BUILD_ENV_PATH}/service.${service}.connect.env`, stackEnv.services[service].connect);
+    }
   }
 
   //=================================================================================
@@ -30,7 +59,6 @@ function up() {
   }
 
   for(const module of Object.keys(stacksConfig.modules)) {
-    console.info(module);
     dockerCompose.services[module] = {
       container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${module}`,
       build: {
@@ -58,6 +86,17 @@ function up() {
   script.stderr.on('data', data => {
     console.log(data.toString().trim()); 
   });
+}
+
+//===================================================================================
+function createEnvFile(fileName, envVars) {
+  const file = fs.createWriteStream(fileName, {flags: 'w'});
+
+  for(const v of Object.keys(envVars)) {
+    file.write(`${v}=${envVars[v]}\n`);
+  }
+
+  file.end();
 }
 
 module.exports = up;

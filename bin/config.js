@@ -1,5 +1,9 @@
 module.exports = {
+  // STACK_BUILD_PATH: './build-stack',
+  STACK_BUILD_ENV_PATH: './build-stack/env',
+
   STACK_CONFIG: 'kmf-stack.json',
+  STACK_ENV: 'kmf-env.json',
   STACK_DOCKER_COMPOSE: 'kmf-docker.yml',
   STACK_DOCKER_NETWORK: 'main',
   STACK_DOCKER_NETWORK_NAME: 'kmf',

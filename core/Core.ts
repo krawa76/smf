@@ -25,6 +25,10 @@ class Core {
 
     this.logger.debug('KMF core started');
   }
+
+  service(name: string) {
+    return serviceRegistry.service(name);
+  }
 }
 
 export default new Core();

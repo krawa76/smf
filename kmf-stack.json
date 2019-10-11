@@ -4,8 +4,7 @@
     "demo-message-broker": {
       "services": {
         "rabbitmq-amqp": {
-          "name": "optional",
-          "internal": "true"
+          "internal": true
         }
       }
     }

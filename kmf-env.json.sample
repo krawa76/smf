@@ -1,0 +1,18 @@
+{
+  "modules": {
+    "demo-message-broker": {
+      "VAR1": "asdfasdfasdf",
+      "VAR2": "asdfasdfasdf"
+    }
+  },
+  "services": {
+    "rabbitmq-amqp": {
+      "start": {
+
+      },
+      "connect": {
+        "RABBITMQ_URL": "amqp://admin:password@localhost:5672"
+      }
+    }
+  }
+}

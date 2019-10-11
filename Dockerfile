@@ -60,4 +60,6 @@ ENV SAILS_PATH=./web-sails
 EXPOSE 1337
 
 ##################################################################################################
+COPY kmf-stack.json .
+ENV KMF_ROOT_PATH=../
 CMD ["node", "./core/index.js"]

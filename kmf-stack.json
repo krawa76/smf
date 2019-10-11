@@ -3,12 +3,10 @@
   "modules": {
     "demo-message-broker": {
       "services": {
-        "rabbitmq-ampq": {
-          "name": "optional",
-          "internal": "true"
+        "rabbitmq-amqp": {
+          "internal": true
         }
       }
-    },
-    "demo-web": {}
+    }
   }
 }

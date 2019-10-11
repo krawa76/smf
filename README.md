@@ -51,3 +51,9 @@ kmf commands:
 kmf up
 kmf down
 ```
+
+## Notes
+
+- service full name: service + lib (e.g. rabbitmq-ampq).
+- generate .env files automatically from the integrated env json.
+- minimise duplicate code by creating your own services.

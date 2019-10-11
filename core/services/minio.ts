@@ -1,7 +1,7 @@
 import minio = require("minio");
 import querystring = require("querystring");
 import url = require("url");
-import config from "../config";
+import config from "../legacy.config";
 import { Logger } from "./logger";
 
 export let endPoint = "10.12.0.127";

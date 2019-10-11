@@ -14,6 +14,37 @@ function up() {
   }
   catch(error) {
     console.error(`File not found: ${config.STACK_CONFIG}`);
+    return;
+  }
+
+  //=================================================================================
+  console.info('Generating env files...');
+
+  fs.mkdirSync(config.STACK_BUILD_ENV_PATH, {recursive: true});
+
+  let stackEnv;
+  try {
+    const data = fs.readFileSync(config.STACK_ENV);
+    stackEnv = JSON.parse(data);
+  }
+  catch(error) {
+    console.error(`File not found: ${config.STACK_ENV}`);
+    return;
+  }
+
+  for(const module of Object.keys(stackEnv.modules)) {
+    createEnvFile(moduleEnvFileName(module), stackEnv.modules[module]);
+  }
+  
+  for(const service of Object.keys(stackEnv.services)) {
+    const varPreffix = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '_').toUpperCase();
+
+    if (stackEnv.services[service].start) {
+      createEnvFile(serviceEnvFileName(service, 'start'), stackEnv.services[service].start, varPreffix);
+    }
+    if (stackEnv.services[service].connect) {
+      createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix);
+    }
   }
 
   //=================================================================================
@@ -30,13 +61,25 @@ function up() {
   }
 
   for(const module of Object.keys(stacksConfig.modules)) {
-    console.info(module);
+    //================ generate env files ===================
+    const envFiles = [moduleEnvFileName(module)];
+    // services env files
+    const moduleData = stacksConfig.modules[module];
+    if (moduleData.services) {
+      for(const service of Object.keys(moduleData.services)) {
+        envFiles.push(serviceEnvFileName(service, 'connect'));
+      }
+    }
+
+    //=======================================================
     dockerCompose.services[module] = {
       container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${module}`,
       build: {
         context: '.',
         args: [`MODULE=${module}`],
       },
+      // env_file: ["env/mongo.env", "env/jwt.env", "env/redis-live.env", "env/redis-stats.env", "env/minio.env", "env/rabbitmq.env"]
+      env_file: envFiles,
       networks: [config.STACK_DOCKER_NETWORK],
     }
   }
@@ -51,13 +94,35 @@ function up() {
   //=================================================================================
   console.info('Running Docker Compose...');
 
-  const script = exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} up`);
+  const script = exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} up --build`);
   script.stdout.on('data', data => {
     console.log(data.toString().trim()); 
   });
   script.stderr.on('data', data => {
     console.log(data.toString().trim()); 
   });
+}
+
+//===================================================================================
+function createEnvFile(fileName, envVars, varPreffix = null) {
+  const preffix = varPreffix ? `${varPreffix}_` : ''; 
+
+  const file = fs.createWriteStream(fileName, {flags: 'w'});
+
+  for(const v of Object.keys(envVars)) {
+    file.write(`${preffix}${v}=${envVars[v]}\n`);
+  }
+
+  file.end();
+}
+
+function moduleEnvFileName(moduleName) {
+  return `${config.STACK_BUILD_ENV_PATH}/module.${moduleName}.env`;
+}
+
+function serviceEnvFileName(serviceName, type /* start | connect */) {
+  const serviceNameNormalized = serviceName.replace(config.STACK_SERVICE_NAME_SEPARATOR, '.');
+  return `${config.STACK_BUILD_ENV_PATH}/service.${serviceNameNormalized}.${type}.env`
 }
 
 module.exports = up;

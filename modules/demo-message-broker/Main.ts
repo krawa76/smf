@@ -6,6 +6,9 @@ export default class Main {
     
     core.log('demo-message-broker');
 
+    const messageBroker = core.service('rabbitmq-amqp');
+
+    /*
     await core.messageBroker.subscribe('demo.*');
     
     core.messageBroker.on('message', message => {
@@ -13,5 +16,14 @@ export default class Main {
     });
 
     core.messageBroker.publish('demo.hello', {text: 'hello'});
+    */
+
+    await messageBroker.subscribe('demo.*');
+    
+    messageBroker.on('message', message => {
+      core.log(message);
+    });
+
+    messageBroker.publish('demo.hello', {text: 'hello'});
   }
 }

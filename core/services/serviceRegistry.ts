@@ -3,23 +3,20 @@ import {Logger} from './logger';
 class ServiceRegistry {
   private services = {};
 
-  async start(modules: any) {
+  async start(module: any) {
     Logger.debug('Service registry starting...');
 
-    for(const moduleName in modules) {
-      const module = modules[moduleName];
-      for (const serviceName in module.services) {
-        if (!this.services[serviceName]) {
-          Logger.debug(`Load service: ${serviceName}`);
-          const serviceModule = require(`./${serviceName}/main`);
-          const serviceConfig = this.serviceEnvVarsConfig(serviceName);
-          const service = new serviceModule.default(serviceConfig);
-  
-          Logger.debug(`Start service: ${serviceName}`);
-          await service.start();
+    for (const serviceName in module.services) {
+      if (!this.services[serviceName]) {
+        Logger.debug(`Load service: ${serviceName}`);
+        const serviceModule = require(`./${serviceName}/main`);
+        const serviceConfig = this.serviceEnvVarsConfig(serviceName);
+        const service = new serviceModule.default(serviceConfig);
 
-          this.services[serviceName] = service;
-        }
+        Logger.debug(`Start service: ${serviceName}`);
+        await service.start();
+
+        this.services[serviceName] = service;
       }
     }
   }

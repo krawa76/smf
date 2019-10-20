@@ -21,7 +21,7 @@ class Core {
     const data = fs.readFileSync(config.STACK_CONFIG);
     const stackConfig = JSON.parse(data);
 
-    await serviceRegistry.start(stackConfig.modules);
+    await serviceRegistry.start(stackConfig.modules[config.MODULE]);
 
     this.logger.debug('KMF core started');
   }

@@ -19,7 +19,7 @@ export class Logger {
           format: combine(
             timestamp(),
             printf((info) => {
-              return `${info.timestamp} [${info.level}]: ${info.message} <==KAZUHM-LOG-END==>`;
+              return `${info.timestamp} [${info.level}]: ${info.message}`;
             }),
           ),
           handleExceptions: true,

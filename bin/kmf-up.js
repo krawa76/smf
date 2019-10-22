@@ -87,7 +87,9 @@ function up() {
     services: {},
     networks: {
       main: {
-        name: config.STACK_DOCKER_NETWORK_NAME,
+        external: {
+          name: config.STACK_DOCKER_NETWORK_NAME,
+        }
       }
     } 
   }

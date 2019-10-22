@@ -4,9 +4,16 @@
     "demo-message-broker": {
       "services": {
         "rabbitmq-amqp": {
-          "internal": true
         }
       }
+    }
+  },
+  "services": {
+    "rabbitmq-amqp": {
+      "external": false
+    },
+    "sample1@rabbitmq-amqp": {
+      "external": true
     }
   }
 }

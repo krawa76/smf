@@ -4,4 +4,5 @@ build-stack
 .DS_Store
 .env
 kmf-docker.yml
+kmf-docker-services.yml
 kmf-env.json

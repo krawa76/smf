@@ -1,0 +1,5 @@
+{
+  "docker": {
+    "image": "rabbitmq:3-management"
+  }
+}

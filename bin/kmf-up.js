@@ -40,7 +40,7 @@ function up() {
     const varPreffix = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '_').toUpperCase();
 
     if (stackEnv.services[service].start) {
-      createEnvFile(serviceEnvFileName(service, 'start'), stackEnv.services[service].start, varPreffix);
+      createEnvFile(serviceEnvFileName(service, 'start'), stackEnv.services[service].start, /* varPreffix */ null);
     }
     if (stackEnv.services[service].connect) {
       createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix);
@@ -48,8 +48,40 @@ function up() {
   }
 
   //=================================================================================
-  console.info('Generating Docker Compose file...');
+  console.info('Generating Docker files...');
 
+  //========(services)================================================================
+  const dockerComposeServices = {
+    version: '3.5',
+    services: {},
+    networks: {
+      main: {
+        name: config.STACK_DOCKER_NETWORK_NAME,
+      }
+    } 
+  }
+
+  for(const service of Object.keys(stacksConfig.services)) {
+    const serviceData = stacksConfig.services[service];
+    if (!serviceData.external) {
+      const serviceNameNormalized = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '-');
+
+      const envFiles = [serviceEnvFileName(service, 'start')];
+
+      dockerComposeServices.services[service] = {
+        container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${serviceNameNormalized}`,
+        env_file: envFiles,
+        networks: [config.STACK_DOCKER_NETWORK],
+      }
+    }
+  }
+
+  // write yaml
+  const dockerComposeServicesDoc = yaml.dump(dockerComposeServices);
+  fs.writeFileSync(config.STACK_DOCKER_COMPOSE_SERVICES, dockerComposeServicesDoc);
+  console.info(`${config.STACK_DOCKER_COMPOSE_SERVICES} created.`);
+
+  //========(modules)================================================================
   const dockerCompose = {
     version: '3.5',
     services: {},

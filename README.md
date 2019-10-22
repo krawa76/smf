@@ -57,3 +57,4 @@ kmf down
 - service full name: service + lib (e.g. rabbitmq-ampq).
 - generate .env files automatically from the integrated env json.
 - minimise duplicate code by creating your own services.
+- connect multiple services of the same type (e.g. message brokers), specifying unique names.

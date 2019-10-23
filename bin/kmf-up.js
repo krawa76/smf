@@ -68,10 +68,14 @@ function up() {
 
       const envFiles = [serviceEnvFileName(service, 'start')];
 
-      dockerComposeServices.services[service] = {
-        container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${serviceNameNormalized}`,
-        env_file: envFiles,
-        networks: [config.STACK_DOCKER_NETWORK],
+      const serviceManifest = readServiceManifest(service);
+      if (serviceManifest && serviceManifest.docker) {
+        dockerComposeServices.services[service] = {
+          container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${serviceNameNormalized}`,
+          image: serviceManifest.docker.image,
+          env_file: envFiles,
+          networks: [config.STACK_DOCKER_NETWORK],
+        }  
       }
     }
   }
@@ -157,6 +161,30 @@ function moduleEnvFileName(moduleName) {
 function serviceEnvFileName(serviceName, type /* start | connect */) {
   const serviceNameNormalized = serviceName.replace(config.STACK_SERVICE_NAME_SEPARATOR, '.');
   return `${config.STACK_BUILD_ENV_PATH}/service.${serviceNameNormalized}.${type}.env`
+}
+
+function serviceTypeName(serviceName) {
+  const segments = serviceName.split(config.STACK_SERVICE_NAME_SEPARATOR);
+  if (segments.length > 0) {
+    return segments[segments.length - 1];
+  }
+  else  {
+    return serviceName;
+  }
+}
+
+function readServiceManifest(serviceName) {
+  const serviceType = serviceTypeName(serviceName);
+  const fileName = `./core/services/${serviceType}/${config.STACK_SERVICE_MANIFEST}`;
+
+  let res = null;
+
+  if (fs.existsSync(fileName)) {
+    const data = fs.readFileSync(fileName);
+    res = JSON.parse(data);  
+  }
+
+  return res;
 }
 
 module.exports = up;

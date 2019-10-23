@@ -9,5 +9,6 @@ module.exports = {
   STACK_DOCKER_NETWORK: 'main',
   STACK_DOCKER_NETWORK_NAME: 'kmf',
   STACK_DOCKER_CONTAINER_PREFIX: 'kmf-',
+  STACK_SERVICE_MANIFEST: 'kmf-service.json',
   STACK_SERVICE_NAME_SEPARATOR: '@',
 }

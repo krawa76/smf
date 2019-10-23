@@ -6,7 +6,10 @@ function down() {
   //=================================================================================
   console.info('Stopping Docker Compose...');
 
-  const script = exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} down`);
+  const command = `docker-compose -f ${config.STACK_DOCKER_COMPOSE} down && ` +
+                  `docker-compose -f ${config.STACK_DOCKER_COMPOSE_SERVICES} down`;
+
+  const script = exec(command);
   script.stdout.on('data', data => {
     console.log(data.toString().trim()); 
   });

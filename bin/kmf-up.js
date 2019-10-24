@@ -3,6 +3,7 @@ const yaml = require('js-yaml');
 const {exec} = require('child_process');
 
 const config = require('./config');
+const utils = require('./utils');
 
 function up() {
   console.info('Reading config...');
@@ -13,39 +14,15 @@ function up() {
     stacksConfig = JSON.parse(data);
   }
   catch(error) {
-    console.error(`File not found: ${config.STACK_CONFIG}`);
+    // console.error(`File not found: ${config.STACK_CONFIG}`);
+    console.error(error);
     return;
   }
 
   //=================================================================================
   console.info('Generating env files...');
 
-  fs.mkdirSync(config.STACK_BUILD_ENV_PATH, {recursive: true});
-
-  let stackEnv;
-  try {
-    const data = fs.readFileSync(config.STACK_ENV);
-    stackEnv = JSON.parse(data);
-  }
-  catch(error) {
-    console.error(`File not found: ${config.STACK_ENV}`);
-    return;
-  }
-
-  for(const module of Object.keys(stackEnv.modules)) {
-    createEnvFile(moduleEnvFileName(module), stackEnv.modules[module]);
-  }
-  
-  for(const service of Object.keys(stackEnv.services)) {
-    const varPreffix = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '_').toUpperCase();
-
-    if (stackEnv.services[service].start) {
-      createEnvFile(serviceEnvFileName(service, 'start'), stackEnv.services[service].start, /* varPreffix */ null);
-    }
-    if (stackEnv.services[service].connect) {
-      createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix);
-    }
-  }
+  utils.buildEnvFiles();
 
   //=================================================================================
   console.info('Generating Docker files...');
@@ -66,7 +43,7 @@ function up() {
     if (!serviceData.external) {
       const serviceNameNormalized = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '-');
 
-      const envFiles = [serviceEnvFileName(service, 'start')];
+      const envFiles = [utils.serviceEnvFileName(service, 'start')];
 
       const serviceManifest = readServiceManifest(service);
       if (serviceManifest && serviceManifest.docker) {
@@ -100,12 +77,12 @@ function up() {
 
   for(const module of Object.keys(stacksConfig.modules)) {
     //================ generate env files ===================
-    const envFiles = [moduleEnvFileName(module)];
+    const envFiles = [utils.moduleEnvFileName(module)];
     // services env files
     const moduleData = stacksConfig.modules[module];
     if (moduleData.services) {
       for(const service of Object.keys(moduleData.services)) {
-        envFiles.push(serviceEnvFileName(service, 'connect'));
+        envFiles.push(utils.serviceEnvFileName(service, 'connect'));
       }
     }
 
@@ -147,27 +124,6 @@ function up() {
 }
 
 //===================================================================================
-function createEnvFile(fileName, envVars, varPreffix = null) {
-  const preffix = varPreffix ? `${varPreffix}_` : ''; 
-
-  const file = fs.createWriteStream(fileName, {flags: 'w'});
-
-  for(const v of Object.keys(envVars)) {
-    file.write(`${preffix}${v}=${envVars[v]}\n`);
-  }
-
-  file.end();
-}
-
-function moduleEnvFileName(moduleName) {
-  return `${config.STACK_BUILD_ENV_PATH}/module.${moduleName}.env`;
-}
-
-function serviceEnvFileName(serviceName, type /* start | connect */) {
-  const serviceNameNormalized = serviceName.replace(config.STACK_SERVICE_NAME_SEPARATOR, '.');
-  return `${config.STACK_BUILD_ENV_PATH}/service.${serviceNameNormalized}.${type}.env`
-}
-
 function serviceTypeName(serviceName) {
   const segments = serviceName.split(config.STACK_SERVICE_NAME_SEPARATOR);
   if (segments.length > 0) {

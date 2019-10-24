@@ -52,7 +52,10 @@ function up() {
           image: serviceManifest.docker.image,
           env_file: envFiles,
           networks: [config.STACK_DOCKER_NETWORK],
-        }  
+        }
+        if (serviceManifest.docker.ports) {
+          dockerComposeServices.services[service].ports = serviceManifest.docker.ports.map(port => `${port}:${port}`);
+        }
       }
     }
   }

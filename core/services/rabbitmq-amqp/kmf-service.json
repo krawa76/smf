@@ -1,5 +1,6 @@
 {
   "docker": {
-    "image": "rabbitmq:3-management"
+    "image": "rabbitmq:3-management",
+    "ports": [5671, 5672]
   }
 }

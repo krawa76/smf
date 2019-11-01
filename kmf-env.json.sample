@@ -8,10 +8,16 @@
   "services": {
     "rabbitmq-amqp": {
       "start": {
-
+        "RABBITMQ_DEFAULT_USER": "admin",
+        "RABBITMQ_DEFAULT_PASS": "password"
       },
       "connect": {
-        "RABBITMQ_URL": "amqp://admin:password@localhost:5672"
+        "RABBITMQ_URL": "amqp://admin:password@rabbitmq-amqp:5672"
+      }
+    },
+    "instance2@rabbitmq-amqp": {
+      "connect": {
+        "RABBITMQ_URL": "amqp://admin:testPass123@localhost2:5672"
       }
     }
   }

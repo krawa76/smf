@@ -1,6 +1,15 @@
 {
   "docker": {
     "image": "rabbitmq:3-management",
-    "ports": [5671, 5672]
+    "ports": [5671, 5672],
+    "env": {
+      "start": {
+        "RABBITMQ_DEFAULT_USER": "admin",
+        "RABBITMQ_DEFAULT_PASS": "password"
+      },
+      "connect": {
+        "RABBITMQ_URL": "amqp://admin:password@rabbitmq-amqp:5672"
+      }
+    }
   }
 }

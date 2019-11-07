@@ -20,6 +20,11 @@ function up() {
   }
 
   //=================================================================================
+  console.info('Updating stack environment file...');
+
+  utils.updateStackEnvFile(stacksConfig);
+
+  //=================================================================================
   console.info('Generating env files...');
 
   utils.buildEnvFiles();
@@ -35,7 +40,7 @@ function up() {
       main: {
         name: config.STACK_DOCKER_NETWORK_NAME,
       }
-    } 
+    }
   }
 
   for(const service of Object.keys(stacksConfig.services)) {
@@ -45,7 +50,7 @@ function up() {
 
       const envFiles = [utils.serviceEnvFileName(service, 'start')];
 
-      const serviceManifest = readServiceManifest(service);
+      const serviceManifest = utils.readServiceManifest(service);
       if (serviceManifest && serviceManifest.docker) {
         dockerComposeServices.services[service] = {
           container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${serviceNameNormalized}`,
@@ -124,31 +129,6 @@ function up() {
   script.stderr.on('data', data => {
     console.log(data.toString().trim()); 
   });
-}
-
-//===================================================================================
-function serviceTypeName(serviceName) {
-  const segments = serviceName.split(config.STACK_SERVICE_NAME_SEPARATOR);
-  if (segments.length > 0) {
-    return segments[segments.length - 1];
-  }
-  else  {
-    return serviceName;
-  }
-}
-
-function readServiceManifest(serviceName) {
-  const serviceType = serviceTypeName(serviceName);
-  const fileName = `./core/services/${serviceType}/${config.STACK_SERVICE_MANIFEST}`;
-
-  let res = null;
-
-  if (fs.existsSync(fileName)) {
-    const data = fs.readFileSync(fileName);
-    res = JSON.parse(data);  
-  }
-
-  return res;
 }
 
 module.exports = up;

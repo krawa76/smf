@@ -21,12 +21,16 @@ function buildEnvFiles() {
   
   for(const service of Object.keys(stackEnv.services)) {
     const varPreffix = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '_').toUpperCase();
+    const serviceNameNormalized = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '-');
 
     if (stackEnv.services[service].start) {
       createEnvFile(serviceEnvFileName(service, 'start'), stackEnv.services[service].start, /* varPreffix */ null);
     }
     if (stackEnv.services[service].connect) {
-      createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix);
+      createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix, (value) => {
+        return value
+          .replace('${hostname}', serviceNameNormalized);
+      });
     }
   }
 }
@@ -60,7 +64,7 @@ function buildLocalEnvFile(stacksConfig, moduleName) {
   file.end();
 }
 
-function createEnvFile(fileName, envVars, varPreffix = null) {
+function createEnvFile(fileName, envVars, varPreffix = null, cbValueTransformation = null) {
   const preffix = varPreffix ? `${varPreffix}_` : ''; 
 
   /*
@@ -76,7 +80,8 @@ function createEnvFile(fileName, envVars, varPreffix = null) {
   let content = '';
 
   for(const v of Object.keys(envVars)) {
-    content = content + `${preffix}${v}=${envVars[v]}\n`;
+    const value = cbValueTransformation ? cbValueTransformation(envVars[v]) : envVars[v];
+    content = content + `${preffix}${v}=${value}\n`;
   }
   fs.writeFileSync(fileName, content);
 }

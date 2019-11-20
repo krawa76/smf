@@ -27,7 +27,10 @@ class Core {
   }
 
   service(name: string) {
-    return serviceRegistry.service(name);
+    const res = serviceRegistry.service(name);
+    if (!res) throw new Error(`Service "${name}" is not found in the service registry`);
+
+    return res;
   }
 }
 

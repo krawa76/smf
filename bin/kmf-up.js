@@ -52,14 +52,14 @@ function up() {
 
       const serviceManifest = utils.readServiceManifest(service);
       if (serviceManifest && serviceManifest.docker) {
-        dockerComposeServices.services[service] = {
+        dockerComposeServices.services[serviceNameNormalized] = {
           container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${serviceNameNormalized}`,
           image: serviceManifest.docker.image,
           env_file: envFiles,
           networks: [config.STACK_DOCKER_NETWORK],
         }
         if (serviceManifest.docker.ports) {
-          dockerComposeServices.services[service].ports = serviceManifest.docker.ports.map(port => `${port}:${port}`);
+          dockerComposeServices.services[serviceNameNormalized].ports = serviceManifest.docker.ports.map(port => `${port}:${port}`);
         }
       }
     }

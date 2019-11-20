@@ -9,7 +9,7 @@ class ServiceRegistry {
     for (const serviceName in module.services) {
       if (!this.services[serviceName]) {
         Logger.debug(`Load service: ${serviceName}`);
-        const serviceModule = require(`./${serviceName}/main`);
+        const serviceModule = require(`./${this.serviceTypeName(serviceName)}/main`);
         const serviceConfig = this.serviceEnvVarsConfig(serviceName);
         const service = new serviceModule.default(serviceConfig);
 
@@ -38,6 +38,16 @@ class ServiceRegistry {
     // console.info(JSON.stringify(res));
     return res;
   }
+
+  serviceTypeName(serviceName) {
+    const segments = serviceName.split('@');
+    if (segments.length > 0) {
+      return segments[segments.length - 1];
+    }
+    else  {
+      return serviceName;
+    }
+  }  
 }
 
 export default new ServiceRegistry();

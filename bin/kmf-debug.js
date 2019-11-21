@@ -12,6 +12,8 @@ function debug() {
   const moduleName = process.argv[3];
   console.info(`Debug module: ${moduleName}`);
 
+  config.session.debug = true;
+
   //==================================================================================
   let stacksConfig;
   try {

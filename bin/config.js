@@ -1,6 +1,7 @@
 module.exports = {
   // STACK_BUILD_PATH: './build-stack',
   STACK_BUILD_ENV_PATH: './build-stack/env',
+  STACK_BUILD_ENV_DEBUG_PATH: './build-stack/env/debug',
 
   STACK_CONFIG: 'kmf-stack.json',
   STACK_ENV: 'kmf-env.json',
@@ -11,4 +12,8 @@ module.exports = {
   STACK_DOCKER_CONTAINER_PREFIX: 'kmf-',
   STACK_SERVICE_MANIFEST: 'kmf-service.json',
   STACK_SERVICE_NAME_SEPARATOR: '@',
+
+  session: {
+    debug: false,
+  }
 }

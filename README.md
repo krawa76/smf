@@ -56,7 +56,7 @@ kmf debug <module name>
 ## Notes
 
 - service full name: service + lib (e.g. rabbitmq-amqp).
-- generate .env files automatically from the integrated env json.
+- generate .env files automatically from the integrated env json (kmf-env.json).
 - minimise duplicate code by creating your own services.
-- connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbit-amqp)
-- local debug: run "kmf debug" to create .env file merging: module=<MODULE>, module.<MODULE>.env and all .envs of services which the module depends on.
+- connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
+- local debug: run "kmf debug ..." to create .env file merging all the required env files (module & services).

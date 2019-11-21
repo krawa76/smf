@@ -3,7 +3,7 @@ const fs = require('fs');
 const config = require('./config');
 
 function buildEnvFiles() {
-  fs.mkdirSync(config.STACK_BUILD_ENV_PATH, {recursive: true});
+  fs.mkdirSync(stackBuildEnvPath(), {recursive: true});
 
   let stackEnv;
   try {
@@ -29,7 +29,7 @@ function buildEnvFiles() {
     if (stackEnv.services[service].connect) {
       createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix, (value) => {
         return value
-          .replace('${hostname}', serviceNameNormalized);
+          .replace('${hostname}', config.session.debug ? 'localhost' : serviceNameNormalized);
       });
     }
   }
@@ -87,12 +87,12 @@ function createEnvFile(fileName, envVars, varPreffix = null, cbValueTransformati
 }
 
 function moduleEnvFileName(moduleName) {
-  return `${config.STACK_BUILD_ENV_PATH}/module.${moduleName}.env`;
+  return `${stackBuildEnvPath()}/module.${moduleName}.env`;
 }
 
 function serviceEnvFileName(serviceName, type /* start | connect */) {
   const serviceNameNormalized = serviceName.replace(config.STACK_SERVICE_NAME_SEPARATOR, '.');
-  return `${config.STACK_BUILD_ENV_PATH}/service.${serviceNameNormalized}.${type}.env`
+  return `${stackBuildEnvPath()}/service.${serviceNameNormalized}.${type}.env`
 }
 
 function updateStackEnvFile(stacksConfig) {
@@ -177,6 +177,10 @@ function readServiceManifest(serviceName) {
   }
 
   return res;
+}
+
+function stackBuildEnvPath() {
+  return config.session.debug ? config.STACK_BUILD_ENV_DEBUG_PATH : config.STACK_BUILD_ENV_PATH;
 }
 
 //===================================================================================

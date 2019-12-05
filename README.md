@@ -61,6 +61,7 @@ kmf debug <module name>
 - minimise duplicate code by creating your own services.
 - connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
 - local debug: run "kmf debug ..." to create .env file merging all the required env files (module & services).
+- service folder format (core/services/): service name - driver name (e.g. mongodb-mongoose).
 
 ## Structure
 

@@ -8,6 +8,7 @@
 - containerized: uses a single Dockerfile to build individual modules images.
 - Dockerfile copies and builds (TypeScript) specified module files only.
 - All the core services code is included to every image, can add dynamical selection if needed.
+- building blocks: custom modules & third-party services (dependencies)
 
 ## Usage
 
@@ -60,3 +61,12 @@ kmf debug <module name>
 - minimise duplicate code by creating your own services.
 - connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
 - local debug: run "kmf debug ..." to create .env file merging all the required env files (module & services).
+
+## Structure
+
+- kmf-stack.json: modules definitions and services dependencies.
+- kmf-env.json: environment variables. Some vars are automatically updated from services manifests.
+- kmf-docker-services.yml: (auto-generated) docker-compose file for services.
+- kmf-docker.yml: (auto-generated) docker-compose file for modules.
+- build/ : (auto-generated) compiled source code.
+- build-stack/env : (auto-generated) compiled environment variables.

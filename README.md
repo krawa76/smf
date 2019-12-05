@@ -1,4 +1,4 @@
-# Kazuhm Microservice Factory (KMF)
+# Microservice Factory (KMF)
 
 ## Key concepts
 

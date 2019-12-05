@@ -1,9 +1,9 @@
 import config from './legacy.config';
 import {Logger} from './services/logger';
 import Helper from './services/helper';
-import messageBroker from './services/messageBroker/messageBroker';
+import messageBroker from './services/legacy.messageBroker/messageBroker';
 import Minio from './services/minio';
-import {MongoConnection} from './services/mongodb/mongooseConnection';
+import {MongoConnection} from './services/legacy.mongodb/mongooseConnection';
 
 class Core {
   public config        = config;

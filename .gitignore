@@ -1,6 +1,7 @@
 node_modules
 build
 build-stack
+data
 .DS_Store
 .env
 .env.backup

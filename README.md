@@ -71,3 +71,9 @@ kmf debug <module name>
 - kmf-docker.yml: (auto-generated) docker-compose file for modules.
 - build/ : (auto-generated) compiled source code.
 - build-stack/env : (auto-generated) compiled environment variables.
+
+## Structure, JSON
+
+core/services/(service name)/kmf-service.json: 
+
+- volume: container destination dir.

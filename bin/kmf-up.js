@@ -61,6 +61,11 @@ function up() {
         if (serviceManifest.docker.ports) {
           dockerComposeServices.services[serviceNameNormalized].ports = serviceManifest.docker.ports.map(port => `${port}:${port}`);
         }
+        if (serviceManifest.docker.volume) {
+          const sourcePath = `./data/${serviceNameNormalized}`;
+          fs.mkdirSync(sourcePath, {recursive: true});
+          dockerComposeServices.services[serviceNameNormalized].volumes = [`${sourcePath}:${serviceManifest.docker.volume}`];
+        }
       }
     }
   }

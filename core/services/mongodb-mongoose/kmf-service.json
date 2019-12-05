@@ -1,0 +1,14 @@
+{
+  "docker": {
+    "image": "mongo:latest",
+    "ports": [27017],
+    "volume": "/data/db",
+    "env": {
+      "start": {
+      },
+      "connect": {
+        "MONGODB_URI": "mongodb://{hostname}/db"
+      }
+    }
+  }
+}

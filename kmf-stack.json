@@ -1,19 +1,16 @@
 {
   "name": "kmf demo",
   "modules": {
-    "demo-message-broker": {
+    "demo-mongodb": {
       "services": {
-        "rabbitmq-amqp": {
+        "mongodb-mongoose": {
         }
       }
     }
   },
   "services": {
-    "rabbitmq-amqp": {
+    "mongodb-mongoose": {
       "external": false
-    },
-    "sample1@rabbitmq-amqp": {
-      "external": true
     }
   }
 }

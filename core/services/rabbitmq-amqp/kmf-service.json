@@ -8,7 +8,7 @@
         "RABBITMQ_DEFAULT_PASS": "password"
       },
       "connect": {
-        "RABBITMQ_URL": "amqp://admin:password@${hostname}:5672"
+        "RABBITMQ_URL": "amqp://admin:password@{hostname}:5672"
       }
     }
   }

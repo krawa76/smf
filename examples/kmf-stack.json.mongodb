@@ -1,0 +1,16 @@
+{
+  "name": "kmf demo",
+  "modules": {
+    "demo-mongodb": {
+      "services": {
+        "mongodb-mongoose": {
+        }
+      }
+    }
+  },
+  "services": {
+    "mongodb-mongoose": {
+      "external": false
+    }
+  }
+}

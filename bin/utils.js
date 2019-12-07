@@ -29,7 +29,7 @@ function buildEnvFiles() {
     if (stackEnv.services[service].connect) {
       createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix, (value) => {
         return value
-          .replace('${hostname}', config.session.debug ? 'localhost' : serviceNameNormalized);
+          .replace('{hostname}', config.session.debug ? 'localhost' : serviceNameNormalized);
       });
     }
   }

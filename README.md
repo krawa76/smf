@@ -66,6 +66,7 @@ kmf debug <module name>
 ## Structure
 
 - kmf-stack.json: modules definitions and services dependencies.
+- kmf-stack.json > modules > ports: ports to open in docker-compose.
 - kmf-env.json: environment variables. Some vars are automatically updated from services manifests.
 - kmf-docker-services.yml: (auto-generated) docker-compose file for services.
 - kmf-docker.yml: (auto-generated) docker-compose file for modules.

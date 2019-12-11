@@ -57,7 +57,7 @@ RUN if test -e "./modules/${MODULE}/install.sh"; then chmod +rx ./modules/${MODU
 COPY docker-temp.txt ./modules/${MODULE}/web-sails* ./modules/${MODULE}/web-sails/
 RUN [ -d "./modules/${MODULE}/web-sails" ] && cd ./modules/${MODULE}/web-sails && npm install
 ENV SAILS_PATH=./web-sails
-EXPOSE 1337
+# EXPOSE 1337
 
 ##################################################################################################
 COPY kmf-stack.json .

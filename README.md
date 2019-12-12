@@ -82,3 +82,4 @@ core/services/(service name)/kmf-service.json:
 ## todo
 
 - diagram: module - service relationship.
+- diagram: ?

@@ -2,7 +2,7 @@ version: "3.5"
 services:
   #========== base services ==============================
   demo:
-    container_name: kmf-demo
+    container_name: smf-demo
     build:
       context: .
       args: ["MODULE=demo"]
@@ -10,7 +10,7 @@ services:
     # env_file: ["env/???-1.env", "env/???-2.env"]
     networks: ["main"]
   demo-web:
-    container_name: kmf-demo-web
+    container_name: smf-demo-web
     build:
       context: .
       args: ["MODULE=demo-web"]
@@ -22,4 +22,4 @@ services:
 
 networks:
   main:
-    name: kmf
+    name: smf

@@ -3,14 +3,14 @@ module.exports = {
   STACK_BUILD_ENV_PATH: './build-stack/env',
   STACK_BUILD_ENV_DEBUG_PATH: './build-stack/env/debug',
 
-  STACK_CONFIG: 'kmf-stack.json',
-  STACK_ENV: 'kmf-env.json',
-  STACK_DOCKER_COMPOSE: 'kmf-docker.yml',
-  STACK_DOCKER_COMPOSE_SERVICES: 'kmf-docker-services.yml',
+  STACK_CONFIG: 'smf-stack.json',
+  STACK_ENV: 'smf-env.json',
+  STACK_DOCKER_COMPOSE: 'smf-docker.yml',
+  STACK_DOCKER_COMPOSE_SERVICES: 'smf-docker-services.yml',
   STACK_DOCKER_NETWORK: 'main',
-  STACK_DOCKER_NETWORK_NAME: 'kmf',
-  STACK_DOCKER_CONTAINER_PREFIX: 'kmf-',
-  STACK_SERVICE_MANIFEST: 'kmf-service.json',
+  STACK_DOCKER_NETWORK_NAME: 'smf',
+  STACK_DOCKER_CONTAINER_PREFIX: 'smf-',
+  STACK_SERVICE_MANIFEST: 'smf-service.json',
   STACK_SERVICE_NAME_SEPARATOR: '@',
 
   session: {

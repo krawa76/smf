@@ -4,7 +4,7 @@ require('ts-node/register');
 
 process.chdir(__dirname);
 
-function start(kmfCore) {
+function start(smfCore) {
   var sails;
   var rc;
   try {
@@ -16,7 +16,7 @@ function start(kmfCore) {
     return;
   }
   
-  sails.kmfCore = kmfCore;
+  sails.smfCore = smfCore;
   
   // Start server
   sails.lift(rc('sails'));

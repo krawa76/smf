@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 import {Logger} from '../logger';
 import {getConnection} from './rabbitmq-connection';
 
-const RMQ_EXCHANGE_NAME = 'kmf-events';
+const RMQ_EXCHANGE_NAME = 'smf-events';
 
 export default class Main extends EventEmitter {
   private config: any;

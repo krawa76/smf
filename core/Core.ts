@@ -15,7 +15,7 @@ class Core {
   }
 
   async start() {
-    this.logger.debug('KMF core starting...');
+    this.logger.debug('SMF core starting...');
 
     this.logger.debug('loading config...');
     const data = fs.readFileSync(config.STACK_CONFIG);
@@ -23,7 +23,7 @@ class Core {
 
     await serviceRegistry.start(stackConfig.modules[config.MODULE]);
 
-    this.logger.debug('KMF core started');
+    this.logger.debug('SMF core started');
   }
 
   service(name: string) {

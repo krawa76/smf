@@ -17,7 +17,7 @@ class Core {
   }
 
   async start() {
-    this.logger.debug('KMF core starting...');
+    this.logger.debug('SMF core starting...');
 
     // template: if (config.<SERVICE_NAME>_ENABLED) await this.start<ServiceName>();
 
@@ -25,7 +25,7 @@ class Core {
     if (config.MINIO_ENABLED)          await this.initMinio();
     if (config.MONGODB_ENABLED)        await this.initMongoDb();
 
-    this.logger.debug('KMF core started');
+    this.logger.debug('SMF core started');
   }
 
   //=======================================================================================

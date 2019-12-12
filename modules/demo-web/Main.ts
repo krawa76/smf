@@ -1,4 +1,4 @@
-import core from 'kmf-core';
+import core from 'smf-core';
 import * as express from 'express';
 
 export default class Main {

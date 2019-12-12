@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 function debug() {
   if (process.argv.length < 4) {
-    console.error('Module name is missing, e.g. "kmf debug my-module"');
+    console.error('Module name is missing, e.g. "smf debug my-module"');
     return;
   }
 

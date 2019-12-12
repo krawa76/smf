@@ -14,10 +14,10 @@
 
 Build a module image:
 ```
-$ docker build -t kmf --build-arg MODULE=<module name> .
+$ docker build -t smf --build-arg MODULE=<module name> .
 
 e.g.
-$ docker build -t kmf --build-arg MODULE=provisioner .
+$ docker build -t smf --build-arg MODULE=provisioner .
 ```
 
 ## Copy module data (optional)
@@ -47,35 +47,35 @@ https://sailsjs.com/documentation/tutorials/using-type-script
 
 Register local package: $ npm link.
 
-kmf commands:
+smf commands:
 ```
-kmf up
-kmf down
-kmf debug <module name>
+smf up
+smf down
+smf debug <module name>
 ```
 
 ## Notes
 
 - service full name: service + lib (e.g. rabbitmq-amqp).
-- generate .env files automatically from the integrated env json (kmf-env.json).
+- generate .env files automatically from the integrated env json (smf-env.json).
 - minimise duplicate code by creating your own services.
 - connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
-- local debug: run "kmf debug ..." to create .env file merging all the required env files (module & services).
+- local debug: run "smf debug ..." to create .env file merging all the required env files (module & services).
 - service folder format (core/services/): service name - driver name (e.g. mongodb-mongoose).
 
 ## Structure
 
-- kmf-stack.json: modules definitions and services dependencies.
-- kmf-stack.json > modules > ports: ports to open in docker-compose.
-- kmf-env.json: environment variables. Some vars are automatically updated from services manifests.
-- kmf-docker-services.yml: (auto-generated) docker-compose file for services.
-- kmf-docker.yml: (auto-generated) docker-compose file for modules.
+- smf-stack.json: modules definitions and services dependencies.
+- smf-stack.json > modules > ports: ports to open in docker-compose.
+- smf-env.json: environment variables. Some vars are automatically updated from services manifests.
+- smf-docker-services.yml: (auto-generated) docker-compose file for services.
+- smf-docker.yml: (auto-generated) docker-compose file for modules.
 - build/ : (auto-generated) compiled source code.
 - build-stack/env : (auto-generated) compiled environment variables.
 
 ## Structure, JSON
 
-core/services/(service name)/kmf-service.json: 
+core/services/(service name)/smf-service.json: 
 
 - volume: container destination dir.
 

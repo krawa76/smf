@@ -1,7 +1,7 @@
 import core from './Core';
 import config from './config';
 
-// (global as any).kmfCore = core;
+// (global as any).smfCore = core;
 
 (async () => {
   await core.start();

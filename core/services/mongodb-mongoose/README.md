@@ -1,3 +1,3 @@
 change db name:
 
-replace "db" in kmf-env.json > mongodb-mongoose > connect > MONGODB_URI
+replace "db" in smf-env.json > mongodb-mongoose > connect > MONGODB_URI

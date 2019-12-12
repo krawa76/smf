@@ -1,9 +1,9 @@
 {
-  "name": "kmf demo",
+  "name": "smf demo",
   "modules": {
     "demo-web": {
       "ports": {
-        "80": "3000"
+        "3000": "3000"
       },
       "services": {
       }

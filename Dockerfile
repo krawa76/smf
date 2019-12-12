@@ -15,7 +15,7 @@ RUN npm install -g typescript@3.5.3
 RUN npm install
 RUN cd ./modules/${MODULE} && npm install
 
-COPY core/kmf-core-docker.js ./node_modules/kmf-core.js
+COPY core/smf-core-docker.js ./node_modules/smf-core.js
 
 ENV NODE_ENV=production
 RUN npm run build-prod
@@ -39,7 +39,7 @@ ENV NODE_ENV=production NODE_PATH=/app
 RUN npm install
 RUN cd ./modules/${MODULE} && npm install
 
-COPY core/kmf-core-docker.js ./node_modules/kmf-core.js
+COPY core/smf-core-docker.js ./node_modules/smf-core.js
 
 ##################################################################################################
 # (optional) copy module data
@@ -60,6 +60,6 @@ ENV SAILS_PATH=./web-sails
 # EXPOSE 1337
 
 ##################################################################################################
-COPY kmf-stack.json .
-ENV KMF_ROOT_PATH=../
+COPY smf-stack.json .
+ENV SMF_ROOT_PATH=../
 CMD ["node", "./core/index.js"]

@@ -1,4 +1,4 @@
-import core from 'kmf-core';
+import core from 'smf-core';
 import * as mongoose from 'mongoose';
 
 export default class Main {

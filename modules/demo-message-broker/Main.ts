@@ -1,4 +1,4 @@
-import core from 'kmf-core';
+import core from 'smf-core';
 
 export default class Main {
   async run(coreParam) {

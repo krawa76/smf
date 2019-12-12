@@ -5,6 +5,6 @@ data
 .DS_Store
 .env
 .env.backup
-kmf-docker.yml
-kmf-docker-services.yml
-kmf-env.json
+smf-docker.yml
+smf-docker-services.yml
+smf-env.json

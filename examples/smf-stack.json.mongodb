@@ -1,5 +1,5 @@
 {
-  "name": "kmf demo",
+  "name": "smf demo",
   "modules": {
     "demo-mongodb": {
       "services": {

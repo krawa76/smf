@@ -78,3 +78,7 @@ kmf debug <module name>
 core/services/(service name)/kmf-service.json: 
 
 - volume: container destination dir.
+
+## todo
+
+- diagram: module - service relationship.

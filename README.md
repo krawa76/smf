@@ -1,4 +1,4 @@
-# Microservice Factory (KMF)
+# SMF. Node.js Microservice Factory
 
 ## Key concepts
 

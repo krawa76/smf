@@ -120,7 +120,7 @@ function up() {
     dockerCompose.services[module] = {
       container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${module}`,
       build: {
-        context: '.',
+        context: fs.existsSync(`./modules/${module}/Dockerfile`) ? `./modules/${module}` : '.',
         args: [`MODULE=${module}`],
       },
       // env_file: ["env/mongo.env", "env/jwt.env", "env/redis-live.env", "env/redis-stats.env", "env/minio.env", "env/rabbitmq.env"]

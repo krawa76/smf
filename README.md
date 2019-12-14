@@ -54,6 +54,11 @@ smf down
 smf debug <module name>
 ```
 
+## Requirements
+
+- Docker
+- npm / node.js - versions?
+
 ## Notes
 
 - service full name: service + lib (e.g. rabbitmq-amqp).

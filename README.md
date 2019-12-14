@@ -62,6 +62,7 @@ smf debug <module name>
 - connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
 - local debug: run "smf debug ..." to create .env file merging all the required env files (module & services).
 - service folder format (core/services/): service name - driver name (e.g. mongodb-mongoose).
+- overwrite the default Dockerfile: put a custom Dockerfile in the module root folder (see demo-frontend-react).
 
 ## Structure
 

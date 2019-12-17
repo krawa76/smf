@@ -1,7 +1,7 @@
 {
   "name": "smf",
   "version": "1.0.0",
-  "description": "Kazuhm Microservice Factory",
+  "description": "Microservice Factory",
   "main": "./core/index.js",
   "bin": {
     "smf": "./bin/smf.js"

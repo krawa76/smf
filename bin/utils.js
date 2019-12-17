@@ -183,5 +183,9 @@ function stackBuildEnvPath() {
   return config.session.debug ? config.STACK_BUILD_ENV_DEBUG_PATH : config.STACK_BUILD_ENV_PATH;
 }
 
+function hr() {
+  console.info('='.repeat(50));
+}
+
 //===================================================================================
-module.exports = {buildEnvFiles, buildLocalEnvFile, moduleEnvFileName, serviceEnvFileName, updateStackEnvFile, readServiceManifest}
+module.exports = {buildEnvFiles, buildLocalEnvFile, moduleEnvFileName, serviceEnvFileName, updateStackEnvFile, readServiceManifest, hr}

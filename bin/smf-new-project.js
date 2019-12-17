@@ -4,7 +4,7 @@ const copyfiles = require('copyfiles');
 
 const validators = require('./validators');
 
-function newProject() {
+async function newProject() {
   if (!process.argv[3]) {
     console.error('Project name not specified');
     return;

@@ -1,0 +1,11 @@
+{
+  "name": "smf demo",
+  "modules": {
+    "demo-frontend-react": {
+      "services": {
+      }
+    }
+  },
+  "services": {
+  }
+}

@@ -1,14 +1,19 @@
 {
   "name": "smf demo",
   "modules": {
-    "demo-frontend-react": {
-      "ports": {
-        "80": "80"
-      },
+    "demo-message-broker": {
       "services": {
+        "rabbitmq-amqp": {
+        }
       }
     }
   },
   "services": {
+    "rabbitmq-amqp": {
+      "external": false
+    },
+    "sample1@rabbitmq-amqp": {
+      "external": true
+    }
   }
 }

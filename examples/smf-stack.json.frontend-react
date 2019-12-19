@@ -1,0 +1,14 @@
+{
+  "name": "smf demo",
+  "modules": {
+    "demo-frontend-react": {
+      "ports": {
+        "80": "80"
+      },
+      "services": {
+      }
+    }
+  },
+  "services": {
+  }
+}

@@ -86,6 +86,7 @@ async function newProject() {
   await copyFilesAsync('core/**/*');
   await copyFilesAsync('modules/demo/**/*');
 
+  await copyFilesAsync('.gitattributes');
   await copyFilesAsync('.gitignore');
   await copyFilesAsync('docker-temp.txt');
   await copyFilesAsync('Dockerfile');

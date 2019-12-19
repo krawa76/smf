@@ -187,5 +187,9 @@ function hr() {
   console.info('='.repeat(50));
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 //===================================================================================
-module.exports = {buildEnvFiles, buildLocalEnvFile, moduleEnvFileName, serviceEnvFileName, updateStackEnvFile, readServiceManifest, hr}
+module.exports = {buildEnvFiles, buildLocalEnvFile, moduleEnvFileName, serviceEnvFileName, updateStackEnvFile, readServiceManifest, hr, sleep}

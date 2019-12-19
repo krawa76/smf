@@ -1,11 +1,11 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
-const {exec} = require('child_process');
+const {exec, execSync} = require('child_process');
 
 const config = require('./config');
 const utils = require('./utils');
 
-function up() {
+async function up() {
   console.info('Reading config...');
 
   let stacksConfig;
@@ -144,13 +144,27 @@ function up() {
   //=================================================================================
   console.info('Running Docker Compose...');
 
+  /*
   const runServices = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_SERVICES} up -d && ` +
                       `echo "pausing for 10 sec, letting the base services to start - a subj for improvement" && ` +
                       `sleep 10 && `;
+  */
+
+  if (fs.existsSync(config.STACK_DOCKER_COMPOSE_SERVICES)) {
+    const runServices = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_SERVICES} up -d`;
+
+    execSync(runServices, {
+      stdio: 'inherit',
+    });
     
+    const pauseSec = 10;
+    console.info(`pausing for ${pauseSec} sec, letting the system services start - a subj for improvement`);
+    await utils.sleep(10 * 1000);
+  }
+                    
   const runModules  = `docker-compose -f ${config.STACK_DOCKER_COMPOSE} up --build`;
 
-  const command = (fs.existsSync(config.STACK_DOCKER_COMPOSE_SERVICES) ? runServices : '') + runModules;
+  const command = /* (fs.existsSync(config.STACK_DOCKER_COMPOSE_SERVICES) ? runServices : '') + */ runModules;
 
   const script = exec(command);
   script.stdout.on('data', data => {

@@ -1,4 +1,6 @@
 const fs = require('fs');
+const path = require('path');
+const copyfiles = require('copyfiles');
 
 const config = require('./config');
 
@@ -191,5 +193,70 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// get SMF root dir name
+function smfDir() {
+  const scriptFilename = process.argv[1];
+  const realScriptFilename = fs.realpathSync(scriptFilename);
+  const realScriptDir  = path.dirname(realScriptFilename);
+  const segs = realScriptDir.split(path.sep);
+  segs.pop();
+  return segs.join(path.sep);
+}
+
+/*
+function copyFiles(src, dst = '') {
+  console.info(src);
+
+  copyfiles(
+    [
+      `${smfDir}/${src}`,
+      `./${projectName}${dst}`,
+    ],
+    {
+      all: true,
+      up: smfDir.split(path.sep).length, // slice out upper folders
+    },
+    () => {
+      // console.info(`${src} copied`)
+    }
+  );  
+}
+*/
+
+function copyFilesAsync(src, dst = '', up = 0) {
+  const root = smfDir();
+
+  return new Promise((resolve, reject) => {
+    console.info(src);
+
+    copyfiles(
+      [
+        `${root}/${src}`,
+        dst,
+      ],
+      {
+        all: true,
+        up: root.split(path.sep).length + up, // slice out upper folders
+      },
+      (err) => {
+        // console.info(`${src} copied`);
+        if (err) reject(err)
+        else resolve();
+      }
+    );  
+  });
+}
+
 //===================================================================================
-module.exports = {buildEnvFiles, buildLocalEnvFile, moduleEnvFileName, serviceEnvFileName, updateStackEnvFile, readServiceManifest, hr, sleep}
+module.exports = {
+  buildEnvFiles,
+  buildLocalEnvFile,
+  moduleEnvFileName,
+  serviceEnvFileName,
+  updateStackEnvFile,
+  readServiceManifest,
+  hr,
+  sleep,
+  smfDir,
+  copyFilesAsync,
+}

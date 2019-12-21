@@ -1,6 +1,4 @@
 const fs = require('fs');
-const path = require('path');
-const copyfiles = require('copyfiles');
 const {execSync} = require('child_process');
 
 const validators = require('./validators');
@@ -27,75 +25,25 @@ async function newProject() {
 
   fs.mkdirSync(projectName, {recursive: true});
 
-  // get SMF root dir name
-  const scriptFilename = process.argv[1];
-  const realScriptFilename = fs.realpathSync(scriptFilename);
-  const realScriptDir  = path.dirname(realScriptFilename);
-  const segs = realScriptDir.split(path.sep);
-  segs.pop();
-  const smfDir = segs.join(path.sep);
-
   //========== copy content =====================================================
   utils.hr();
   console.info('Copying components...');
 
-  /*
-  function copyFiles(src, dst = '') {
-    console.info(src);
+  await utils.copyFilesAsync('.vscode/**/*', `./${projectName}`);
+  await utils.copyFilesAsync('core/**/*', `./${projectName}`);
+  await utils.copyFilesAsync('modules/demo/**/*', `./${projectName}`);
 
-    copyfiles(
-      [
-        `${smfDir}/${src}`,
-        `./${projectName}${dst}`,
-      ],
-      {
-        all: true,
-        up: smfDir.split(path.sep).length, // slice out upper folders
-      },
-      () => {
-        // console.info(`${src} copied`)
-      }
-    );  
-  }
-  */
-
-  function copyFilesAsync(src, dst = '', up = 0) {
-    return new Promise((resolve, reject) => {
-      console.info(src);
-
-      copyfiles(
-        [
-          `${smfDir}/${src}`,
-          `./${projectName}${dst}`,
-        ],
-        {
-          all: true,
-          up: smfDir.split(path.sep).length + up, // slice out upper folders
-        },
-        (err) => {
-          // console.info(`${src} copied`);
-          if (err) reject(err)
-          else resolve();
-        }
-      );  
-    });
-  }
-
-  await copyFilesAsync('.vscode/**/*');
-  await copyFilesAsync('core/**/*');
-  await copyFilesAsync('modules/demo/**/*');
-
-  await copyFilesAsync('.gitattributes');
-  await copyFilesAsync('.gitignore');
-  await copyFilesAsync('docker-temp.txt');
-  await copyFilesAsync('Dockerfile');
-  await copyFilesAsync('tsconfig.json');
+  await utils.copyFilesAsync('.gitattributes', `./${projectName}`);
+  await utils.copyFilesAsync('.gitignore', `./${projectName}`);
+  await utils.copyFilesAsync('docker-temp.txt', `./${projectName}`);
+  await utils.copyFilesAsync('Dockerfile', `./${projectName}`);
+  await utils.copyFilesAsync('tsconfig.json', `./${projectName}`);
 
   // todo: copy & adjust package.json
-  await copyFilesAsync('package.json');
-  updatePackageJson(`${projectName}/package.json`);
+  await utils.copyFilesAsync('package.json', `./${projectName}`);
+  updatePackageJson(`${projectName}/package.json`, `./${projectName}`);
 
-  await copyFilesAsync('templates/new-project.smf-stack.json', '', 1 /* slice out "templates" */);
+  await utils.copyFilesAsync('templates/new-project.smf-stack.json', `./${projectName}`, 1 /* slice out "templates" */);
   fs.renameSync(`./${projectName}/new-project.smf-stack.json`, `./${projectName}/smf-stack.json`)
 
   // todo: readme.md ?

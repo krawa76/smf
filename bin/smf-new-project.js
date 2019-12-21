@@ -3,7 +3,6 @@ const path = require('path');
 const copyfiles = require('copyfiles');
 const {execSync} = require('child_process');
 
-
 const validators = require('./validators');
 const utils = require('./utils');
 

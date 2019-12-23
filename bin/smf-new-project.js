@@ -1,6 +1,7 @@
 const fs = require('fs');
 const {execSync} = require('child_process');
 
+const config = require('./config');
 const validators = require('./validators');
 const utils = require('./utils');
 
@@ -41,10 +42,15 @@ async function newProject() {
 
   // todo: copy & adjust package.json
   await utils.copyFilesAsync('package.json', `./${projectName}`);
-  updatePackageJson(`${projectName}/package.json`, `./${projectName}`);
+  updatePackageJson(`${projectName}/package.json`, {
+    projectName,
+  });
 
-  await utils.copyFilesAsync('templates/new-project.smf-stack.json', `./${projectName}`, 1 /* slice out "templates" */);
-  fs.renameSync(`./${projectName}/new-project.smf-stack.json`, `./${projectName}/smf-stack.json`)
+  await utils.copyFilesAsync(`templates/new-project.${config.STACK_CONFIG}`, `./${projectName}`, 1 /* slice out "templates" */);
+  fs.renameSync(`./${projectName}/new-project.${config.STACK_CONFIG}`, `./${projectName}/${config.STACK_CONFIG}`);
+  updateStackConfig(`./${projectName}/${config.STACK_CONFIG}`, {
+    projectName,
+  });
 
   // todo: readme.md ?
 
@@ -66,21 +72,29 @@ async function newProject() {
   console.info(`\t smf up`);
   console.info('');
   console.info('Happy coding!');
-
-  // todo: cd ${projectName}; smf up
 }
 
-function updatePackageJson(fileName) {
+function updatePackageJson(fileName, options) {
   const data = fs.readFileSync(fileName);
-  const package = JSON.parse(data);
+  const json = JSON.parse(data);
 
-  package.description = '';
-  package.author      = '';
-  package.license     = '';
+  json.name        = options.projectName;
+  json.description = '';
+  json.author      = '';
+  json.license     = '';
 
-  delete package.bin;
+  delete json.bin;
 
-  fs.writeFileSync(fileName, JSON.stringify(package, null, 2));
+  fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+}
+
+function updateStackConfig(fileName, options) {
+  const data = fs.readFileSync(fileName);
+  const json = JSON.parse(data);
+
+  json.name = options.projectName;
+
+  fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
 }
 
 module.exports = newProject;

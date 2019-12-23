@@ -1,7 +1,5 @@
 const fs = require('fs');
-const path = require('path');
-const copyfiles = require('copyfiles');
-const {execSync} = require('child_process');
+const prompt = require('prompt');
 
 const validators = require('./validators');
 const utils = require('./utils');
@@ -26,6 +24,32 @@ async function addService() {
     console.error(`Directory already exists: ${dirName}`);
     return;
   }
+
+  const properties = [
+    {
+      name: 'imagename',
+      description: 'Docker image name (e.g. mysql:latest)',
+      // validator: /^[a-zA-Z0-9:\s\-]+$/,
+      // warning: 'Image name must be only letters, spaces, or dashes'
+      required: true,
+    },
+    /*
+    {
+      name: 'password',
+      hidden: true
+    }
+    */
+  ];
+
+  prompt.start();
+
+  prompt.get(properties, function (err, result) {
+    if (err) { return console.log(err); }
+
+    console.log('Image name: ' + result.imagename);
+  });
+
+  return;
 
   fs.mkdirSync(dirName, {recursive: true});
 

@@ -96,15 +96,7 @@ async function addService() {
   //========== info ===============================================
   utils.hr();
   console.info(`Success! Created ${serviceName} service in ${fs.realpathSync(dirName)}`);
-  /*
-  console.info('');
-  console.info('We suggest that you start by typing');
-  console.info('');
-  console.info(`\t cd ${projectName}`);
-  console.info(`\t smf up`);
-  console.info('');
-  console.info('Happy coding!');
-  */
+  console.info(`You can now add "${serviceName}" as a dependency to the modules in ${config.STACK_CONFIG}`);
 }
 
 module.exports = addService;

@@ -37,13 +37,15 @@ async function up() {
   console.info('Generating Docker files...');
 
   //========(services)================================================================
+  const networkName = `${config.PREFIX}${stacksConfig.name}`
+
   if (Object.keys(stacksConfig.services).length > 0) {
     const dockerComposeServices = {
       version: '3.5',
       services: {},
       networks: {
         main: {
-          name: config.STACK_DOCKER_NETWORK_NAME,
+          name: networkName,
         }
       }
     }
@@ -58,7 +60,7 @@ async function up() {
         const serviceManifest = utils.readServiceManifest(service);
         if (serviceManifest && serviceManifest.docker) {
           dockerComposeServices.services[serviceNameNormalized] = {
-            container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${serviceNameNormalized}`,
+            container_name: `${config.PREFIX}${serviceNameNormalized}`,
             image: serviceManifest.docker.image,
             env_file: envFiles,
             networks: [config.STACK_DOCKER_NETWORK],
@@ -95,13 +97,13 @@ async function up() {
   if (Object.keys(stacksConfig.services).length > 0) {
     dockerCompose.networks.main = {
       external: {
-        name: config.STACK_DOCKER_NETWORK_NAME,
+        name: networkName,
       }
     }
   }
   else {
     dockerCompose.networks.main = {
-      name: config.STACK_DOCKER_NETWORK_NAME,
+      name: networkName,
     }
   }
 
@@ -119,7 +121,7 @@ async function up() {
 
     //=======================================================
     dockerCompose.services[module] = {
-      container_name: `${config.STACK_DOCKER_CONTAINER_PREFIX}${module}`,
+      container_name: `${config.PREFIX}${module}`,
       build: {
         context: fs.existsSync(`./modules/${module}/Dockerfile`) ? `./modules/${module}` : '.',
         args: [`MODULE=${module}`],

@@ -4,11 +4,13 @@ import config from './config';
 import {Logger} from './services/logger';
 import Helper from './services/helper';
 import serviceRegistry from './services/serviceRegistry';
+import shared from './shared';
 
 class Core {
   public config        = config;
   public logger        = Logger;
   public helper        = new Helper();
+  public shared        = shared;
 
   public log(message: string) {
     this.logger.debug(message);

@@ -88,6 +88,12 @@ core/services/(service name)/smf-service.json:
 
 - volume: container destination dir.
 
+## Shared modules
+
+1. Add module to core/shared folder (see module1 & module2 examples).
+2. Add module to import & export in core/shared/index.ts.
+3. Use module functions as core.shared.module.func in custom modules (see ./modules/demo/Main.ts).
+
 ## todo
 
 - diagram: module - service relationship.

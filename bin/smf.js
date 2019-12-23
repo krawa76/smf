@@ -6,6 +6,7 @@ const debug      = require('./smf-debug');
 
 const newProject = require('./smf-new-project');
 const addService = require('./smf-add-service');
+const addModule  = require('./smf-add-module');
 
 (async () => {
   if (process.argv[2] == 'up')    await up();
@@ -16,7 +17,11 @@ const addService = require('./smf-add-service');
 
   if (process.argv[2] == 'add') {
     if (process.argv[3] == 'service') await addService();
-    //
   }
+
+  if (process.argv[2] == 'add') {
+    if (process.argv[3] == 'module') await addModule();
+  }
+  
 })();
 

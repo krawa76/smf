@@ -112,7 +112,8 @@ async function up() {
     const moduleData = stacksConfig.modules[module];
     if (moduleData.services) {
       for(const service of Object.keys(moduleData.services)) {
-        envFiles.push(utils.serviceEnvFileName(service, 'connect'));
+        const filename = utils.serviceEnvFileName(service, 'connect');
+        if (fs.existsSync(filename)) envFiles.push(filename);
       }
     }
 

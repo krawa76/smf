@@ -8,7 +8,8 @@
 - containerized: uses a single Dockerfile to build individual modules images.
 - Dockerfile copies and builds (TypeScript) specified module files only.
 - All the core services code is included to every image, can add dynamical selection if needed.
-- building blocks: custom modules & third-party services (dependencies)
+- building blocks: custom modules & third-party services (dependencies).
+- volumes: data folder which is created and mapped to services automatically.
 
 ## Usage
 

@@ -39,7 +39,7 @@ async function up() {
   //========(services)================================================================
   const networkName = `${config.PREFIX}${stacksConfig.name}`
 
-  if (Object.keys(stacksConfig.services).length > 0) {
+  if (Object.keys(stacksConfig.services || []).length > 0) {
     const dockerComposeServices = {
       version: '3.5',
       services: {},
@@ -94,7 +94,7 @@ async function up() {
   }
 
   // network is internal if there are no internal services to start
-  if (Object.keys(stacksConfig.services).length > 0) {
+  if (Object.keys(stacksConfig.services || []).length > 0) {
     dockerCompose.networks.main = {
       external: {
         name: networkName,

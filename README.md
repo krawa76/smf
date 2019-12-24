@@ -71,6 +71,7 @@ smf add service <service name> (inputs: docker image name)
 - local debug: run "smf debug ..." to create .env file merging all the required env files (module & services).
 - service folder format (core/services/): service name - driver name (e.g. mongodb-mongoose).
 - overwrite the default Dockerfile: put a custom Dockerfile in the module root folder (see demo-frontend-react).
+- use core from any file: import core from 'smf-core'; core.log(...)
 
 ## Structure
 

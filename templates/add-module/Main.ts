@@ -1,3 +1,5 @@
+// {imports}
+
 export default class Main {
   run(core) {
     core.log('custom module');
@@ -10,5 +12,8 @@ export default class Main {
       core.log('ping');
     },
     5000);
+
+    // services usage demos
+    // {services usage code}
   }
 }

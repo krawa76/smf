@@ -8,7 +8,7 @@ module.exports = {
   */
 
   ALL: [
-    {category: 'message broker', name: 'RabbitMQ', 'folder': 'rabbitmq-amqp'},
-    {category: 'database', name: 'MongoDB', 'folder': 'mongodb-mongoose'},
+    {'id': 'rabbitmq-amqp',    category: 'message broker', name: 'RabbitMQ'},
+    {'id': 'mongodb-mongoose', category: 'database',       name: 'MongoDB'},
   ]
 }

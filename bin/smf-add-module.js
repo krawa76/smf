@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const prompt = require('prompt');
 const util = require('util');
 
@@ -89,44 +90,67 @@ async function addService() {
   }
   while (input.number !== '0');
 
-  return;
-
   //=============================================================================
   fs.mkdirSync(dirName, {recursive: true});
-
-  console.info(`Generating ${config.STACK_SERVICE_MANIFEST}`);
-
-  const manifest = {
-    "docker": {
-      "image": input.imagename,
-      "ports": [],
-      // "volume": "/data/db",
-      "env": {
-        "start": {
-        },
-        "connect": {
-        }
-      }
-    }
-  
-  }
-
-  fs.writeFileSync(`${dirName}/${config.STACK_SERVICE_MANIFEST}`, JSON.stringify(manifest, null, 2));
 
   //========== copy content =====================================================
   utils.hr();
   console.info('Copying components...');
 
-  await utils.copyFilesAsync('templates/add-service/*', `./${dirName}`, 2);
+  await utils.copyFilesAsync('templates/add-module/*', `./${dirName}`, 2);
+  updatePackageJson(`${dirName}/package.json`, {
+    moduleName,
+  });
+
+  //========== add module with deps to stack config file ========================
+  updateStackConfig(`./${config.STACK_CONFIG}`, {
+    moduleName,
+    services: selectedServices,
+  });
 
   //========== info ===============================================
   utils.hr();
-  console.info(`Success! Created ${serviceName} service in ${fs.realpathSync(dirName)}`);
-  console.info(`You can now add "${serviceName}" as a dependency to the modules in ${config.STACK_CONFIG}`);
+  console.info(`Success! Created ${moduleName} microservice module in ${fs.realpathSync(dirName)}`);
+  console.info('');
+  console.info('We suggest that you continue by typing');
+  console.info('');
+  console.info(`\t cd .${path.sep}modules${path.sep}${moduleName}`);
+  console.info(`\t (start coding: install new libs using npm install <...>, edit Main.ts file, etc.)`);
+  console.info('');
 }
 
 function formatService(number, name) {
   console.info(`${number/*.toString().padStart(2, '0')*/}) ${name}`);
+}
+
+function updatePackageJson(fileName, options) {
+  const data = fs.readFileSync(fileName);
+  const json = JSON.parse(data);
+
+  json.name        = options.moduleName;
+  json.description = '';
+  json.author      = '';
+  json.license     = '';
+
+  fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+}
+
+function updateStackConfig(fileName, options) {
+  const data = fs.readFileSync(fileName);
+  const json = JSON.parse(data);
+
+  json.modules[options.moduleName] = {
+    services: {}
+  }
+
+  if (!json.services) json.services = {}
+
+  for (const service of options.services) {
+    json.modules[options.moduleName].services[service.id] = {}
+    json.services[service.id] = {external: false}
+  }
+
+  fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
 }
 
 module.exports = addService;

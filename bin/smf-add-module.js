@@ -31,6 +31,10 @@ async function addService() {
     return;
   }
 
+  const smfRoot = utils.smfDir();
+  const allServices = configServices.ALL;
+  const selectedServices = [];
+
   //========== select services ==================================================
   console.info('');
   console.info(`Select the third-party services your microservice module "${moduleName}" connects to (one at a time):`);
@@ -46,9 +50,6 @@ async function addService() {
   ];
   
   prompt.start();
-
-  const allServices = configServices.ALL;
-  const selectedServices = [];
 
   let input;
   
@@ -107,6 +108,37 @@ async function addService() {
     moduleName,
     services: selectedServices,
   });
+
+  //========== generate service usage code ======================================
+  utils.hr();
+  console.info('Generate service usage demo code...');
+
+  const codeHeader = [];
+  const codeBody   = [];
+
+  for (const service of selectedServices) {
+    const usageFileName = `${smfRoot}/core/services/${service.id}/${config.STACK_USAGE_EXAMPLE}`;
+    if (fs.existsSync(usageFileName)) {
+      const data = fs.readFileSync(usageFileName, 'utf8');
+      const lines = data.split("\n");
+
+      codeBody.push('');
+      codeBody.push(`//========== ${service.name} ==========`);
+
+      for (const l of lines) {
+        if (l.startsWith('import')) {
+          if (!codeHeader.includes(l)) codeHeader.push(l)
+        }
+        else codeBody.push(l);
+      }
+
+      codeBody.push('');
+    }
+
+    if (codeHeader.length > 0 || codeBody.length > 0) {
+
+    }
+  }
 
   //========== info ===============================================
   utils.hr();

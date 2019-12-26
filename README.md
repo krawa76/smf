@@ -55,6 +55,7 @@ smf down
 smf debug <module name>
 smf new <project name>
 smf add service <service name> (inputs: docker image name)
+smf add module <module name>
 ```
 
 ## Requirements

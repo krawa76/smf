@@ -100,3 +100,7 @@ core/services/(service name)/smf-service.json:
 
 - diagram: module - service relationship.
 - diagram: ?
+
+## License
+
+This project is licensed under the terms of the ISC license.

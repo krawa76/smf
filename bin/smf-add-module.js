@@ -118,6 +118,7 @@ async function addService() {
 
   for (const service of selectedServices) {
     const usageFileName = `${smfRoot}/core/services/${service.id}/${config.STACK_USAGE_EXAMPLE}`;
+    console.info(usageFileName);
     if (fs.existsSync(usageFileName)) {
       const data = fs.readFileSync(usageFileName, 'utf8');
       const lines = data.trim().split("\n");
@@ -132,10 +133,10 @@ async function addService() {
         else codeBody.push(l);
       }
     }
+  }
 
-    if (codeHeader.length > 0 || codeBody.length > 0) {
-      updateMain(`./${dirName}/Main.ts`, codeHeader, codeBody);
-    }
+  if (codeHeader.length > 0 || codeBody.length > 0) {
+    updateMain(`./${dirName}/Main.ts`, codeHeader, codeBody);
   }
 
   //========== info ===============================================
@@ -144,6 +145,7 @@ async function addService() {
   console.info('');
   console.info('We suggest that you continue by typing');
   console.info('');
+  console.info(`\t smf up - to see how the demo code is working`);
   console.info(`\t cd .${path.sep}modules${path.sep}${moduleName}`);
   console.info(`\t (start coding: install new libs using npm install <...>, edit Main.ts file, etc.)`);
   console.info('');

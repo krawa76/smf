@@ -1,7 +1,7 @@
 // {imports}
 
 export default class Main {
-  run(core) {
+  async run(core) {
     core.log('custom module');
 
     // shared modules functions calls example

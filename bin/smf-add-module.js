@@ -120,7 +120,7 @@ async function addService() {
     const usageFileName = `${smfRoot}/core/services/${service.id}/${config.STACK_USAGE_EXAMPLE}`;
     if (fs.existsSync(usageFileName)) {
       const data = fs.readFileSync(usageFileName, 'utf8');
-      const lines = data.split("\n");
+      const lines = data.trim().split("\n");
 
       codeBody.push('');
       codeBody.push(`//========== ${service.name} ==========`);
@@ -131,12 +131,10 @@ async function addService() {
         }
         else codeBody.push(l);
       }
-
-      codeBody.push('');
     }
 
     if (codeHeader.length > 0 || codeBody.length > 0) {
-
+      updateMain(`./${dirName}/Main.ts`, codeHeader, codeBody);
     }
   }
 
@@ -183,6 +181,31 @@ function updateStackConfig(fileName, options) {
   }
 
   fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+}
+
+function updateMain(fileName, codeHeader, codeBody) {
+  const data = fs.readFileSync(fileName, 'utf8');
+
+  if (data.includes(config.MODULE_SERVICE_USAGE_CODE)) {
+    const lines = data.split("\n");
+
+    let indent = '';
+
+    for (l of lines) {
+      if (l.includes(config.MODULE_SERVICE_USAGE_CODE)) {
+        indent = l.replace(config.MODULE_SERVICE_USAGE_CODE, '').replace("\n", '');
+        break;
+      }
+    }
+
+    const codeBodyIndented = codeBody.map(l => `${indent}${l}`);
+  
+    let newContent = data
+      .replace(config.MODULE_IMPORTS, codeHeader.join("\n"))
+      .replace(`${indent}${config.MODULE_SERVICE_USAGE_CODE}`, codeBodyIndented.join("\n"));
+  
+    fs.writeFileSync(fileName, newContent);
+  }
 }
 
 module.exports = addService;

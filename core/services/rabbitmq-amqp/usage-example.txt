@@ -1,0 +1,17 @@
+import core from 'smf-core';
+
+const messageBroker = core.service('rabbitmq-amqp');
+
+// subscribe to the "demo.*" routes
+await messageBroker.subscribe('demo.*');
+
+// handle new messages
+messageBroker.on('message', message => {
+  core.log(message);
+});
+
+// publish new messages
+setInterval(async () => {
+  messageBroker.publish('demo.hello', {text: 'hello'});
+},
+5000);

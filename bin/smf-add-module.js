@@ -37,7 +37,8 @@ async function addService() {
 
   //========== select services ==================================================
   console.info('');
-  console.info(`Select the third-party services your microservice module "${moduleName}" connects to (one at a time):`);
+  console.info(`Select the third-party services your microservice module "${moduleName}" connects to (one at a time),`);
+  console.info("(don't forget to select one of the message broker services if you want your modules communicate with each other):");
 
   const properties = [
     {

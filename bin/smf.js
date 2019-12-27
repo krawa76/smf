@@ -9,19 +9,40 @@ const addService = require('./smf-add-service');
 const addModule  = require('./smf-add-module');
 
 (async () => {
-  if (process.argv[2] == 'up')    await up();
-  if (process.argv[2] == 'down')  down();
-  if (process.argv[2] == 'debug') debug();
+  if (process.argv[2] == 'up')    return await up();
+  if (process.argv[2] == 'down')  return down();
+  if (process.argv[2] == 'debug') return debug();
   
-  if (process.argv[2] == 'new')   await newProject();
+  if (process.argv[2] == 'new')   return await newProject();
 
   if (process.argv[2] == 'add') {
-    if (process.argv[3] == 'service') await addService();
+    if (process.argv[3] == 'service') return await addService();
   }
 
   if (process.argv[2] == 'add') {
-    if (process.argv[3] == 'module') await addModule();
+    if (process.argv[3] == 'module') return await addModule();
   }
+
+  if (['help', '--help', '/?'].includes(process.argv[2])) return help();
+
+  if (process.argv[2] !== '') {
+    return console.info(`Unknown command "${process.argv[2]}". See "smf help" for more information.`);
+  }
+
+  return help();
   
 })();
 
+function help() {
+  console.info('');
+  console.info('Usage: smf COMMAND ARGUMENTS');
+  console.info('');
+  console.info('Commands:');
+  console.info('  new PROJECT-NAME            create new project');
+  console.info('  up                          start stack');
+  console.info('  down                        stop stack');
+  console.info('  debug MODULE-NAME           generate module debug environment file');
+  console.info('');
+  console.info('  add service SERVICE-NAME    create new service (third-party docker image)');
+  console.info('  add module MODULE-NAME      create new custom microservice module');
+}

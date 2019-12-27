@@ -2,13 +2,13 @@
   "name": "smf demo",
   "modules": {
     "demo-mongodb": {
-      "services": {
+      "clients": {
         "mongodb-mongoose": {
         }
       }
     }
   },
-  "services": {
+  "clients": {
     "mongodb-mongoose": {
       "external": false
     }

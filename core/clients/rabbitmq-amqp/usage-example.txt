@@ -1,6 +1,6 @@
 import core from 'smf-core';
 
-const messageBroker = core.service('rabbitmq-amqp');
+const messageBroker = core.client('rabbitmq-amqp');
 
 // subscribe to the "demo.*" routes
 await messageBroker.subscribe('demo.*');

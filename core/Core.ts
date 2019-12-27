@@ -1,9 +1,9 @@
 const fs = require('fs');
 
 import config from './config';
-import {Logger} from './services/logger';
-import Helper from './services/helper';
-import serviceRegistry from './services/serviceRegistry';
+import {Logger} from './clients/logger';
+import Helper from './clients/helper';
+import clientRegistry from './clients/clientRegistry';
 import shared from './shared';
 
 class Core {
@@ -23,14 +23,14 @@ class Core {
     const data = fs.readFileSync(config.STACK_CONFIG);
     const stackConfig = JSON.parse(data);
 
-    await serviceRegistry.start(stackConfig.modules[config.MODULE]);
+    await clientRegistry.start(stackConfig.modules[config.MODULE]);
 
     this.logger.debug('SMF core started');
   }
 
-  service(name: string) {
-    const res = serviceRegistry.service(name);
-    if (!res) throw new Error(`Service "${name}" is not found in the service registry`);
+  client(name: string) {
+    const res = clientRegistry.client(name);
+    if (!res) throw new Error(`Client "${name}" is not found in the client registry`);
 
     return res;
   }

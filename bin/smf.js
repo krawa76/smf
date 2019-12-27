@@ -5,7 +5,7 @@ const down       = require('./smf-down');
 const debug      = require('./smf-debug');
 
 const newProject = require('./smf-new-project');
-const addService = require('./smf-add-service');
+const addClient  = require('./smf-add-client');
 const addModule  = require('./smf-add-module');
 
 (async () => {
@@ -16,7 +16,7 @@ const addModule  = require('./smf-add-module');
   if (process.argv[2] == 'new')   return await newProject();
 
   if (process.argv[2] == 'add') {
-    if (process.argv[3] == 'service') return await addService();
+    if (process.argv[3] == 'client') return await addClient();
   }
 
   if (process.argv[2] == 'add') {
@@ -43,6 +43,6 @@ function help() {
   console.info('  down                        stop stack');
   console.info('  debug MODULE-NAME           generate module debug environment file');
   console.info('');
-  console.info('  add service SERVICE-NAME    create new service (third-party docker image)');
-  console.info('  add module MODULE-NAME      create new custom microservice module');
+  console.info('  add client CLIENT-NAME      create new client (third-party docker image)');
+  console.info('  add module MODULE-NAME      create new custom service');
 }

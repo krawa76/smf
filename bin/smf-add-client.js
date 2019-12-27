@@ -8,21 +8,21 @@ const validators = require('./validators');
 
 const promptGetAsync = util.promisify(prompt.get);
 
-async function addService() {
+async function addClient() {
   if (!process.argv[4]) {
-    console.error('Service name not specified');
+    console.error('Client name not specified');
     return;
   }
 
-  const serviceName = process.argv[4];
+  const clientName = process.argv[4];
 
-  if (!validators.IsGenericNameValid(serviceName)) {
+  if (!validators.IsGenericNameValid(clientName)) {
     return;
   }
 
-  console.info(`Creating new service: ${serviceName}`);
+  console.info(`Creating new client: ${clientName}`);
 
-  const dirName = `./core/services/${serviceName}`;
+  const dirName = `./core/clients/${clientName}`;
 
   if (fs.existsSync(dirName)) {
     console.error(`Directory already exists: ${dirName}`);
@@ -68,7 +68,7 @@ async function addService() {
   //=============================================================================
   fs.mkdirSync(dirName, {recursive: true});
 
-  console.info(`Generating ${config.STACK_SERVICE_MANIFEST}`);
+  console.info(`Generating ${config.STACK_CLIENT_MANIFEST}`);
 
   const manifest = {
     "docker": {
@@ -85,18 +85,18 @@ async function addService() {
   
   }
 
-  fs.writeFileSync(`${dirName}/${config.STACK_SERVICE_MANIFEST}`, JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(`${dirName}/${config.STACK_CLIENT_MANIFEST}`, JSON.stringify(manifest, null, 2));
 
   //========== copy content =====================================================
   utils.hr();
   console.info('Copying components...');
 
-  await utils.copyFilesAsync('templates/add-service/*', `./${dirName}`, 2);
+  await utils.copyFilesAsync('templates/add-client/*', `./${dirName}`, 2);
 
   //========== info ===============================================
   utils.hr();
-  console.info(`Success! Created ${serviceName} service in ${fs.realpathSync(dirName)}`);
-  console.info(`You can now add "${serviceName}" as a dependency to the modules in ${config.STACK_CONFIG}`);
+  console.info(`Success! Created ${clientName} client in ${fs.realpathSync(dirName)}`);
+  console.info(`You can now add "${clientName}" as a dependency to the modules in ${config.STACK_CONFIG}`);
 }
 
-module.exports = addService;
+module.exports = addClient;

@@ -20,7 +20,7 @@ async function up() {
   }
 
   //========== cleanup ==============================================================
-  if (fs.existsSync(config.STACK_DOCKER_COMPOSE_SERVICES)) fs.unlinkSync(config.STACK_DOCKER_COMPOSE_SERVICES); // services docker-compose
+  if (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE)) fs.unlinkSync(config.STACK_DOCKER_COMPOSE_BASE); // base docker-compose
   if (fs.existsSync(config.STACK_DOCKER_COMPOSE))          fs.unlinkSync(config.STACK_DOCKER_COMPOSE);          // modules docker-compose
 
   //=================================================================================
@@ -36,11 +36,11 @@ async function up() {
   //=================================================================================
   console.info('Generating Docker files...');
 
-  //========(services)================================================================
+  //========(clients)================================================================
   const networkName = `${config.PREFIX}${stacksConfig.name}`
 
-  if (Object.keys(stacksConfig.services || []).length > 0) {
-    const dockerComposeServices = {
+  if (Object.keys(stacksConfig.clients || []).length > 0) {
+    const dockerComposeBase = {
       version: '3.5',
       services: {},
       networks: {
@@ -50,37 +50,37 @@ async function up() {
       }
     }
   
-    for(const service of Object.keys(stacksConfig.services)) {
-      const serviceData = stacksConfig.services[service];
-      if (!serviceData.external) {
-        const serviceNameNormalized = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '-');
+    for(const client of Object.keys(stacksConfig.clients)) {
+      const clientData = stacksConfig.clients[client];
+      if (!clientData.external) {
+        const clientNameNormalized = client.replace(config.STACK_CLIENT_NAME_SEPARATOR, '-');
   
-        const envFiles = [utils.serviceEnvFileName(service, 'start')];
+        const envFiles = [utils.clientEnvFileName(client, 'start')];
   
-        const serviceManifest = utils.readServiceManifest(service);
-        if (serviceManifest && serviceManifest.docker) {
-          dockerComposeServices.services[serviceNameNormalized] = {
-            container_name: `${config.PREFIX}${serviceNameNormalized}`,
-            image: serviceManifest.docker.image,
+        const clientManifest = utils.readClientManifest(client);
+        if (clientManifest && clientManifest.docker) {
+          dockerComposeBase.services[clientNameNormalized] = {
+            container_name: `${config.PREFIX}${clientNameNormalized}`,
+            image: clientManifest.docker.image,
             env_file: envFiles,
             networks: [config.STACK_DOCKER_NETWORK],
           }
-          if (serviceManifest.docker.ports) {
-            dockerComposeServices.services[serviceNameNormalized].ports = serviceManifest.docker.ports.map(port => `${port}:${port}`);
+          if (clientManifest.docker.ports) {
+            dockerComposeBase.services[clientNameNormalized].ports = clientManifest.docker.ports.map(port => `${port}:${port}`);
           }
-          if (serviceManifest.docker.volume) {
-            const sourcePath = `./data/${serviceNameNormalized}`;
+          if (clientManifest.docker.volume) {
+            const sourcePath = `./data/${clientNameNormalized}`;
             fs.mkdirSync(sourcePath, {recursive: true});
-            dockerComposeServices.services[serviceNameNormalized].volumes = [`${sourcePath}:${serviceManifest.docker.volume}`];
+            dockerComposeBase.services[clientNameNormalized].volumes = [`${sourcePath}:${clientManifest.docker.volume}`];
           }
         }
       }
     }
   
     // write yaml
-    const dockerComposeServicesDoc = yaml.dump(dockerComposeServices);
-    fs.writeFileSync(config.STACK_DOCKER_COMPOSE_SERVICES, dockerComposeServicesDoc);
-    console.info(`${config.STACK_DOCKER_COMPOSE_SERVICES} created.`);
+    const dockerComposeBaseDoc = yaml.dump(dockerComposeBase);
+    fs.writeFileSync(config.STACK_DOCKER_COMPOSE_BASE, dockerComposeBaseDoc);
+    console.info(`${config.STACK_DOCKER_COMPOSE_BASE} created.`);
   }
 
   //========(modules)================================================================
@@ -94,7 +94,7 @@ async function up() {
   }
 
   // network is internal if there are no internal services to start
-  if (Object.keys(stacksConfig.services || []).length > 0) {
+  if (Object.keys(stacksConfig.clients || []).length > 0) {
     dockerCompose.networks.main = {
       external: {
         name: networkName,
@@ -110,11 +110,11 @@ async function up() {
   for(const module of Object.keys(stacksConfig.modules)) {
     //================ generate env files ===================
     const envFiles = [utils.moduleEnvFileName(module)];
-    // services env files
+    // clients env files
     const moduleData = stacksConfig.modules[module];
-    if (moduleData.services) {
-      for(const service of Object.keys(moduleData.services)) {
-        const filename = utils.serviceEnvFileName(service, 'connect');
+    if (moduleData.clients) {
+      for(const client of Object.keys(moduleData.clients)) {
+        const filename = utils.clientEnvFileName(client, 'connect');
         if (fs.existsSync(filename)) envFiles.push(filename);
       }
     }
@@ -148,15 +148,15 @@ async function up() {
   console.info('Running Docker Compose...');
 
   /*
-  const runServices = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_SERVICES} up -d && ` +
+  const runBase = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_BASE} up -d && ` +
                       `echo "pausing for 10 sec, letting the base services to start - a subj for improvement" && ` +
                       `sleep 10 && `;
   */
 
-  if (fs.existsSync(config.STACK_DOCKER_COMPOSE_SERVICES)) {
-    const runServices = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_SERVICES} up -d`;
+  if (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE)) {
+    const runBase = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_BASE} up -d`;
 
-    execSync(runServices, {
+    execSync(runBase, {
       stdio: 'inherit',
     });
     
@@ -167,7 +167,7 @@ async function up() {
                     
   const runModules  = `docker-compose -f ${config.STACK_DOCKER_COMPOSE} up --build`;
 
-  const command = /* (fs.existsSync(config.STACK_DOCKER_COMPOSE_SERVICES) ? runServices : '') + */ runModules;
+  const command = /* (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE) ? runBase : '') + */ runModules;
 
   const script = exec(command);
   script.stdout.on('data', data => {

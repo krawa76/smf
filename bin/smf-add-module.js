@@ -4,13 +4,13 @@ const prompt = require('prompt');
 const util = require('util');
 
 const config = require('./config');
-const configServices = require('./config-services');
+const configClients = require('./config-clients');
 const utils = require('./utils');
 const validators = require('./validators');
 
 const promptGetAsync = util.promisify(prompt.get);
 
-async function addService() {
+async function addModule() {
   if (!process.argv[4]) {
     console.error('Module name not specified');
     return;
@@ -32,13 +32,13 @@ async function addService() {
   }
 
   const smfRoot = utils.smfDir();
-  const allServices = configServices.ALL;
-  const selectedServices = [];
+  const allClients = configClients.ALL;
+  const selectedClients = [];
 
-  //========== select services ==================================================
+  //========== select clients ==================================================
   console.info('');
-  console.info(`Select the third-party services your microservice module "${moduleName}" connects to (one at a time),`);
-  console.info("(don't forget to select one of the message broker services if you want your modules communicate with each other):");
+  console.info(`Select the third-party services clients your module "${moduleName}" connects to (one at a time),`);
+  console.info("(don't forget to select one of the message broker clients if you want your modules communicate with each other):");
 
   const properties = [
     {
@@ -55,11 +55,11 @@ async function addService() {
   let input;
   
   do {
-    formatService(0, 'exit selection');
+    formatClient(0, 'exit selection');
 
-    for (const i in allServices) {
-      const service = allServices[i];
-      formatService(Number(i) + 1, `(${service.category}) ${service.name}`);
+    for (const i in allClients) {
+      const client = allClients[i];
+      formatClient(Number(i) + 1, `(${client.category}) ${client.name}`);
     }
 
     try {
@@ -71,22 +71,22 @@ async function addService() {
     }
 
     if (input.number !== '0') {
-      const selectedService = allServices[input.number - 1];
+      const selectedClient = allClients[input.number - 1];
 
-      if (!selectedService) {
-        console.error(`No service for option ${input.number}`);
+      if (!selectedClient) {
+        console.error(`No client for option ${input.number}`);
       }
       else {
-        // console.info(selectedService);
-        if (!selectedServices.includes(selectedService)) {
-          selectedServices.push(selectedService);
+        // console.info(selectedClient);
+        if (!selectedClients.includes(selectedClient)) {
+          selectedClients.push(selectedClient);
         }
       }
 
       console.info('');
-      console.info('Selected services: ');
-      console.info(`[${selectedServices.map(service => service.name).join(', ')}]`);
-      console.info('Select another service: ');
+      console.info('Selected clients: ');
+      console.info(`[${selectedClients.map(client => client.name).join(', ')}]`);
+      console.info('Select another client: ');
       console.info('');
     }
   }
@@ -107,25 +107,25 @@ async function addService() {
   //========== add module with deps to stack config file ========================
   updateStackConfig(`./${config.STACK_CONFIG}`, {
     moduleName,
-    services: selectedServices,
+    clients: selectedClients,
   });
 
-  //========== generate service usage code ======================================
+  //========== generate client usage code ======================================
   utils.hr();
-  console.info('Generate service usage demo code...');
+  console.info('Generate client usage demo code...');
 
   const codeHeader = [];
   const codeBody   = [];
 
-  for (const service of selectedServices) {
-    const usageFileName = `${smfRoot}/core/services/${service.id}/${config.STACK_USAGE_EXAMPLE}`;
+  for (const client of selectedClients) {
+    const usageFileName = `${smfRoot}/core/clients/${client.id}/${config.STACK_USAGE_EXAMPLE}`;
     console.info(usageFileName);
     if (fs.existsSync(usageFileName)) {
       const data = fs.readFileSync(usageFileName, 'utf8');
       const lines = data.trim().split("\n");
 
       codeBody.push('');
-      codeBody.push(`//========== ${service.name} ==========`);
+      codeBody.push(`//========== ${client.name} ==========`);
 
       for (const l of lines) {
         if (l.startsWith('import')) {
@@ -152,7 +152,7 @@ async function addService() {
   console.info('');
 }
 
-function formatService(number, name) {
+function formatClient(number, name) {
   console.info(`${number/*.toString().padStart(2, '0')*/}) ${name}`);
 }
 
@@ -173,14 +173,14 @@ function updateStackConfig(fileName, options) {
   const json = JSON.parse(data);
 
   json.modules[options.moduleName] = {
-    services: {}
+    clients: {}
   }
 
-  if (!json.services) json.services = {}
+  if (!json.clients) json.clients = {}
 
-  for (const service of options.services) {
-    json.modules[options.moduleName].services[service.id] = {}
-    json.services[service.id] = {external: false}
+  for (const client of options.clients) {
+    json.modules[options.moduleName].clients[client.id] = {}
+    json.clients[client.id] = {external: false}
   }
 
   fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
@@ -189,14 +189,14 @@ function updateStackConfig(fileName, options) {
 function updateMain(fileName, codeHeader, codeBody) {
   const data = fs.readFileSync(fileName, 'utf8');
 
-  if (data.includes(config.MODULE_SERVICE_USAGE_CODE)) {
+  if (data.includes(config.MODULE_CLIENT_USAGE_CODE)) {
     const lines = data.split("\n");
 
     let indent = '';
 
     for (l of lines) {
-      if (l.includes(config.MODULE_SERVICE_USAGE_CODE)) {
-        indent = l.replace(config.MODULE_SERVICE_USAGE_CODE, '').replace("\n", '');
+      if (l.includes(config.MODULE_CLIENT_USAGE_CODE)) {
+        indent = l.replace(config.MODULE_CLIENT_USAGE_CODE, '').replace("\n", '');
         break;
       }
     }
@@ -205,10 +205,10 @@ function updateMain(fileName, codeHeader, codeBody) {
   
     let newContent = data
       .replace(config.MODULE_IMPORTS, codeHeader.join("\n"))
-      .replace(`${indent}${config.MODULE_SERVICE_USAGE_CODE}`, codeBodyIndented.join("\n"));
+      .replace(`${indent}${config.MODULE_CLIENT_USAGE_CODE}`, codeBodyIndented.join("\n"));
   
     fs.writeFileSync(fileName, newContent);
   }
 }
 
-module.exports = addService;
+module.exports = addModule;

@@ -2,7 +2,7 @@ module.exports = {
   /*
   const root = utils.smfDir();
 
-  const allServices = fs.readdirSync(`${root}/core/services`, {withFileTypes: true})
+  const allClients = fs.readdirSync(`${root}/core/clients`, {withFileTypes: true})
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
   */

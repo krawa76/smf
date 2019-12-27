@@ -7,7 +7,7 @@
 - TypeScript supported at the root/core level.
 - containerized: uses a single Dockerfile to build individual modules images.
 - Dockerfile copies and builds (TypeScript) specified module files only.
-- All the core services code is included to every image, can add dynamical selection if needed.
+- All the core clients code is included to every image, can add dynamical selection if needed.
 - building blocks: custom modules & third-party services (dependencies).
 - volumes: data folder which is created and mapped to services automatically.
 
@@ -54,7 +54,7 @@ smf up
 smf down
 smf debug <module name>
 smf new <project name>
-smf add service <service name> (inputs: docker image name)
+smf add client <client name> (inputs: docker image name)
 smf add module <module name>
 ```
 
@@ -65,28 +65,28 @@ smf add module <module name>
 
 ## Notes
 
-- service full name: service + lib (e.g. rabbitmq-amqp).
+- client full name: service + lib (e.g. rabbitmq-amqp).
 - generate .env files automatically from the integrated env json (smf-env.json).
-- minimise duplicate code by creating your own services.
+- minimise duplicate code by creating shared modules.
 - connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
-- local debug: run "smf debug ..." to create .env file merging all the required env files (module & services).
-- service folder format (core/services/): service name - driver name (e.g. mongodb-mongoose).
+- local debug: run "smf debug ..." to create .env file merging all the required env files (module & clients).
+- client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
 - overwrite the default Dockerfile: put a custom Dockerfile in the module root folder (see demo-frontend-react).
 - use core from any file: import core from 'smf-core'; core.log(...)
 
 ## Structure
 
-- smf-stack.json: modules definitions and services dependencies.
+- smf-stack.json: modules definitions and clients dependencies.
 - smf-stack.json > modules > ports: ports to open in docker-compose.
-- smf-env.json: environment variables. Some vars are automatically updated from services manifests.
-- smf-docker-services.yml: (auto-generated) docker-compose file for services.
+- smf-env.json: environment variables. Some vars are automatically updated from clients manifests.
+- smf-docker-base.yml: (auto-generated) docker-compose file for third-party services.
 - smf-docker.yml: (auto-generated) docker-compose file for modules.
 - build/ : (auto-generated) compiled source code.
 - build-stack/env : (auto-generated) compiled environment variables.
 
 ## Structure, JSON
 
-core/services/(service name)/smf-service.json: 
+core/clients/(client name)/smf-client.json: 
 
 - volume: container destination dir.
 
@@ -100,7 +100,7 @@ Usecase: shared code or config (constants).
 
 ## todo
 
-- diagram: module - service relationship.
+- diagram: module - client relationship.
 - diagram: ?
 
 ## License

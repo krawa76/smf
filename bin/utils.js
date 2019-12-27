@@ -21,17 +21,17 @@ function buildEnvFiles() {
     createEnvFile(moduleEnvFileName(module), stackEnv.modules[module]);
   }
   
-  for(const service of Object.keys(stackEnv.services)) {
-    const varPreffix = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '_').toUpperCase();
-    const serviceNameNormalized = service.replace(config.STACK_SERVICE_NAME_SEPARATOR, '-');
+  for(const client of Object.keys(stackEnv.clients)) {
+    const varPreffix = client.replace(config.STACK_CLIENT_NAME_SEPARATOR, '_').toUpperCase();
+    const clientNameNormalized = client.replace(config.STACK_CLIENT_NAME_SEPARATOR, '-');
 
-    if (stackEnv.services[service].start) {
-      createEnvFile(serviceEnvFileName(service, 'start'), stackEnv.services[service].start, /* varPreffix */ null);
+    if (stackEnv.clients[client].start) {
+      createEnvFile(clientEnvFileName(client, 'start'), stackEnv.clients[client].start, /* varPreffix */ null);
     }
-    if (stackEnv.services[service].connect) {
-      createEnvFile(serviceEnvFileName(service, 'connect'), stackEnv.services[service].connect, varPreffix, (value) => {
+    if (stackEnv.clients[client].connect) {
+      createEnvFile(clientEnvFileName(client, 'connect'), stackEnv.clients[client].connect, varPreffix, (value) => {
         return value
-          .replace('{hostname}', config.session.debug ? 'localhost' : serviceNameNormalized);
+          .replace('{hostname}', config.session.debug ? 'localhost' : clientNameNormalized);
       });
     }
   }
@@ -51,12 +51,12 @@ function buildLocalEnvFile(stacksConfig, moduleName) {
     file.write(content);
     file.write('\n');
 
-    const services = module.services;
-    if (services) {
-      for(const serviceName of Object.keys(services)) {
-        // const service = services[serviceName];
-        file.write(`########## service ${serviceName} variables ##########\n`);
-        content = fs.readFileSync(serviceEnvFileName(serviceName, 'connect'));
+    const clients = module.clients;
+    if (clients) {
+      for(const clientName of Object.keys(clients)) {
+        // const client = clients[clientName];
+        file.write(`########## client ${clientName} variables ##########\n`);
+        content = fs.readFileSync(clientEnvFileName(clientName, 'connect'));
         file.write(content);
         file.write('\n');
       }    
@@ -92,13 +92,13 @@ function moduleEnvFileName(moduleName) {
   return `${stackBuildEnvPath()}/module.${moduleName}.env`;
 }
 
-function serviceEnvFileName(serviceName, type /* start | connect */) {
-  const serviceNameNormalized = serviceName.replace(config.STACK_SERVICE_NAME_SEPARATOR, '.');
-  return `${stackBuildEnvPath()}/service.${serviceNameNormalized}.${type}.env`
+function clientEnvFileName(clientName, type /* start | connect */) {
+  const clientNameNormalized = clientName.replace(config.STACK_CLIENT_NAME_SEPARATOR, '.');
+  return `${stackBuildEnvPath()}/client.${clientNameNormalized}.${type}.env`
 }
 
 function updateStackEnvFile(stacksConfig) {
-  // populate config.STACK_ENV with env vars default values from services manifests
+  // populate config.STACK_ENV with env vars default values from clients manifests
  
   let stacksEnv = {};
 
@@ -114,7 +114,7 @@ function updateStackEnvFile(stacksConfig) {
   }
 
   if (!stacksEnv.modules) stacksEnv.modules = {}
-  if (!stacksEnv.services) stacksEnv.services = {}
+  if (!stacksEnv.clients) stacksEnv.clients = {}
 
   if (stacksConfig.modules) {
     for (const moduleName of Object.keys(stacksConfig.modules)) {
@@ -122,30 +122,30 @@ function updateStackEnvFile(stacksConfig) {
     }
   }
 
-  if (stacksConfig.services) {
-    for (const serviceName of Object.keys(stacksConfig.services)) {
-      const serviceManifest = readServiceManifest(serviceName);
-      if (serviceManifest && serviceManifest.docker && serviceManifest.docker.env) {
-        const service = stacksConfig.services[serviceName];
+  if (stacksConfig.clients) {
+    for (const clientName of Object.keys(stacksConfig.clients)) {
+      const clientManifest = readClientManifest(clientName);
+      if (clientManifest && clientManifest.docker && clientManifest.docker.env) {
+        const client = stacksConfig.clients[clientName];
 
-        if (!stacksEnv.services[serviceName]) stacksEnv.services[serviceName] = {}
+        if (!stacksEnv.clients[clientName]) stacksEnv.clients[clientName] = {}
 
-        if (serviceManifest.docker.env.connect) {
-          if (!stacksEnv.services[serviceName].connect) stacksEnv.services[serviceName].connect = {}
+        if (clientManifest.docker.env.connect) {
+          if (!stacksEnv.clients[clientName].connect) stacksEnv.clients[clientName].connect = {}
 
-          for (const envVarName of Object.keys(serviceManifest.docker.env.connect)) {
-            if (!stacksEnv.services[serviceName].connect[envVarName]) {
-              stacksEnv.services[serviceName].connect[envVarName] = serviceManifest.docker.env.connect[envVarName];
+          for (const envVarName of Object.keys(clientManifest.docker.env.connect)) {
+            if (!stacksEnv.clients[clientName].connect[envVarName]) {
+              stacksEnv.clients[clientName].connect[envVarName] = clientManifest.docker.env.connect[envVarName];
             }
           }
         }
 
-        if (!service.external && serviceManifest.docker.env.start) {
-          if (!stacksEnv.services[serviceName].start) stacksEnv.services[serviceName].start = {}
+        if (!client.external && clientManifest.docker.env.start) {
+         if (!stacksEnv.clients[clientName].start) stacksEnv.clients[clientName].start = {}
 
-          for (const envVarName of Object.keys(serviceManifest.docker.env.start)) {
-            if (!stacksEnv.services[serviceName].start[envVarName]) {
-              stacksEnv.services[serviceName].start[envVarName] = serviceManifest.docker.env.start[envVarName];
+          for (const envVarName of Object.keys(clientManifest.docker.env.start)) {
+            if (!stacksEnv.clients[clientName].start[envVarName]) {
+              stacksEnv.clients[clientName].start[envVarName] = clientManifest.docker.env.start[envVarName];
             }
           }
         }
@@ -157,19 +157,19 @@ function updateStackEnvFile(stacksConfig) {
 }
 
 //===================================================================================
-function serviceTypeName(serviceName) {
-  const segments = serviceName.split(config.STACK_SERVICE_NAME_SEPARATOR);
+function clientTypeName(clientName) {
+  const segments = clientName.split(config.STACK_CLIENT_NAME_SEPARATOR);
   if (segments.length > 0) {
     return segments[segments.length - 1];
   }
   else  {
-    return serviceName;
+    return clientName;
   }
 }
 
-function readServiceManifest(serviceName) {
-  const serviceType = serviceTypeName(serviceName);
-  const fileName = `./core/services/${serviceType}/${config.STACK_SERVICE_MANIFEST}`;
+function readClientManifest(clientName) {
+  const clientType = clientTypeName(clientName);
+  const fileName = `./core/clients/${clientType}/${config.STACK_CLIENT_MANIFEST}`;
 
   let res = null;
 
@@ -252,9 +252,9 @@ module.exports = {
   buildEnvFiles,
   buildLocalEnvFile,
   moduleEnvFileName,
-  serviceEnvFileName,
+  clientEnvFileName,
   updateStackEnvFile,
-  readServiceManifest,
+  readClientManifest,
   hr,
   sleep,
   smfDir,

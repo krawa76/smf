@@ -5,7 +5,7 @@
       "VAR2": "asdfasdfasdf"
     }
   },
-  "services": {
+  "clients": {
     "rabbitmq-amqp": {
       "start": {
         "RABBITMQ_DEFAULT_USER": "admin",

@@ -1,9 +1,9 @@
 import config from './legacy.config';
-import {Logger} from './services/logger';
-import Helper from './services/helper';
-import messageBroker from './services/legacy.messageBroker/messageBroker';
-import Minio from './services/minio';
-import {MongoConnection} from './services/legacy.mongodb/mongooseConnection';
+import {Logger} from './clients/logger';
+import Helper from './clients/helper';
+import messageBroker from './clients/legacy.messageBroker/messageBroker';
+import Minio from './clients/minio';
+import {MongoConnection} from './clients/legacy.mongodb/mongooseConnection';
 
 class Core {
   public config        = config;
@@ -18,8 +18,6 @@ class Core {
 
   async start() {
     this.logger.debug('SMF core starting...');
-
-    // template: if (config.<SERVICE_NAME>_ENABLED) await this.start<ServiceName>();
 
     if (config.MESSAGE_BROKER_ENABLED) await this.initMessageBroker();
     if (config.MINIO_ENABLED)          await this.initMinio();

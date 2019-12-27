@@ -6,5 +6,5 @@ data
 .env
 .env.backup
 smf-docker.yml
-smf-docker-services.yml
+smf-docker-base.yml
 smf-env.json

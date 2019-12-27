@@ -5,10 +5,10 @@
       "ports": {
         "1337": "1337"
       },
-      "services": {
+      "clients": {
       }
     }
   },
-  "services": {
+  "clients": {
   }
 }

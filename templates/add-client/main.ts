@@ -8,7 +8,7 @@ export default class Main {
   }
 
   async start() {
-    console.debug('custom service start');
+    console.debug('custom client starting');
 
     setInterval(async () => {
       core.log('ping');

@@ -2,13 +2,13 @@
   "name": "smf demo",
   "modules": {
     "demo-message-broker": {
-      "services": {
+      "clients": {
         "rabbitmq-amqp": {
         }
       }
     }
   },
-  "services": {
+  "clients": {
     "rabbitmq-amqp": {
       "external": false
     },

@@ -5,10 +5,10 @@
       "ports": {
         "80": "80"
       },
-      "services": {
+      "clients": {
       }
     }
   },
-  "services": {
+  "clients": {
   }
 }

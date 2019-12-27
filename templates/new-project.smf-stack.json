@@ -2,10 +2,10 @@
   "name": "smf demo",
   "modules": {
     "demo": {
-      "services": {
+      "clients": {
       }
     }
   },
-  "services": {
+  "clients": {
   }
 }

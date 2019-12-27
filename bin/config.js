@@ -8,13 +8,13 @@ module.exports = {
   STACK_CONFIG:                  'smf-stack.json',
   STACK_ENV:                     'smf-env.json',
   STACK_DOCKER_COMPOSE:          'smf-docker.yml',
-  STACK_DOCKER_COMPOSE_SERVICES: 'smf-docker-services.yml',
+  STACK_DOCKER_COMPOSE_BASE:     'smf-docker-base.yml',
   STACK_DOCKER_NETWORK:          'main',
-  STACK_SERVICE_MANIFEST:        'smf-service.json',
-  STACK_SERVICE_NAME_SEPARATOR:  '@',
+  STACK_CLIENT_MANIFEST:         'smf-client.json',
+  STACK_CLIENT_NAME_SEPARATOR:   '@',
   STACK_USAGE_EXAMPLE:           'usage-example.txt',
 
-  MODULE_SERVICE_USAGE_CODE:     '// {services usage code}',
+  MODULE_CLIENT_USAGE_CODE:      '// {clients usage code}',
   MODULE_IMPORTS:                '// {imports}',
 
   session: {

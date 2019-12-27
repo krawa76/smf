@@ -6,7 +6,7 @@ export default class Main {
     
     core.log('demo-message-broker');
 
-    const messageBroker = core.service('rabbitmq-amqp');
+    const messageBroker = core.client('rabbitmq-amqp');
 
     /*
     await core.messageBroker.subscribe('demo.*');

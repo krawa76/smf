@@ -13,7 +13,7 @@ export default class Main {
     },
     5000);
 
-    // services usage demos
-    // {services usage code}
+    // clients usage demos
+    // {clients usage code}
   }
 }

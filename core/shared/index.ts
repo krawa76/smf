@@ -1,7 +1,7 @@
+import config from './config';
 import module1 from './module1';
-import module2 from './module2';
 
 export default {
+  config,
   module1,
-  module2,
 }

@@ -5,12 +5,12 @@ const utils = require('./utils');
 
 function debug() {
   if (process.argv.length < 4) {
-    console.error('Module name is missing, e.g. "smf debug my-module"');
+    console.error('Service name is missing, e.g. "smf debug service-name"');
     return;
   }
 
-  const moduleName = process.argv[3];
-  console.info(`Debug module: ${moduleName}`);
+  const serviceName = process.argv[3];
+  console.info(`Debug service: ${serviceName}`);
 
   config.session.debug = true;
 
@@ -28,7 +28,7 @@ function debug() {
 
   //==================================================================================
   console.info('Generating & merging env files...');
-  utils.buildLocalEnvFile(stacksConfig, moduleName);
+  utils.buildLocalEnvFile(stacksConfig, serviceName);
   console.info('done');
 }
 

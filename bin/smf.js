@@ -6,7 +6,7 @@ const debug      = require('./smf-debug');
 
 const newProject = require('./smf-new-project');
 const addClient  = require('./smf-add-client');
-const addModule  = require('./smf-add-module');
+const addService = require('./smf-add-service');
 
 (async () => {
   if (process.argv[2] == 'up')    return await up();
@@ -20,7 +20,7 @@ const addModule  = require('./smf-add-module');
   }
 
   if (process.argv[2] == 'add') {
-    if (process.argv[3] == 'module') return await addModule();
+    if (process.argv[3] == 'service') return await addService();
   }
 
   if (['help', '--help', '/?'].includes(process.argv[2])) return help();
@@ -41,8 +41,8 @@ function help() {
   console.info('  new PROJECT-NAME            create new project');
   console.info('  up                          start stack');
   console.info('  down                        stop stack');
-  console.info('  debug MODULE-NAME           generate module debug environment file');
+  console.info('  debug SERVICE-NAME          generate service debug environment file');
   console.info('');
   console.info('  add client CLIENT-NAME      create new client (third-party docker image)');
-  console.info('  add module MODULE-NAME      create new custom service');
+  console.info('  add service SERVICE-NAME    create new custom service');
 }

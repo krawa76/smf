@@ -96,7 +96,7 @@ async function addClient() {
   //========== info ===============================================
   utils.hr();
   console.info(`Success! Created ${clientName} client in ${fs.realpathSync(dirName)}`);
-  console.info(`You can now add "${clientName}" as a dependency to the modules in ${config.STACK_CONFIG}`);
+  console.info(`You can now add "${clientName}" as a dependency to the services in ${config.STACK_CONFIG}`);
 }
 
 module.exports = addClient;

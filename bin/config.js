@@ -14,8 +14,8 @@ module.exports = {
   STACK_CLIENT_NAME_SEPARATOR:   '@',
   STACK_USAGE_EXAMPLE:           'usage-example.txt',
 
-  MODULE_CLIENT_USAGE_CODE:      '// {clients usage code}',
-  MODULE_IMPORTS:                '// {imports}',
+  SERVICE_CLIENT_USAGE_CODE:      '// {clients usage code}',
+  SERVICE_IMPORTS:                '// {imports}',
 
   session: {
     debug: false,

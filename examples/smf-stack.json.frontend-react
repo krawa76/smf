@@ -1,6 +1,6 @@
 {
   "name": "smf demo",
-  "modules": {
+  "services": {
     "demo-frontend-react": {
       "ports": {
         "80": "80"

@@ -1,6 +1,6 @@
 {
   "name": "smf demo",
-  "modules": {
+  "services": {
     "demo-web-sails": {
       "ports": {
         "1337": "1337"

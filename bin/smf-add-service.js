@@ -10,21 +10,21 @@ const validators = require('./validators');
 
 const promptGetAsync = util.promisify(prompt.get);
 
-async function addModule() {
+async function addService() {
   if (!process.argv[4]) {
-    console.error('Module name not specified');
+    console.error('Service name not specified');
     return;
   }
 
-  const moduleName = process.argv[4];
+  const serviceName = process.argv[4];
 
-  if (!validators.IsGenericNameValid(moduleName)) {
+  if (!validators.IsGenericNameValid(serviceName)) {
     return;
   }
 
-  console.info(`Creating new module: ${moduleName}`);
+  console.info(`Creating new service: ${serviceName}`);
 
-  const dirName = `./modules/${moduleName}`;
+  const dirName = `./services/${serviceName}`;
 
   if (fs.existsSync(dirName)) {
     console.error(`Directory already exists: ${dirName}`);
@@ -37,8 +37,8 @@ async function addModule() {
 
   //========== select clients ==================================================
   console.info('');
-  console.info(`Select the third-party services clients your module "${moduleName}" connects to (one at a time),`);
-  console.info("(don't forget to select one of the message broker clients if you want your modules communicate with each other):");
+  console.info(`Select the third-party services clients that your service "${serviceName}" connects to (one at a time),`);
+  console.info("(don't forget to select one of the message broker clients if you want your services communicate with each other):");
 
   const properties = [
     {
@@ -99,14 +99,14 @@ async function addModule() {
   utils.hr();
   console.info('Copying components...');
 
-  await utils.copyFilesAsync('templates/add-module/*', `./${dirName}`, 2);
+  await utils.copyFilesAsync('templates/add-service/*', `./${dirName}`, 2);
   updatePackageJson(`${dirName}/package.json`, {
-    moduleName,
+    serviceName,
   });
 
-  //========== add module with deps to stack config file ========================
+  //========== add service with deps to stack config file ========================
   updateStackConfig(`./${config.STACK_CONFIG}`, {
-    moduleName,
+    serviceName,
     clients: selectedClients,
   });
 
@@ -142,12 +142,12 @@ async function addModule() {
 
   //========== info ===============================================
   utils.hr();
-  console.info(`Success! Created ${moduleName} microservice module in ${fs.realpathSync(dirName)}`);
+  console.info(`Success! Created ${serviceName} service in ${fs.realpathSync(dirName)}`);
   console.info('');
   console.info('We suggest that you continue by typing');
   console.info('');
   console.info(`\t smf up - to see how the demo code is working`);
-  console.info(`\t cd .${path.sep}modules${path.sep}${moduleName}`);
+  console.info(`\t cd .${path.sep}services${path.sep}${serviceName}`);
   console.info(`\t (start coding: install new libs using npm install <...>, edit Main.ts file, etc.)`);
   console.info('');
 }
@@ -160,7 +160,7 @@ function updatePackageJson(fileName, options) {
   const data = fs.readFileSync(fileName);
   const json = JSON.parse(data);
 
-  json.name        = options.moduleName;
+  json.name        = options.serviceName;
   json.description = '';
   json.author      = '';
   json.license     = '';
@@ -172,14 +172,14 @@ function updateStackConfig(fileName, options) {
   const data = fs.readFileSync(fileName);
   const json = JSON.parse(data);
 
-  json.modules[options.moduleName] = {
+  json.services[options.serviceName] = {
     clients: {}
   }
 
   if (!json.clients) json.clients = {}
 
   for (const client of options.clients) {
-    json.modules[options.moduleName].clients[client.id] = {}
+    json.services[options.serviceName].clients[client.id] = {}
     json.clients[client.id] = {external: false}
   }
 
@@ -189,14 +189,14 @@ function updateStackConfig(fileName, options) {
 function updateMain(fileName, codeHeader, codeBody) {
   const data = fs.readFileSync(fileName, 'utf8');
 
-  if (data.includes(config.MODULE_CLIENT_USAGE_CODE)) {
+  if (data.includes(config.SERVICE_CLIENT_USAGE_CODE)) {
     const lines = data.split("\n");
 
     let indent = '';
 
     for (l of lines) {
-      if (l.includes(config.MODULE_CLIENT_USAGE_CODE)) {
-        indent = l.replace(config.MODULE_CLIENT_USAGE_CODE, '').replace("\n", '');
+      if (l.includes(config.SERVICE_CLIENT_USAGE_CODE)) {
+        indent = l.replace(config.SERVICE_CLIENT_USAGE_CODE, '').replace("\n", '');
         break;
       }
     }
@@ -204,11 +204,11 @@ function updateMain(fileName, codeHeader, codeBody) {
     const codeBodyIndented = codeBody.map(l => `${indent}${l}`);
   
     let newContent = data
-      .replace(config.MODULE_IMPORTS, codeHeader.join("\n"))
-      .replace(`${indent}${config.MODULE_CLIENT_USAGE_CODE}`, codeBodyIndented.join("\n"));
+      .replace(config.SERVICE_IMPORTS, codeHeader.join("\n"))
+      .replace(`${indent}${config.SERVICE_CLIENT_USAGE_CODE}`, codeBodyIndented.join("\n"));
   
     fs.writeFileSync(fileName, newContent);
   }
 }
 
-module.exports = addModule;
+module.exports = addService;

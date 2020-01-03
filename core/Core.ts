@@ -23,7 +23,7 @@ class Core {
     const data = fs.readFileSync(config.STACK_CONFIG);
     const stackConfig = JSON.parse(data);
 
-    await clientRegistry.start(stackConfig.modules[config.MODULE]);
+    await clientRegistry.start(stackConfig.services[config.SERVICE]);
 
     this.logger.debug('SMF core started');
   }

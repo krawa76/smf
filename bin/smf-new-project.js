@@ -32,7 +32,7 @@ async function newProject() {
 
   await utils.copyFilesAsync('.vscode/**/*', `./${projectName}`);
   await utils.copyFilesAsync('core/**/*', `./${projectName}`);
-  await utils.copyFilesAsync('modules/demo/**/*', `./${projectName}`);
+  await utils.copyFilesAsync('services/demo/**/*', `./${projectName}`);
 
   await utils.copyFilesAsync('.gitattributes', `./${projectName}`);
   await utils.copyFilesAsync('.gitignore', `./${projectName}`);

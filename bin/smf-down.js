@@ -7,10 +7,10 @@ function down() {
   //=================================================================================
   console.info('Stopping Docker Compose...');
 
-  const stopBase = ` && docker-compose -f ${config.STACK_DOCKER_COMPOSE_BASE} down`;
-  const stopModules  = `docker-compose -f ${config.STACK_DOCKER_COMPOSE} down`
+  const stopBase      = ` && docker-compose -f ${config.STACK_DOCKER_COMPOSE_BASE} down`;
+  const stopServices  = `docker-compose -f ${config.STACK_DOCKER_COMPOSE} down`
 
-  const command = stopModules + (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE) ? stopBase : '');
+  const command = stopServices + (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE) ? stopBase : '');
 
   const script = exec(command);
   script.stdout.on('data', data => {

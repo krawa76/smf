@@ -1,8 +1,8 @@
 const Config = {
-  MODULE: process.env.MODULE || 'demo',
-  DATA_PATH: (process.env.DATA_PATH || '/data').replace('${MODULE}', process.env.MODULE),
+  SERVICE: process.env.SERVICE || 'demo',
+  DATA_PATH: (process.env.DATA_PATH || '/data').replace('${SERVICE}', process.env.SERVICE),
   LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
-  SAILS_PATH: process.env.SAILS_PATH || `../../../modules/${process.env.MODULE}/web-sails`,
+  SAILS_PATH: process.env.SAILS_PATH || `../../../services/${process.env.SERVICE}/web-sails`,
 
   // Message broker
   MESSAGE_BROKER_ENABLED: process.env.MESSAGE_BROKER_ENABLED === 'true' || false, 

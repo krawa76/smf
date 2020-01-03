@@ -6,7 +6,7 @@ import config from './config';
 (async () => {
   await core.start();
 
-  const module = require(`../modules/${config.MODULE}/Main`);
-  const main = new module.default();
+  const service = require(`../services/${config.SERVICE}/Main`);
+  const main = new service.default();
   main.run(core);
 })();

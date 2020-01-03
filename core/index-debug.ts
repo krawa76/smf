@@ -1,9 +1,9 @@
-// copy node_modules from the module folder to build
+// copy node_modules from the service folder to build
 
 /*
 //========== OS specific copy files approach ================================
 const {execSync} = require('child_process');
-execSync(`if test -e "./modules/${process.env.MODULE}/node_modules"; then cp -r ./modules/${process.env.MODULE}/node_modules/* ./build/modules/${process.env.MODULE}/node_modules ; fi`);
+execSync(`if test -e "./services/${process.env.SERVICE}/node_modules"; then cp -r ./services/${process.env.SERVICE}/node_modules/* ./build/services/${process.env.SERVICE}/node_modules ; fi`);
 */
 
 //========== OS agnostic copy files approach ================================
@@ -12,12 +12,12 @@ const copyfiles = require('copyfiles');
 console.info('copying node_modules...');
 copyfiles(
   [
-    `./modules/${process.env.MODULE}/node_modules/**/*`,
-    `./build/modules/${process.env.MODULE}/node_modules`,
+    `./services/${process.env.SERVICE}/node_modules/**/*`,
+    `./build/services/${process.env.SERVICE}/node_modules`,
   ],
   {
     all: true,
-    up: 3, // slice out ./modules/<module_name>/node_modules
+    up: 3, // slice out ./services/<service_name>/node_modules
   },
   () => {} // mandatory callback
 );

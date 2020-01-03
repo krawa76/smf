@@ -3,15 +3,15 @@ import {Logger} from './logger';
 class ClientRegistry {
   private clients = {};
 
-  async start(module: any) {
+  async start(service: any) {
     Logger.debug('Client registry starting...');
 
-    for (const clientName in module.clients) {
+    for (const clientName in service.clients) {
       if (!this.clients[clientName]) {
         Logger.debug(`Load client: ${clientName}`);
-        const clientModule = require(`./${this.clientTypeName(clientName)}/main`);
+        const clientService = require(`./${this.clientTypeName(clientName)}/main`);
         const clientConfig = this.clientEnvVarsConfig(clientName);
-        const client = new clientModule.default(clientConfig);
+        const client = new clientService.default(clientConfig);
 
         Logger.debug(`Start client: ${clientName}`);
         await client.start();

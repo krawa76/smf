@@ -17,8 +17,8 @@ function buildEnvFiles() {
     return;
   }
 
-  for(const module of Object.keys(stackEnv.modules)) {
-    createEnvFile(moduleEnvFileName(module), stackEnv.modules[module]);
+  for(const service of Object.keys(stackEnv.services)) {
+    createEnvFile(serviceEnvFileName(service), stackEnv.services[service]);
   }
   
   for(const client of Object.keys(stackEnv.clients)) {
@@ -37,21 +37,21 @@ function buildEnvFiles() {
   }
 }
 
-function buildLocalEnvFile(stacksConfig, moduleName) {
+function buildLocalEnvFile(stacksConfig, serviceName) {
   buildEnvFiles();
 
   const file = fs.createWriteStream('.env', {flags: 'w'});
-  file.write(`MODULE=${moduleName}\n\n`);
+  file.write(`SERVICE=${serviceName}\n\n`);
 
-  const module = stacksConfig.modules[moduleName];
-  if (module) {
-    file.write(`########## module ${moduleName} variables ##########\n`);
+  const service = stacksConfig.services[serviceName];
+  if (service) {
+    file.write(`########## service ${serviceName} variables ##########\n`);
     
-    let content = fs.readFileSync(moduleEnvFileName(moduleName), 'utf8');
+    let content = fs.readFileSync(serviceEnvFileName(serviceName), 'utf8');
     file.write(content);
     file.write('\n');
 
-    const clients = module.clients;
+    const clients = service.clients;
     if (clients) {
       for(const clientName of Object.keys(clients)) {
         // const client = clients[clientName];
@@ -88,8 +88,8 @@ function createEnvFile(fileName, envVars, varPreffix = null, cbValueTransformati
   fs.writeFileSync(fileName, content);
 }
 
-function moduleEnvFileName(moduleName) {
-  return `${stackBuildEnvPath()}/module.${moduleName}.env`;
+function serviceEnvFileName(serviceName) {
+  return `${stackBuildEnvPath()}/service.${serviceName}.env`;
 }
 
 function clientEnvFileName(clientName, type /* start | connect */) {
@@ -113,12 +113,12 @@ function updateStackEnvFile(stacksConfig) {
     }  
   }
 
-  if (!stacksEnv.modules) stacksEnv.modules = {}
+  if (!stacksEnv.services) stacksEnv.services = {}
   if (!stacksEnv.clients) stacksEnv.clients = {}
 
-  if (stacksConfig.modules) {
-    for (const moduleName of Object.keys(stacksConfig.modules)) {
-      if (!stacksEnv.modules[moduleName]) stacksEnv.modules[moduleName] = {}
+  if (stacksConfig.services) {
+    for (const serviceName of Object.keys(stacksConfig.services)) {
+      if (!stacksEnv.services[serviceName]) stacksEnv.services[serviceName] = {}
     }
   }
 
@@ -251,7 +251,7 @@ function copyFilesAsync(src, dst = '', up = 0) {
 module.exports = {
   buildEnvFiles,
   buildLocalEnvFile,
-  moduleEnvFileName,
+  serviceEnvFileName,
   clientEnvFileName,
   updateStackEnvFile,
   readClientManifest,

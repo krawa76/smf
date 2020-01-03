@@ -5,7 +5,7 @@ services:
     container_name: smf-demo
     build:
       context: .
-      args: ["MODULE=demo"]
+      args: ["SERVICE=demo"]
     # depends_on: ["???"]
     # env_file: ["env/???-1.env", "env/???-2.env"]
     networks: ["main"]
@@ -13,12 +13,12 @@ services:
     container_name: smf-demo-web
     build:
       context: .
-      args: ["MODULE=demo-web"]
+      args: ["SERVICE=demo-web"]
     # depends_on: ["???"]
     ports: ["1337:1337"]
     # env_file: ["env/???-1.env", "env/???-2.env"]
     networks: ["main"]
-  #========== modules ===================================
+  #========== services ===================================
 
 networks:
   main:

@@ -1,5 +1,5 @@
 {
-  "modules": {
+  "services": {
     "demo-message-broker": {
       "VAR1": "asdfasdfasdf",
       "VAR2": "asdfasdfasdf"

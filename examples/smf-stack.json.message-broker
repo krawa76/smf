@@ -1,6 +1,6 @@
 {
   "name": "smf demo",
-  "modules": {
+  "services": {
     "demo-message-broker": {
       "clients": {
         "rabbitmq-amqp": {

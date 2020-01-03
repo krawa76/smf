@@ -37,7 +37,8 @@ async function up() {
   console.info('Generating Docker files...');
 
   //========(clients)================================================================
-  const networkName = `${config.PREFIX}${stacksConfig.name}`
+  const networkName = `${/* config.PREFIX */ ''}${stacksConfig.name}`
+  const containerPrefix = `${/* config.PREFIX */ ''}${stacksConfig.name}-`;
 
   if (Object.keys(stacksConfig.clients || []).length > 0) {
     const dockerComposeBase = {
@@ -60,7 +61,7 @@ async function up() {
         const clientManifest = utils.readClientManifest(client);
         if (clientManifest && clientManifest.docker) {
           dockerComposeBase.services[clientNameNormalized] = {
-            container_name: `${config.PREFIX}${clientNameNormalized}`,
+            container_name: `${containerPrefix}${clientNameNormalized}`,
             image: clientManifest.docker.image,
             env_file: envFiles,
             networks: [config.STACK_DOCKER_NETWORK],
@@ -121,7 +122,7 @@ async function up() {
 
     //=======================================================
     dockerCompose.services[service] = {
-      container_name: `${config.PREFIX}${service}`,
+      container_name: `${containerPrefix}${service}`,
       build: {
         context: fs.existsSync(`./services/${service}/Dockerfile`) ? `./services/${service}` : '.',
         args: [`SERVICE=${service}`],

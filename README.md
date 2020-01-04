@@ -12,7 +12,7 @@ Automates development and deployment of containerized microservice stacks in Nod
 - command line interface for adding new services, selecting client dependencies and generating the boilerplate code.
 - shared code can be defined in a single place (no extra npm packages needed).
 - services npm packages are isolated and can have overlapping dependencies.
-- centralized stack & environment config (see smf-stack.json & smf-env.json).
+- centralized stack & environment config (see `smf-stack.json` & `smf-env.json`).
 - built-in pipelines for copying custom data & running custom scripts.
 - TypeScript is supported by default in all services.
 
@@ -47,9 +47,9 @@ smf up
 
 Create JS modules with common code or config/constants which are accessible in all the services in the stack.
 
-1. Add a JS module to `core/shared` folder (see config & module1 examples).
-2. Add the JS module reference to import & export in core/shared/index.ts.
-3. Call the module functions as core.shared.module.func in a service (see ./services/demo/Main.ts).
+1. Add a JS module to `core/shared` folder (see `config & module1` examples).
+2. Add the JS module reference to import & export in `core/shared/index.ts`.
+3. Call the module functions as `core.shared.module.func` in a service (see `./services/demo/Main.ts`).
 
 ## Copy custom data
 

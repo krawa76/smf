@@ -43,6 +43,34 @@ smf up
 - VSCode built-in support.
 - smf debug service-name
 
+- local debug: run "smf debug ..." to create .env file merging all the required env files (service & clients).
+
+## Stack configuration
+
+`smf-stack.json`, structure
+
+- client full name: service + lib (e.g. rabbitmq-amqp).
+- connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
+
+## Environment variables
+
+All the environment variables are specified in a single `smf-env.json` file. Structure: ?????????????????
+
+- generate .env files automatically from the integrated env json (smf-env.json).
+
+## Service, development, structure
+
+`Main.ts`, etc.
+- overwrite the default Dockerfile: put a custom Dockerfile in the service root folder (see demo-frontend-react).
+- use core from any file: import core from 'smf-core'; core.log(...)
+
+## Client, structure
+
+- list of existing clients
+- core/clients/(client name)/smf-client.json: 
+- volume: container destination dir.
+- client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
+
 ## Shared modules
 
 Create JS modules with common code or config/constants which are accessible in all the services in the stack.
@@ -53,23 +81,11 @@ Create JS modules with common code or config/constants which are accessible in a
 
 ## Copy custom data
 
-Service's ./data subfolder is copied to /data image folder.
+If a service uses some custom data, put it to the service's `./data` subfolder. After the Docker image is built, the data is in the image's `/data` folder.
 
-## Run custom script
+## Run custom script (build time)
 
-Useful for installing extra dependencies.
-Create optional "install.sh" file in a service folder.
-Docker runs it building the service image.
-
-## Notes
-
-- client full name: service + lib (e.g. rabbitmq-amqp).
-- generate .env files automatically from the integrated env json (smf-env.json).
-- connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
-- local debug: run "smf debug ..." to create .env file merging all the required env files (service & clients).
-- client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
-- overwrite the default Dockerfile: put a custom Dockerfile in the service root folder (see demo-frontend-react).
-- use core from any file: import core from 'smf-core'; core.log(...)
+If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder. 
 
 ## Structure
 
@@ -82,12 +98,6 @@ Docker runs it building the service image.
 - build/ : (auto-generated) compiled source code.
 - build-stack/env : (auto-generated) compiled environment variables.
 
-## Structure, JSON
-
-core/clients/(client name)/smf-client.json: 
-
-- volume: container destination dir.
-
 ## Commands
 
 ```
@@ -99,7 +109,11 @@ smf debug service-name
 smf add client client-name (inputs: docker image name)
 ```
 
-## Bonus #1: Sails web app integration
+## Bonus #1: React web app integration
+
+???
+
+## Bonus #2: Sails web app integration
 
 - create a service folder (services/<new service>).
 - cd to it, create package.json & Main.ts (see demo-web-sails service).

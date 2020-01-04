@@ -4,14 +4,16 @@ Automates development and deployment of containerized microservice stacks in Nod
 
 ## Key concepts
 
-- monorepo: SMF core npm package manages custom services npm packages (inversion-of-control pattern).
+- monorepo: SMF core npm package manages custom services npm packages (the inversion-of-control pattern).
 - each service is a combination of custom code and built-in clients for connecting third-party services like databases, message brokers, etc.
-- SMF generates all Docker artifacts (docker-compose files, env files, data volumes, etc.) needed for starting the microservice stack automatically.
-- single generic Dockerfile is used for building all the services images.
+- each service is a separate Docker image/container. SMF also starts third-party services automatically.
+- SMF generates all Docker artifacts (docker-compose files, env files, data volumes, etc.) needed for starting the microservice stack.
+- a single generic Dockerfile is used for building all the services images.
 - command line interface for adding new services, selecting client dependencies and generating the boilerplate code.
 - shared code can be defined in a single place (no extra npm packages needed).
 - services npm packages are isolated and can have overlapping dependencies.
 - centralized stack & environment config (see smf-stack.json & smf-env.json).
+- built-in pipelines for copying custom data & running custom scripts.
 - TypeScript is supported by default in all services.
 
 ## Requirements
@@ -21,30 +23,19 @@ Automates development and deployment of containerized microservice stacks in Nod
 
 ## Getting started
 
-Install SMF, create new project and start it:
+Install SMF, create a new project and start it:
 ```
 npm install ... -g
 smf new test-stack
 cd test-stack
 smf up
 ```
-Stop the stack, add a new service, start the stack:
+Stop the stack, add a new service, start the stack again:
 ```
 smf down
 smf add service service-name
 (select third-party services dependencies)
 smf up
-```
-
-## Usage
-
-```
-smf new <project name>
-smf up
-smf down
-smf debug <service name>
-smf add client <client name> (inputs: docker image name)
-smf add service <service name>
 ```
 
 ## Debug
@@ -54,13 +45,13 @@ smf add service <service name>
 
 ## Shared modules
 
-Usecase: shared code or config (constants).
+Create JS modules with common code or config/constants which are accessible in all the services in the stack.
 
-1. Add module to core/shared folder (see config & module1 examples).
-2. Add module to import & export in core/shared/index.ts.
-3. Use module functions as core.shared.module.func in service (see ./services/demo/Main.ts).
+1. Add a JS module to `core/shared` folder (see config & module1 examples).
+2. Add the JS module reference to import & export in core/shared/index.ts.
+3. Call the module functions as core.shared.module.func in a service (see ./services/demo/Main.ts).
 
-## Copy service data
+## Copy custom data
 
 Service's ./data subfolder is copied to /data image folder.
 
@@ -96,6 +87,17 @@ Docker runs it building the service image.
 core/clients/(client name)/smf-client.json: 
 
 - volume: container destination dir.
+
+## Commands
+
+```
+smf new project-name
+smf up
+smf down
+smf add service service-name
+smf debug service-name
+smf add client client-name (inputs: docker image name)
+```
 
 ## Bonus #1: Sails web app integration
 

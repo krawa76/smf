@@ -38,13 +38,6 @@ smf add service service-name
 smf up
 ```
 
-## (todo) Debug
-
-- VSCode built-in support.
-- smf debug service-name
-
-- local debug: run "smf debug ..." to create .env file merging all the required env files (service & clients).
-
 ## Project configuration
 
 See `smf-stack.json` file, e.g:
@@ -171,14 +164,6 @@ core.log(...);
 core.shared.module1.func();
 ```
 
-## (todo) Client, structure
-
-- list of existing clients
-- core/clients/(client name)/smf-client.json: 
-- volume: container destination dir.
-- client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
-- client full name: service + lib (e.g. rabbitmq-amqp).
-
 ## Shared modules
 
 Create JS modules with common code or config/constants which are accessible in all the services in the stack.
@@ -191,13 +176,32 @@ Create JS modules with common code or config/constants which are accessible in a
 
 If a service uses some custom data, put it to the service's `./data` subfolder. After the Docker image is built, the data is in the image's `/data` folder.
 
-## Run custom script (build time)
+## Run custom script (Docker build time)
 
 If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder.
 
-## (todo) Demos
+## Demos
 
-links to demos
+- [Message broker](https://github.com/krawa76/smf/tree/master/services/demo-message-broker)
+- [Mongodb](https://github.com/krawa76/smf/tree/master/services/demo-mongodb)
+- [React frontend](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react)
+- [Web app, Express server](https://github.com/krawa76/smf/tree/master/services/demo-web)
+- [Web app, Sails backend](https://github.com/krawa76/smf/tree/master/services/demo-web-sails)
+
+## (todo) Debug
+
+- VSCode built-in support.
+- smf debug service-name
+
+- local debug: run "smf debug ..." to create .env file merging all the required env files (service & clients).
+
+## (todo) Client, structure
+
+- list of existing clients
+- core/clients/(client name)/smf-client.json: 
+- volume: container destination dir.
+- client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
+- client full name: service + lib (e.g. rabbitmq-amqp).
 
 ## Commands
 

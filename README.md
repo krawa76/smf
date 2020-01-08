@@ -124,8 +124,8 @@ All environment variables are specified in `smf-env.json` file, e.g.:
 - `services > service-name > ... `: custom services variables.
 - `clients > client-name > start > ...`: variables needed to start the dependency service.
 - `clients > client-name > connect > ...`: variables needed to connect to the dependency service from a custom one.
-- some values (e.g. `{hostname}`) are replaced automatically at build time depending on the deployment circumstances.
-- some `clients > ...` values are automatically added to the env config from the clients mafifests when adding dependencies.
+- system placeholders (e.g. `{hostname}`) are replaced automatically at build time depending on the deployment circumstances.
+- some default `clients > ...` values are automatically added to the env config from the clients manifests when adding dependencies.
 
 ## Project structure
 
@@ -140,15 +140,35 @@ All environment variables are specified in `smf-env.json` file, e.g.:
 - `Dockerfile`: a generic one for all services.
 - `smf-docker-base.yml`: docker-compose file for third-party services (auto-generated).
 - `smf-docker.yml`: docker-compose file for services (auto-generated).
-- `smf-env.json`: environment variables. Some vars are automatically updated from clients manifests.
+- `smf-env.json`: environment variables.
 - `smf-stack.json`: project config: services definitions and clients dependencies.
 - `tsconfig.json`: TypeScript options.
 
-## (todo) Service, development, structure
+## Service structure
 
-`Main.ts`, etc.
-- overwrite the default Dockerfile: put a custom Dockerfile in the service root folder (see demo-frontend-react).
-- use core from any file: import core from 'smf-core'; core.log(...)
+See `./services/service-name` folder.
+
+- `Main.ts`: service entry point code, e.g.:
+```
+export default class Main {
+  run(core) {
+    core.log('demo-main');
+
+    setInterval(async () => {
+      core.log('ping');
+    },
+    5000);
+  }
+}```
+
+- `Dockerfile`: (optional) overwrites the default Dockerfile if build customization needed(see `demo-frontend-react` service).
+- use SMF core from any source code module (folder independent):
+```
+import core from 'smf-core';
+...
+core.log(...);
+core.shared.module1.func();
+```
 
 ## (todo) Client, structure
 

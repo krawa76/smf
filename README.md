@@ -87,11 +87,62 @@ See `smf-stack.json` file, e.g:
 - `clients > client-name > external`: if `false` SMF is responsible for starting the dependency service.
 - can start & connect multiple third-party services of the same type, e.g. 2 mongodb. In this case the client name has to be prefixed, e.g. `db1@mongodb-mongoose`, `db2@mongodb-mongoose`. 
 
-## (todo) Environment variables
+## Environment variables
 
-All the environment variables are specified in a single `smf-env.json` file. Structure: ?????????????????
+All environment variables are specified in `smf-env.json` file, e.g.:
 
-- generate .env files automatically from the integrated env json (smf-env.json).
+```
+{
+  "services": {
+    "demo": {},
+    "service1": {
+      VAR1=value1,
+      VAR2=value2
+    }
+  },
+  "clients": {
+    "rabbitmq-amqp": {
+      "connect": {
+        "RABBITMQ_URL": "amqp://admin:password@{hostname}:5672"
+      },
+      "start": {
+        "RABBITMQ_DEFAULT_USER": "admin",
+        "RABBITMQ_DEFAULT_PASS": "password"
+      }
+    },
+    "mongodb-mongoose": {
+      "connect": {
+        "MONGODB_URI": "mongodb://{hostname}/db"
+      },
+      "start": {}
+    }
+  }
+}
+```
+
+- SMF uses `smf-env.json` to generate all required .env files for every service container automatically.
+- `services > service-name > ... `: custom services variables.
+- `clients > client-name > start > ...`: variables needed to start the dependency service.
+- `clients > client-name > connect > ...`: variables needed to connect to the dependency service from a custom one.
+- some values (e.g. `{hostname}`) are replaced automatically at build time depending on the deployment circumstances.
+- some `clients > ...` values are automatically added to the env config from the clients mafifests when adding dependencies.
+
+## Project structure
+
+- `./build`: compiled source JS code (auto-generated).
+- `./build-stack/env`: containers .env files (auto-generated).
+- `./core`: SMF core files.
+- `./core/clients`: SMF clients for third-party services.
+- `./core/shared`: shared modules.
+- `./data`: persistent data mapped using Docker volumes (databases, etc.).
+- `./services`: user-defined custom services.
+- `.env`: local .env file for debug purpose.
+- `Dockerfile`: a generic one for all services.
+- `smf-docker-base.yml`: docker-compose file for third-party services (auto-generated).
+- `smf-docker.yml`: docker-compose file for services (auto-generated).
+- `smf-env.json`: environment variables. Some vars are automatically updated from clients manifests.
+- `smf-stack.json`: project config: services definitions and clients dependencies.
+- `tsconfig.json`: TypeScript options.
 
 ## (todo) Service, development, structure
 
@@ -126,17 +177,6 @@ If a service needs to run a custom script (e.g. download & install extra depende
 ## (todo) Demos
 
 links to demos
-
-## (todo) Project Structure
-
-- core, clients & services: directories?
-- smf-stack.json: services definitions and clients dependencies.
-- smf-stack.json > services > ports: ports to open in docker-compose.
-- smf-env.json: environment variables. Some vars are automatically updated from clients manifests.
-- smf-docker-base.yml: (auto-generated) docker-compose file for third-party services.
-- smf-docker.yml: (auto-generated) docker-compose file for services.
-- build/ : (auto-generated) compiled source code.
-- build-stack/env : (auto-generated) compiled environment variables.
 
 ## Commands
 

@@ -12,7 +12,7 @@ Automates development and deployment of containerized microservice stacks in Nod
 - command line interface for adding new services, selecting client dependencies and generating the boilerplate code.
 - shared code can be defined in a single place (no extra npm packages needed).
 - services npm packages are isolated and can have overlapping dependencies.
-- centralized stack & environment config (see `smf-stack.json` & `smf-env.json`).
+- centralized stack & environment config.
 - built-in pipelines for copying custom data & running custom scripts.
 - TypeScript is supported by default in all services.
 
@@ -38,38 +38,74 @@ smf add service service-name
 smf up
 ```
 
-## Debug
+## (todo) Debug
 
 - VSCode built-in support.
 - smf debug service-name
 
 - local debug: run "smf debug ..." to create .env file merging all the required env files (service & clients).
 
-## Stack configuration
+## Project configuration
 
-`smf-stack.json`, structure
+See `smf-stack.json` file, e.g:
 
-- client full name: service + lib (e.g. rabbitmq-amqp).
-- connect multiple services of the same type (e.g. message brokers), specifying unique names (e.g. instance1@rabbitmq-amqp)
+```
+{
+  "name": "project-name",
+  "services": {
+    "service1": {
+      "clients": {
+        "mongodb-mongoose": {
+        },
+        "rabbitmq-amqp": {
+        }
+      }
+    },
+    "service2": {
+      "ports": {
+        "80": "3000"
+      },
+      "clients": {
+        "rabbitmq-amqp": {
+        }
+      }
+    }
+  },
+  "clients": {
+    "mongodb-mongoose": {
+      "external": false
+    },
+    "rabbitmq-amqp": {
+      "external": false
+    }
+  }
+}
+```
 
-## Environment variables
+- `services > service-name > clients`: third-party services dependencies.
+- `services > service-name > ports`: Docker ports mapping (host:container).
+- `clients > client-name > external`: if `false` SMF is responsible for starting the dependency service.
+- can start & connect multiple third-party services of the same type, e.g. 2 mongodb. In this case the client name has to be prefixed, e.g. `db1@mongodb-mongoose`, `db2@mongodb-mongoose`. 
+
+## (todo) Environment variables
 
 All the environment variables are specified in a single `smf-env.json` file. Structure: ?????????????????
 
 - generate .env files automatically from the integrated env json (smf-env.json).
 
-## Service, development, structure
+## (todo) Service, development, structure
 
 `Main.ts`, etc.
 - overwrite the default Dockerfile: put a custom Dockerfile in the service root folder (see demo-frontend-react).
 - use core from any file: import core from 'smf-core'; core.log(...)
 
-## Client, structure
+## (todo) Client, structure
 
 - list of existing clients
 - core/clients/(client name)/smf-client.json: 
 - volume: container destination dir.
 - client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
+- client full name: service + lib (e.g. rabbitmq-amqp).
 
 ## Shared modules
 
@@ -85,9 +121,13 @@ If a service uses some custom data, put it to the service's `./data` subfolder. 
 
 ## Run custom script (build time)
 
-If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder. 
+If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder.
 
-## Structure
+## (todo) Demos
+
+links to demos
+
+## (todo) Project Structure
 
 - core, clients & services: directories?
 - smf-stack.json: services definitions and clients dependencies.
@@ -109,7 +149,7 @@ smf debug service-name
 smf add client client-name (inputs: docker image name)
 ```
 
-## Bonus #1: React web app integration
+## (todo) Bonus #1: React web app integration
 
 ???
 

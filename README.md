@@ -159,7 +159,8 @@ export default class Main {
     },
     5000);
   }
-}```
+}
+```
 
 - `Dockerfile`: (optional) overwrites the default Dockerfile if build customization needed(see `demo-frontend-react` service).
 - use SMF core from any source code module (folder independent):

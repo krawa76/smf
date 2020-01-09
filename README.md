@@ -181,6 +181,22 @@ If a service uses some custom data, put it to the service's `./data` subfolder. 
 
 If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder.
 
+## Debug
+
+In the current version you can debug only one service at a time due to the shared .env file issue.
+
+Stop the service container:
+```
+docker stop project-name-service-name
+```
+Build the service .env file (merge the service & clients env variables):
+```
+smf debug service-name
+```
+VSCode users: click `Debug and Run > Start Debugging (Control-F5)` in the editor.
+
+Other IDEs: run `tsc` to build the source code and use `./build/core/index-debug.js` as the starting script.
+
 ## Demos
 
 - [Message broker](https://github.com/krawa76/smf/tree/master/services/demo-message-broker)
@@ -188,13 +204,6 @@ If a service needs to run a custom script (e.g. download & install extra depende
 - [React frontend](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react)
 - [Web app, Express server](https://github.com/krawa76/smf/tree/master/services/demo-web)
 - [Web app, Sails backend](https://github.com/krawa76/smf/tree/master/services/demo-web-sails)
-
-## (todo) Debug
-
-- VSCode built-in support.
-- smf debug service-name
-
-- local debug: run "smf debug ..." to create .env file merging all the required env files (service & clients).
 
 ## (todo) Client, structure
 
@@ -215,15 +224,16 @@ smf debug service-name
 smf add client client-name (inputs: docker image name)
 ```
 
-## (todo) Bonus #1: React web app integration
+## Bonus #1: React web app integration
 
-???
+- run `smf add service` (skip service dependencies) to create the service boilerplate code.
+- cd to the new service folder, run `npx create-react-app app` to generate the React app code.
+- copy `Dockerfile` from [React frontend demo](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react) to the service folder.
 
 ## Bonus #2: Sails web app integration
 
-- create a service folder (services/<new service>).
-- cd to it, create package.json & Main.ts (see demo-web-sails service).
-- run "sails new web-sails" (the app name is pre-defined/fixed).
+- run `smf add service` (skip service dependencies) to create the service boilerplate code.
+- cd to the new service folder, run run `sails new web-sails` to generate the Sails app code (don't change the app name).
 - add hosts to "./web-sails/config/env/production.js/onlyAllowOrigins".
 - (optionally) enable controllers actions blueprints (./web-sails/config/blueprints.js > actions: true).
 

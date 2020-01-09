@@ -234,10 +234,10 @@ smf add client client-name (inputs: docker image name)
 
 - run `smf add service` (skip service dependencies) to create the service boilerplate code.
 - cd to the new service folder, run run `sails new web-sails` to generate the Sails app code (don't change the app name).
-- add hosts to "./web-sails/config/env/production.js/onlyAllowOrigins".
-- (optionally) enable controllers actions blueprints (./web-sails/config/blueprints.js > actions: true).
+- add hosts to `./web-sails/config/env/production.js/onlyAllowOrigins`.
+- (optionally) enable controllers actions blueprints: `./web-sails/config/blueprints.js > actions: true`.
 
-Root TypeScript build process ignores "web-sails" folders, they are copied separately in Dockerfile.
+Root TypeScript build process ignores the `web-sails` folders, they are copied separately in Dockerfile.
 TypeScript is added to a Sails app using this instruction:
 https://sailsjs.com/documentation/tutorials/using-type-script 
 

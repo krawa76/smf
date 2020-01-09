@@ -205,13 +205,47 @@ Other IDEs: run `tsc` to build the source code and use `./build/core/index-debug
 - [Web app, Express server](https://github.com/krawa76/smf/tree/master/services/demo-web)
 - [Web app, Sails backend](https://github.com/krawa76/smf/tree/master/services/demo-web-sails)
 
-## (todo) Client, structure
+## (todo) Clients
 
-- list of existing clients
-- core/clients/(client name)/smf-client.json: 
-- volume: container destination dir.
-- client folder format (core/clients/): service name - driver name (e.g. mongodb-mongoose).
-- client full name: service + lib (e.g. rabbitmq-amqp).
+- SMF clients are modules that connect user services to third-party ones (databases, message brokers, etc.).
+- clients are located in `./core/clients` folder.
+- client name convention is `service name`-`library name` (e.g. `mongodb-mongoose`).
+
+Existing clients:
+
+- mongodb-mongoose
+- rabbitmq-amqp
+
+In order to add a new client run:
+```
+smf add client client-name
+(type a docker image name which is accessible on Dockerhub)
+```
+...then go to `./core/clients/client-name` and edit `main.ts` file.
+
+Client config is stored in `smf-client.json` manifest file, e.g. see the mongodb one:
+```
+{
+  "docker": {
+    "image": "mongo:latest",
+    "ports": [27017],
+    "volume": "/data/db",
+    "env": {
+      "start": {
+      },
+      "connect": {
+        "MONGODB_URI": "mongodb://{hostname}/db"
+      }
+    }
+  }
+}
+```
+
+- `image`: Docker image.
+- `ports`: container ports to open.
+- `volume`: Docker volume path in the container.
+- `env > start`: default env variables for starting the container (e.g. see [RabbitMQ client manifest](https://github.com/krawa76/smf/blob/master/core/services/rabbitmq-amqp/smf-service.json))
+- `env > connect`: default env variables for connecting to the service from custom services.
 
 ## Commands
 

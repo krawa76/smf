@@ -155,7 +155,8 @@ export default class Main {
 }
 ```
 
-- `Dockerfile`: (optional) overwrites the default Dockerfile if build customization needed(see `demo-frontend-react` service).
+- npm's `package.json` & `package-lock.json`. Run `npm install ...` in the service folder to add service specific libraries.
+- `Dockerfile`: (optional) overwrites the default Dockerfile if any build customization needed(see [React frontend demo](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react)).
 - use SMF core from any source code module (folder independent):
 ```
 import core from 'smf-core';
@@ -166,7 +167,7 @@ core.shared.module1.func();
 
 ## Shared modules
 
-Create JS modules with common code or config/constants which are accessible in all the services in the stack.
+Create JS modules with common code or config/constants which are accessible in all the services in the stack:
 
 1. Add a JS module to `core/shared` folder (see `config & module1` examples).
 2. Add the JS module reference to import & export in `core/shared/index.ts`.

@@ -205,7 +205,7 @@ Other IDEs: run `tsc` to build the source code and use `./build/core/index-debug
 - [Web app, Express server](https://github.com/krawa76/smf/tree/master/services/demo-web)
 - [Web app, Sails backend](https://github.com/krawa76/smf/tree/master/services/demo-web-sails)
 
-## (todo) Clients
+## Clients
 
 - SMF clients are modules that connect user services to third-party ones (databases, message brokers, etc.).
 - clients are located in `./core/clients` folder.

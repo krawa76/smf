@@ -25,7 +25,7 @@ Automates development and deployment of containerized microservice stacks in Nod
 
 Install SMF, create a new project and start it:
 ```
-npm install ... -g
+npm install -g sokyra-microservice-factory
 smf new test-stack
 cd test-stack
 smf up

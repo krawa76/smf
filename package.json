@@ -1,6 +1,6 @@
 {
   "name": "sokyra-microservice-factory",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Microservice Factory",
   "main": "./core/index.js",
   "bin": {

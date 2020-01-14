@@ -30,8 +30,8 @@ ENV SERVICE=$SERVICE
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-COPY services/${SERVICE}/package.json ./services/${SERVICE}/package.json
-COPY services/${SERVICE}/package-lock.json ./services/${SERVICE}/package-lock.json
+# copy package.json & package-lock.json (if the latter exists)
+COPY services/${SERVICE}/package*.json ./services/${SERVICE}/
 COPY --from=build /app/build .
 
 # ENV NODE_ENV=production NODE_PATH=/app PORT=80

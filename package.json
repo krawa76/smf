@@ -1,6 +1,6 @@
 {
   "name": "sokyra-microservice-factory",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Microservice Factory",
   "main": "./core/index.js",
   "bin": {
@@ -10,17 +10,18 @@
     "build": "tsc",
     "build-prod": "tsc --sourceMap false",
     "start": "tsc && node ./build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "copyfiles -u 1 ./core/smf-core.js ./node_modules"
   },
   "author": "Sergey Kravchenko",
   "license": "ISC",
   "devDependencies": {
-    "copyfiles": "^2.1.1",
     "typescript": "^3.5.3"
   },
   "dependencies": {
     "@types/node": "^12.7.2",
     "amqplib": "^0.5.5",
+    "copyfiles": "^2.1.1",
     "js-yaml": "^3.13.1",
     "minio": "^7.0.12",
     "mongoose": "^5.6.11",

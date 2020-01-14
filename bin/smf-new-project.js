@@ -83,6 +83,8 @@ function updatePackageJson(fileName, options) {
   json.author      = '';
   json.license     = '';
 
+  json.scripts.postinstall = "copyfiles -u 1 ./core/smf-core.js ./node_modules";
+
   delete json.bin;
 
   fs.writeFileSync(fileName, JSON.stringify(json, null, 2));

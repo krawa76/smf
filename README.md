@@ -8,7 +8,7 @@ Automates development and deployment of containerized microservice stacks in Nod
 - each service is a combination of custom code and built-in clients for connecting third-party services like databases, message brokers, etc.
 - each service is a separate Docker image/container. SMF also starts third-party services automatically.
 - SMF generates all Docker artifacts (docker-compose files, env files, data volumes, etc.) needed for starting the microservice stack.
-- a single generic Dockerfile is used for building all the services images.
+- one generic Dockerfile is used for building all the services images.
 - command line interface for adding new services, selecting client dependencies and generating the boilerplate code.
 - shared code can be defined in a single place (no extra npm packages needed).
 - services npm packages are isolated and can have overlapping dependencies.

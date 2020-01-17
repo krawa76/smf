@@ -165,6 +165,32 @@ core.log(...);
 core.shared.module1.func();
 ```
 
+## Service communication
+
+Use a message broker to exchange messages between services.
+Select a broker (`RabbitMQ` by default) when creating a new service (`smf add service ...`).
+
+Usage example:
+
+```
+import core from 'smf-core';
+
+const messageBroker = core.client('rabbitmq-amqp');
+
+// subscribe to the "demo.*" routes
+await messageBroker.subscribe('demo.*');
+
+// receive messages
+messageBroker.on('message', message => {
+  core.log(message);
+});
+
+// publish a message
+messageBroker.publish('demo.hello', {text: 'hello'});
+```
+
+Event-driven routes naming convention is recommended, e.g. route = `user.created`, `email.sent`, etc.
+
 ## Shared modules
 
 Create JS modules with common code or config/constants which are accessible in all the services in the stack:

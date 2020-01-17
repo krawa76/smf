@@ -89,8 +89,8 @@ All environment variables are specified in `smf-env.json` file, e.g.:
   "services": {
     "demo": {},
     "service1": {
-      VAR1=value1,
-      VAR2=value2
+      "var1": "value1",
+      "var2": "value2"
     }
   },
   "clients": {

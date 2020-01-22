@@ -73,7 +73,7 @@ copy deployment files (docker-compose x2, env files)
 
 docker-compose -f smf-docker-images.yml up
 
-run start.sh (smf-docker-base.yml, smf-docker.yml)
+run start.sh (smf-docker-base.yml, smf-docker.yml) ?
 
 publish ports (configure load balancer, etc.)
 
@@ -83,6 +83,7 @@ risks
 
 ---
 todo
+- more developed stack: deploy with rabbitmq & mongodb (volume)
 - docker swarm?
 - kubernetes?
 - on-prem (existing) / cloud (provisioner) hosts

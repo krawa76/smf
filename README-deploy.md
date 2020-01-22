@@ -41,18 +41,40 @@ Remotely:
 
 prepare hosts (create AWS EC2 machine)
 - type = t2.medium
-- disk = ?
-- save VM's ssh
+- disk = 8 Gb
 
 install Docker
+```
+# USER=${user}
+# export DEBIAN_FRONTEND=noninteractive
+echo ========== install docker ==================================
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+echo ========== add user to docker group ==================================
+sudo usermod -aG docker $USER
+echo ========== start docker services ==================================
+# sudo setfacl -m user:$USER:rw /var/run/docker.sock
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+```
+
+https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04
 
 create project folder (/project-name?)
+- cd ~/
+- mkdir smf
+- cd smf
+- mkdir stack-14
 
 copy deployment files (docker-compose x2, env files)
 
 run start.sh (smf-docker-base.yml, smf-docker.yml)
 
 publish ports (configure load balancer, etc.)
+
+---
+risks
+- what happens when the cloud VM restarts? need to login to docker again, re-install anything?
 
 ---
 todo

@@ -58,7 +58,10 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 ```
 
-https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04
+(installs outdated version) https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04
+
+install Docker Compose:
+https://docs.docker.com/compose/install/
 
 create project folder (/project-name?)
 - cd ~/
@@ -67,6 +70,8 @@ create project folder (/project-name?)
 - mkdir stack-14
 
 copy deployment files (docker-compose x2, env files)
+
+docker-compose -f smf-docker-images.yml up
 
 run start.sh (smf-docker-base.yml, smf-docker.yml)
 

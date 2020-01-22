@@ -43,6 +43,8 @@ prepare hosts (create AWS EC2 machine)
 - type = t2.medium
 - disk = 8 Gb
 
+Docker v 19.03, Docker Compose v 1.24.
+
 install Docker
 ```
 # USER=${user}

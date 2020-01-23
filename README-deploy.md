@@ -79,9 +79,10 @@ docker-compose -f smf-docker-images.yml up
 
 ---
 todo
-- create start.sh (mkdir ./data, smf-docker-base.yml, smf-docker.yml) ?
 - permanent data: what happens when the cloud VM restarts? need to login to docker again, re-install anything?
-- publish ports (configure load balancer, etc.) - use web service demo.
+- deploy Docker to EC2: any existing products?
+- any ports publishing needed? - try web service demo.
+- smf-deploy (or manual): create start.sh (mkdir ./data, smf-docker-base.yml, smf-docker.yml) ?
 - deployment environments (local, dev, qa, stage, prod). -> introduce "config" folder with smf-stack.json, smf-env.json, etc.?
 - base services (dbs, etc.): switch to using external ones when deploying?
 - scalable services: docker swarm?
@@ -90,3 +91,4 @@ todo
 backlog
 - kubernetes?
 - on-prem (existing) / cloud (provisioner) hosts
+- publish ports (configure load balancer, etc.)

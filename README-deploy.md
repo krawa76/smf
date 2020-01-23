@@ -79,7 +79,6 @@ docker-compose -f smf-docker-images.yml up
 
 ---
 todo
-- permanent data: what happens when the cloud VM restarts? need to login to docker again, re-install anything?
 - deploy Docker to EC2: any existing products?
 - any ports publishing needed? - try web service demo.
 - smf-deploy (or manual): create start.sh (mkdir ./data, smf-docker-base.yml, smf-docker.yml) ?

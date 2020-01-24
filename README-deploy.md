@@ -79,7 +79,6 @@ docker-compose -f smf-docker-images.yml up
 
 ---
 todo
-- deploy Docker to EC2: any existing products?
 - any ports publishing needed? - try web service demo.
 - smf-deploy (or manual): create start.sh (mkdir ./data, smf-docker-base.yml, smf-docker.yml) ?
 - deployment environments (local, dev, qa, stage, prod). -> introduce "config" folder with smf-stack.json, smf-env.json, etc.?
@@ -88,6 +87,7 @@ todo
 - run deployment in a pipeline (Bitbucket, GitHub, etc.)
 
 backlog
+- deploy to AWS ECS
 - kubernetes?
 - on-prem (existing) / cloud (provisioner) hosts
 - publish ports (configure load balancer, etc.)

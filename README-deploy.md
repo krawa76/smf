@@ -77,6 +77,8 @@ mkdir ./data
 
 docker-compose -f smf-docker-images.yml up
 
+if there is a web app, go to EC2 instance security group, add inbound rule: custom TCP - TCP - port 80.
+
 ---
 todo
 - any ports publishing needed? - try web service demo.

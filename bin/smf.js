@@ -3,15 +3,17 @@
 const up         = require('./smf-up');
 const down       = require('./smf-down');
 const debug      = require('./smf-debug');
+const deploy     = require('./smf-deploy');
 
 const newProject = require('./smf-new-project');
 const addClient  = require('./smf-add-client');
 const addService = require('./smf-add-service');
 
 (async () => {
-  if (process.argv[2] == 'up')    return await up();
-  if (process.argv[2] == 'down')  return down();
-  if (process.argv[2] == 'debug') return debug();
+  if (process.argv[2] == 'up')     return await up();
+  if (process.argv[2] == 'down')   return down();
+  if (process.argv[2] == 'debug')  return debug();
+  if (process.argv[2] == 'deploy') return await deploy();
   
   if (process.argv[2] == 'new')   return await newProject();
 

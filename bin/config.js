@@ -7,6 +7,7 @@ module.exports = {
 
   STACK_CONFIG:                  'smf-stack.json',
   STACK_ENV:                     'smf-env.json',
+  STACK_DEPLOY:                  'smf-deploy.json',
   STACK_DOCKER_COMPOSE:          'smf-docker.yml',
   STACK_DOCKER_COMPOSE_BASE:     'smf-docker-base.yml',
   STACK_DOCKER_NETWORK:          'main',

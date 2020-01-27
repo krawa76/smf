@@ -81,7 +81,7 @@ if there is a web app, go to EC2 instance security group, add inbound rule: cust
 
 ---
 todo
-- any ports publishing needed? - try web service demo.
+- deploy v1 (Linux only): pre-requisites (linux VM + docker + docker-compose installed), build local files, create stack folder in VM, upload files via SSH, run commands via SSH.
 - smf-deploy (or manual): create start.sh (mkdir ./data, smf-docker-base.yml, smf-docker.yml) ?
 - deployment environments (local, dev, qa, stage, prod). -> introduce "config" folder with smf-stack.json, smf-env.json, etc.?
 - base services (dbs, etc.): switch to using external ones when deploying?

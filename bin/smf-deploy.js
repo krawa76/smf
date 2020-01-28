@@ -36,9 +36,9 @@ async function deploy() {
     console.info(`SSH to ${stackDeploy.username}@${stackDeploy.host}...`);
 
     await ssh.connect({
-      host: stackDeploy.host,
-      username: stackDeploy.username,
-      privateKey: stackDeploy.privateKey,
+      host: stackDeploy.remote.host,
+      username: stackDeploy.remote.username,
+      privateKey: stackDeploy.remote.privateKey,
     });
 
     console.info('Connected');
@@ -46,7 +46,7 @@ async function deploy() {
     try {
       console.info('Copying files...');
 
-      const stackRemotePath = `/home/${stackDeploy.username}/smf/${stackConfig.name}`;
+      const stackRemotePath = `/home/${stackDeploy.remote.username}/smf/${stackConfig.name}`;
 
       const copyRes = await ssh.putDirectory(
         '/Users/sergey/projects/private/test/stack-16/build-stack',

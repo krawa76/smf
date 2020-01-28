@@ -1,12 +1,12 @@
 {
   "registry": {
-    "username": "",
-    "password": ""
+    "username": "Docker Hub username",
+    "password": "Docker Hub password"
   },
   "remote": {
-    "host": "",
-    "username": "",
-    "privateKey": "",
+    "host": "ec2-x-x-x-x.compute-1.amazonaws.com",
+    "username": "ubuntu",
+    "privateKey": "/Users/me/.ssh/aws-key.pem",
     "passphrase": ""
   }  
 }

@@ -36,7 +36,7 @@ networks:
     name: stack-14
 
 ```
----
+----
 Remotely:
 
 prepare hosts (create AWS EC2 machine)
@@ -64,6 +64,7 @@ sudo systemctl start docker.service
 
 install Docker Compose:
 https://docs.docker.com/compose/install/
+----
 
 create project folder (/project-name?)
 - cd ~/

@@ -1,7 +1,7 @@
 const fs = require('fs');
 node_ssh = require('node-ssh')
 const config = require('./config');
-// const utils = require('./utils');
+const utils = require('./utils');
 
 async function deploy() {
   console.info('Deploying...');
@@ -28,6 +28,10 @@ async function deploy() {
     console.error(error);
     return;
   }
+
+  //==================================================================================
+  console.info('Building images...');
+  utils.exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} build`);
 
   //==================================================================================
   ssh = new node_ssh();

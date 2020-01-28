@@ -49,8 +49,11 @@ async function newProject() {
   // await utils.copyFilesAsync(`templates/new-project.${config.STACK_CONFIG}`, `./${projectName}`, 1 /* slice out "templates" */);
   // fs.renameSync(`./${projectName}/new-project.${config.STACK_CONFIG}`, `./${projectName}/${config.STACK_CONFIG}`);
 
+  await utils.copyFilesAsync('templates/new-project/gitignore', `./${projectName}`, 2 /* slice out "templates/new-project" */);
+  fs.renameSync(`./${projectName}/gitignore`, `./${projectName}/.gitignore`);
+
+  await utils.copyFilesAsync(`templates/new-project/${config.STACK_DEPLOY}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
   await utils.copyFilesAsync(`templates/new-project/${config.STACK_CONFIG}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
-  await utils.copyFilesAsync('templates/new-project/.gitignore', `./${projectName}`, 2 /* slice out "templates/new-project" */);
 
   updateStackConfig(`./${projectName}/${config.STACK_CONFIG}`, {
     projectName,

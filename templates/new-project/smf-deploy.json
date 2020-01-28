@@ -1,0 +1,12 @@
+{
+  "registry": {
+    "username": "",
+    "password": ""
+  },
+  "remote": {
+    "host": "",
+    "username": "",
+    "privateKey": "",
+    "passphrase": ""
+  }  
+}

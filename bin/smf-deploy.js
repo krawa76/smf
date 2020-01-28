@@ -33,7 +33,7 @@ async function deploy() {
   ssh = new node_ssh();
 
   try {
-    console.info(`SSH to ${stackDeploy.username}@${stackDeploy.host}...`);
+    console.info(`SSH to ${stackDeploy.remote.username}@${stackDeploy.remote.host}...`);
 
     await ssh.connect({
       host: stackDeploy.remote.host,

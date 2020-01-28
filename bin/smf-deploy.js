@@ -72,8 +72,8 @@ async function deploy() {
       const cmd = 'docker run -d rabbitmq';
 
       runRes = await ssh.execCommand(cmd, {cwd: stackRemotePath});
-      console.info('STDOUT: ' + runRes.stdout);
-      console.info('STDERR: ' + runRes.stderr);
+      console.info(/* 'STDOUT: ' + */ runRes.stdout);
+      console.error(/* 'STDERR: ' + */ runRes.stderr);
     }
     catch(error) {
       console.error(error);

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
-const {exec, execSync} = require('child_process');
+const {exec} = require('child_process');
 
 const config = require('./config');
 const utils = require('./utils');
@@ -157,9 +157,7 @@ async function up() {
   if (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE)) {
     const runBase = `docker-compose -f ${config.STACK_DOCKER_COMPOSE_BASE} up -d`;
 
-    execSync(runBase, {
-      stdio: 'inherit',
-    });
+    utils.exec(runBase);
     
     const pauseSec = 10;
     console.info(`pausing for ${pauseSec} sec, letting the system services start - a subj for improvement`);

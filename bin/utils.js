@@ -1,8 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const copyfiles = require('copyfiles');
+const {execSync} = require('child_process');
 
 const config = require('./config');
+
+function exec(cmd) {
+  return execSync(cmd, {
+    stdio: 'inherit',
+  });
+}
 
 function buildEnvFiles() {
   fs.mkdirSync(stackBuildEnvPath(), {recursive: true});
@@ -253,6 +260,7 @@ module.exports = {
   buildLocalEnvFile,
   serviceEnvFileName,
   clientEnvFileName,
+  exec,
   updateStackEnvFile,
   readClientManifest,
   hr,

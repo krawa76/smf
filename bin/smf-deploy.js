@@ -7,31 +7,25 @@ async function deploy() {
   console.info('Deploying...');
 
   let stackDeploy = {};
+  let stackConfig = {};
 
-  if (fs.existsSync(config.STACK_DEPLOY)) {
-    try {
+  try {
+    if (fs.existsSync(config.STACK_DEPLOY)) {
       const data = fs.readFileSync(config.STACK_DEPLOY);
       stackDeploy = JSON.parse(data);
     }
-    catch(error) {
-      console.error(error);
-      return;
-    }  
-  }
-
-  let stackConfig;
-  try {
+  
     const data = fs.readFileSync(config.STACK_CONFIG);
     stackConfig = JSON.parse(data);
+
+    //==================================================================================
+    console.info('Building images...');
+    utils.exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} build`);
   }
   catch(error) {
     console.error(error);
     return;
   }
-
-  //==================================================================================
-  console.info('Building images...');
-  utils.exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} build`);
 
   //==================================================================================
   ssh = new node_ssh();

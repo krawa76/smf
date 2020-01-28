@@ -46,9 +46,11 @@ async function deploy() {
     try {
       console.info('Copying files...');
 
+      const stackRemotePath = `/home/${stackDeploy.username}/smf/${stackConfig.name}`;
+
       const copyRes = await ssh.putDirectory(
         '/Users/sergey/projects/private/test/stack-16/build-stack',
-        `/home/${stackDeploy.username}/smf/${stackConfig.name}`,
+        stackRemotePath,
         {
         recursive: true,
         concurrency: 1,
@@ -63,6 +65,15 @@ async function deploy() {
       });
 
       if (copyRes) console.info('Copying done');
+
+      //=============================================================================
+      console.info('Starting...');
+
+      const cmd = 'docker run -d rabbitmq';
+
+      runRes = await ssh.execCommand(cmd, {cwd: stackRemotePath});
+      console.info('STDOUT: ' + runRes.stdout);
+      console.info('STDERR: ' + runRes.stderr);
     }
     catch(error) {
       console.error(error);

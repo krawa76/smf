@@ -21,7 +21,7 @@ async function up() {
 
   //========== cleanup ==============================================================
   if (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE)) fs.unlinkSync(config.STACK_DOCKER_COMPOSE_BASE); // base docker-compose
-  if (fs.existsSync(config.STACK_DOCKER_COMPOSE))          fs.unlinkSync(config.STACK_DOCKER_COMPOSE);  // services docker-compose
+  if (fs.existsSync(config.STACK_DOCKER_COMPOSE))      fs.unlinkSync(config.STACK_DOCKER_COMPOSE);  // services docker-compose
 
   //=================================================================================
   console.info('Updating stack environment file...');

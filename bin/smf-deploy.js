@@ -19,6 +19,10 @@ async function deploy() {
     stackConfig = JSON.parse(data);
 
     //==================================================================================
+    console.info('Login to container registry...');
+    utils.exec(`docker login --username=${stackDeploy.registry.username} --password=${stackDeploy.registry.password}`);
+
+    //==================================================================================
     console.info('Building images...');
     utils.exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} build`);
   }

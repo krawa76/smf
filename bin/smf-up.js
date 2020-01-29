@@ -37,7 +37,7 @@ async function up() {
   console.info('Generating Docker files...');
 
   //========(clients)================================================================
-  const networkName = `${/* config.PREFIX */ ''}${stacksConfig.name}`
+  const networkName = `${/* config.PREFIX */ ''}${stacksConfig.name}`;
   const containerPrefix = `${/* config.PREFIX */ ''}${stacksConfig.name}-`;
 
   if (Object.keys(stacksConfig.clients || []).length > 0) {

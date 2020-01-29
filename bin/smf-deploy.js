@@ -1,7 +1,9 @@
 const fs = require('fs');
 node_ssh = require('node-ssh')
+
 const config = require('./config');
 const utils = require('./utils');
+const build = require('./build');
 
 async function deploy() {
   console.info('Deploying...');
@@ -18,13 +20,29 @@ async function deploy() {
     const data = fs.readFileSync(config.STACK_CONFIG);
     stackConfig = JSON.parse(data);
 
+    build();
+
     //==================================================================================
     console.info('Login to container registry...');
-    utils.exec(`docker login --username=${stackDeploy.registry.username} --password=${stackDeploy.registry.password}`);
+    const registry = stackDeploy.registry;
+    utils.exec(`docker login --username=${registry.username} --password=${registry.password}`);
 
     //==================================================================================
     console.info('Building images...');
     utils.exec(`docker-compose -f ${config.STACK_DOCKER_COMPOSE} build`);
+
+    //==================================================================================
+    console.info('Pushing images...');
+
+    for(const service of Object.keys(stackConfig.services)) {
+      const localTag    = `${stackConfig.name}_${service}`;
+      const registryTag = `${registry.username}/${stackConfig.name}_${service}`;
+
+      console.info(`${localTag} -> ${registryTag}`);
+
+      utils.exec(`docker tag ${localTag} ${registryTag}`);
+      utils.exec(`docker push ${registryTag}`);
+    }
   }
   catch(error) {
     console.error(error);

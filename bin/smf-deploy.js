@@ -34,14 +34,15 @@ async function deploy() {
     //==================================================================================
     console.info('Pushing images...');
 
+    const tagFunc = getRegistryTagsFunc(registry.username);
+
     for(const service of Object.keys(stackConfig.services)) {
-      const localTag    = `${stackConfig.name}_${service}`;
-      const registryTag = `${registry.username}/${stackConfig.name}_${service}`;
+      const tags = tagFunc(stackConfig.name, service);
 
-      console.info(`${localTag} -> ${registryTag}`);
+      console.info(`${tags.localTag} -> ${tags.registryTag}`);
 
-      utils.exec(`docker tag ${localTag} ${registryTag}`);
-      utils.exec(`docker push ${registryTag}`);
+      utils.exec(`docker tag ${tags.localTag} ${tags.registryTag}`);
+      utils.exec(`docker push ${tags.registryTag}`);
     }
 
     //==================================================================================
@@ -113,6 +114,15 @@ async function deploy() {
 
   //==================================================================================
   console.info('Done');
+}
+
+function getRegistryTagsFunc(registryAccount) {
+  return (projectName, serviceName) => {
+    return {
+      localTag: `${projectName}_${serviceName}`,
+      registryTag: `${registryAccount}/${projectName}_${serviceName}`,
+    }
+  }
 }
 
 module.exports = deploy;

@@ -47,7 +47,21 @@ async function deploy() {
 
     //==================================================================================
     console.info('Generating deployment package...');
-    build.buildServicesDockerCompose(stackConfig, {deploy: true});
+
+    fs.mkdirSync(config.STACK_DEPLOY_BUILD_PATH, {recursive: true});
+
+    build.buildServicesDockerCompose(stackConfig, {
+      deploy: true,
+      tagFunc,
+    });
+
+    if (fs.existsSync(config.STACK_DOCKER_COMPOSE_BASE)) {
+      await utils.copyFilesAsync(config.STACK_DOCKER_COMPOSE_BASE,  `${config.STACK_DEPLOY_BUILD_PATH}`);
+    }
+
+    await utils.copyFilesAsync(`${config.STACK_BUILD_ENV_PATH}/**/*`,  `${config.STACK_DEPLOY_BUILD_PATH}`);
+    await utils.copyFilesAsync(`${config.STACK_DEPLOY_PATH}/start.sh`, `${config.STACK_DEPLOY_BUILD_PATH}`, 1);
+    await utils.copyFilesAsync(`${config.STACK_DEPLOY_PATH}/stop.sh`,  `${config.STACK_DEPLOY_BUILD_PATH}`, 1);
   }
   catch(error) {
     console.error(error);

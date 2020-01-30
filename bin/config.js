@@ -1,9 +1,11 @@
 module.exports = {
   PREFIX:                        'smf-',
 
-  // STACK_BUILD_PATH:           './build-stack',
+  // STACK_BUILD_PATH:              './build-stack',
   STACK_BUILD_ENV_PATH:          './build-stack/env',
-  STACK_BUILD_ENV_DEBUG_PATH:    './build-stack/env/debug',
+  STACK_BUILD_ENV_DEBUG_PATH:    './build-stack/env-debug',
+  STACK_DEPLOY_PATH:             './deploy',
+  STACK_DEPLOY_BUILD_PATH:       './deploy/build',
 
   STACK_CONFIG:                  'smf-stack.json',
   STACK_ENV:                     'smf-env.json',

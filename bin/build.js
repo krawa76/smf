@@ -146,7 +146,11 @@ function buildServicesDockerCompose(stacksConfig, options) {
 
     if (options.deploy) {
       delete dockerService.build;
-      // dockerService.image = ``;
+
+      if (options.tagFunc) {
+        const {registryTag} = options.tagFunc(stacksConfig.name, service);
+        dockerService.image = registryTag;
+      }
     }
 
     //=======================================================
@@ -156,10 +160,10 @@ function buildServicesDockerCompose(stacksConfig, options) {
   // console.info(dockerCompose);
 
   // write yaml
+  const fileName = `${options.deploy ? config.STACK_DEPLOY_BUILD_PATH + '/' : ''}${config.STACK_DOCKER_COMPOSE}`;
   const dockerComposeDoc = yaml.dump(dockerCompose);
-  fs.writeFileSync(config.STACK_DOCKER_COMPOSE, dockerComposeDoc);
-  console.info(`${config.STACK_DOCKER_COMPOSE} created.`);
-
+  fs.writeFileSync(fileName, dockerComposeDoc);
+  console.info(`${fileName} created.`);
 }
 
 function getContext(stacksConfig) {

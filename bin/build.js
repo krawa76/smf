@@ -36,8 +36,7 @@ async function buildAll() {
   console.info('Generating Docker files...');
 
   //========(clients)================================================================
-  const networkName = `${/* config.PREFIX */ ''}${stacksConfig.name}`;
-  const containerPrefix = `${/* config.PREFIX */ ''}${stacksConfig.name}-`;
+  const context = getContext(stacksConfig);
 
   if (Object.keys(stacksConfig.clients || []).length > 0) {
     const dockerComposeBase = {
@@ -45,7 +44,7 @@ async function buildAll() {
       services: {},
       networks: {
         main: {
-          name: networkName,
+          name: context.networkName,
         }
       }
     }
@@ -60,7 +59,7 @@ async function buildAll() {
         const clientManifest = utils.readClientManifest(client);
         if (clientManifest && clientManifest.docker) {
           dockerComposeBase.services[clientNameNormalized] = {
-            container_name: `${containerPrefix}${clientNameNormalized}`,
+            container_name: `${context.containerPrefix}${clientNameNormalized}`,
             image: clientManifest.docker.image,
             env_file: envFiles,
             networks: [config.STACK_DOCKER_NETWORK],
@@ -84,13 +83,12 @@ async function buildAll() {
   }
 
   //========(services)================================================================
-  buildServicesDockerCompose(stacksConfig, {
-    networkName,
-    containerPrefix,
-  });
+  buildServicesDockerCompose(stacksConfig, {});
 }
 
 function buildServicesDockerCompose(stacksConfig, options) {
+  const context = getContext(stacksConfig);
+
   const dockerCompose = {
     version: '3.5',
     services: {},
@@ -104,13 +102,13 @@ function buildServicesDockerCompose(stacksConfig, options) {
   if (Object.keys(stacksConfig.clients || []).length > 0) {
     dockerCompose.networks.main = {
       external: {
-        name: options.networkName,
+        name: context.networkName,
       }
     }
   }
   else {
     dockerCompose.networks.main = {
-      name: options.networkName,
+      name: context.networkName,
     }
   }
 
@@ -127,8 +125,8 @@ function buildServicesDockerCompose(stacksConfig, options) {
     }
 
     //=======================================================
-    dockerCompose.services[service] = {
-      container_name: `${options.containerPrefix}${service}`,
+    const dockerService = {
+      container_name: `${context.containerPrefix}${service}`,
       build: {
         context: fs.existsSync(`./services/${service}/Dockerfile`) ? `./services/${service}` : '.',
         args: [`SERVICE=${service}`],
@@ -140,8 +138,19 @@ function buildServicesDockerCompose(stacksConfig, options) {
 
     if (serviceData.ports) {
       const ports = Object.keys(serviceData.ports).map(key => `${key}:${serviceData.ports[key]}`);
-      dockerCompose.services[service].ports = ports;
+      dockerService.ports = ports;
     }
+
+    //=======================================================
+    // deployment adjustments
+
+    if (options.deploy) {
+      delete dockerService.build;
+      // dockerService.image = ``;
+    }
+
+    //=======================================================
+    dockerCompose.services[service] = dockerService;
   }
 
   // console.info(dockerCompose);
@@ -151,6 +160,13 @@ function buildServicesDockerCompose(stacksConfig, options) {
   fs.writeFileSync(config.STACK_DOCKER_COMPOSE, dockerComposeDoc);
   console.info(`${config.STACK_DOCKER_COMPOSE} created.`);
 
+}
+
+function getContext(stacksConfig) {
+  return {
+    networkName: `${/* config.PREFIX */ ''}${stacksConfig.name}`,
+    containerPrefix: `${/* config.PREFIX */ ''}${stacksConfig.name}-`,  
+  }
 }
 
 module.exports = {buildAll, buildServicesDockerCompose};

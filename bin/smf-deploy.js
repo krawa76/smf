@@ -43,6 +43,10 @@ async function deploy() {
       utils.exec(`docker tag ${localTag} ${registryTag}`);
       utils.exec(`docker push ${registryTag}`);
     }
+
+    //==================================================================================
+    console.info('Generating deployment package...');
+    build.buildServicesDockerCompose(stackConfig, {deploy: true});
   }
   catch(error) {
     console.error(error);

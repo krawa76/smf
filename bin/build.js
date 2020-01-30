@@ -4,7 +4,7 @@ const yaml = require('js-yaml');
 const config = require('./config');
 const utils = require('./utils');
 
-async function build() {
+async function buildAll() {
   console.info('Generating stack files...');
 
   let stacksConfig;
@@ -84,6 +84,13 @@ async function build() {
   }
 
   //========(services)================================================================
+  buildServicesDockerCompose(stacksConfig, {
+    networkName,
+    containerPrefix,
+  });
+}
+
+function buildServicesDockerCompose(stacksConfig, options) {
   const dockerCompose = {
     version: '3.5',
     services: {},
@@ -97,13 +104,13 @@ async function build() {
   if (Object.keys(stacksConfig.clients || []).length > 0) {
     dockerCompose.networks.main = {
       external: {
-        name: networkName,
+        name: options.networkName,
       }
     }
   }
   else {
     dockerCompose.networks.main = {
-      name: networkName,
+      name: options.networkName,
     }
   }
 
@@ -121,7 +128,7 @@ async function build() {
 
     //=======================================================
     dockerCompose.services[service] = {
-      container_name: `${containerPrefix}${service}`,
+      container_name: `${options.containerPrefix}${service}`,
       build: {
         context: fs.existsSync(`./services/${service}/Dockerfile`) ? `./services/${service}` : '.',
         args: [`SERVICE=${service}`],
@@ -143,6 +150,7 @@ async function build() {
   const dockerComposeDoc = yaml.dump(dockerCompose);
   fs.writeFileSync(config.STACK_DOCKER_COMPOSE, dockerComposeDoc);
   console.info(`${config.STACK_DOCKER_COMPOSE} created.`);
+
 }
 
-module.exports = build;
+module.exports = {buildAll, buildServicesDockerCompose};

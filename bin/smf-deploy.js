@@ -20,7 +20,7 @@ async function deploy() {
     const data = fs.readFileSync(config.STACK_CONFIG);
     stackConfig = JSON.parse(data);
 
-    build();
+    build.buildAll();
 
     //==================================================================================
     console.info('Login to container registry...');

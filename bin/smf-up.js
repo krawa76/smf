@@ -6,7 +6,7 @@ const utils = require('./utils');
 const build = require('./build');
 
 async function up() {
-  build();
+  build.buildAll();
 
   //=================================================================================
   console.info('Running Docker Compose...');

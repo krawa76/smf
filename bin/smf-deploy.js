@@ -88,7 +88,7 @@ async function deploy() {
       const stackRemotePath = `/home/${stackDeploy.remote.username}/smf/${stackConfig.name}`;
 
       const copyRes = await ssh.putDirectory(
-        '/Users/sergey/projects/private/test/stack-16/build-stack',
+        config.STACK_DEPLOY_BUILD_PATH,
         stackRemotePath,
         {
         recursive: true,

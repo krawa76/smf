@@ -70,6 +70,7 @@ async function deploy() {
 
   //==================================================================================
   ssh = new node_ssh();
+  let res = null;
 
   try {
     console.info(`SSH to ${stackDeploy.remote.username}@${stackDeploy.remote.host}...`);
@@ -83,6 +84,7 @@ async function deploy() {
     console.info('Connected');
 
     try {
+      //=============================================================================
       console.info('Copying files...');
 
       const stackRemotePath = `/home/${stackDeploy.remote.username}/smf/${stackConfig.name}`;
@@ -104,6 +106,15 @@ async function deploy() {
       });
 
       if (copyRes) console.info('Copying done');
+
+      //=============================================================================
+      console.info('Setting files permissions...');
+      res = await ssh.execCommand('chmod +x start.sh', {cwd: stackRemotePath});
+      res = await ssh.execCommand('chmod +x stop.sh',  {cwd: stackRemotePath});
+
+      //=============================================================================
+      console.info('Creating data folder...');
+      await ssh.mkdir(`${stackRemotePath}/data`);
 
       //=============================================================================
       console.info('Starting...');

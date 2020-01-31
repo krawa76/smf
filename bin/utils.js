@@ -231,19 +231,17 @@ function copyFiles(src, dst = '') {
 */
 
 function copyFilesAsync(src, dst = '', up = 0) {
-  const root = smfDir();
-
   return new Promise((resolve, reject) => {
     console.info(src);
 
     copyfiles(
       [
-        `${root}/${src}`,
+        src,
         dst,
       ],
       {
         all: true,
-        up: root.split(path.sep).length + up, // slice out upper folders
+        up, // slice out upper folders
       },
       (err) => {
         // console.info(`${src} copied`);
@@ -252,6 +250,11 @@ function copyFilesAsync(src, dst = '', up = 0) {
       }
     );  
   });
+}
+
+function copyFilesRootAsync(src, dst = '', up = 0) {
+  const root = smfDir();
+  return copyFilesAsync(`${root}/${src}`, dst, root.split(path.sep).length + up);
 }
 
 //===================================================================================
@@ -267,4 +270,5 @@ module.exports = {
   sleep,
   smfDir,
   copyFilesAsync,
+  copyFilesRootAsync,
 }

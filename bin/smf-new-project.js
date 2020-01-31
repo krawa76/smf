@@ -30,31 +30,31 @@ async function newProject() {
   utils.hr();
   console.info('Copying components...');
 
-  await utils.copyFilesAsync('.vscode/**/*', `./${projectName}`);
-  await utils.copyFilesAsync('core/**/*', `./${projectName}`);
-  await utils.copyFilesAsync('deploy/**/*', `./${projectName}`);
-  await utils.copyFilesAsync('services/demo/**/*', `./${projectName}`);
+  await utils.copyFilesRootAsync('.vscode/**/*', `./${projectName}`);
+  await utils.copyFilesRootAsync('core/**/*', `./${projectName}`);
+  await utils.copyFilesRootAsync('deploy/**/*', `./${projectName}`);
+  await utils.copyFilesRootAsync('services/demo/**/*', `./${projectName}`);
 
-  await utils.copyFilesAsync('.gitattributes', `./${projectName}`);
-  await utils.copyFilesAsync('.gitignore', `./${projectName}`);
-  await utils.copyFilesAsync('docker-temp.txt', `./${projectName}`);
-  await utils.copyFilesAsync('Dockerfile', `./${projectName}`);
-  await utils.copyFilesAsync('tsconfig.json', `./${projectName}`);
+  await utils.copyFilesRootAsync('.gitattributes', `./${projectName}`);
+  await utils.copyFilesRootAsync('.gitignore', `./${projectName}`);
+  await utils.copyFilesRootAsync('docker-temp.txt', `./${projectName}`);
+  await utils.copyFilesRootAsync('Dockerfile', `./${projectName}`);
+  await utils.copyFilesRootAsync('tsconfig.json', `./${projectName}`);
 
   // todo: copy & adjust package.json
-  await utils.copyFilesAsync('package.json', `./${projectName}`);
+  await utils.copyFilesRootAsync('package.json', `./${projectName}`);
   updatePackageJson(`${projectName}/package.json`, {
     projectName,
   });
 
-  // await utils.copyFilesAsync(`templates/new-project.${config.STACK_CONFIG}`, `./${projectName}`, 1 /* slice out "templates" */);
+  // await utils.copyFilesRootAsync(`templates/new-project.${config.STACK_CONFIG}`, `./${projectName}`, 1 /* slice out "templates" */);
   // fs.renameSync(`./${projectName}/new-project.${config.STACK_CONFIG}`, `./${projectName}/${config.STACK_CONFIG}`);
 
-  await utils.copyFilesAsync('templates/new-project/gitignore', `./${projectName}`, 2 /* slice out "templates/new-project" */);
+  await utils.copyFilesRootAsync('templates/new-project/gitignore', `./${projectName}`, 2 /* slice out "templates/new-project" */);
   fs.renameSync(`./${projectName}/gitignore`, `./${projectName}/.gitignore`);
 
-  await utils.copyFilesAsync(`templates/new-project/${config.STACK_DEPLOY}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
-  await utils.copyFilesAsync(`templates/new-project/${config.STACK_CONFIG}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
+  await utils.copyFilesRootAsync(`templates/new-project/${config.STACK_DEPLOY}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
+  await utils.copyFilesRootAsync(`templates/new-project/${config.STACK_CONFIG}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
 
   updateStackConfig(`./${projectName}/${config.STACK_CONFIG}`, {
     projectName,

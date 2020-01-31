@@ -99,7 +99,7 @@ async function addService() {
   utils.hr();
   console.info('Copying components...');
 
-  await utils.copyFilesAsync('templates/add-service/*', `./${dirName}`, 2);
+  await utils.copyFilesRootAsync('templates/add-service/*', `./${dirName}`, 2);
   updatePackageJson(`${dirName}/package.json`, {
     serviceName,
   });

@@ -91,7 +91,7 @@ async function addClient() {
   utils.hr();
   console.info('Copying components...');
 
-  await utils.copyFilesAsync('templates/add-client/*', `./${dirName}`, 2);
+  await utils.copyFilesRootAsync('templates/add-client/*', `./${dirName}`, 2);
 
   //========== info ===============================================
   utils.hr();

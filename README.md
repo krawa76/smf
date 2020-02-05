@@ -207,6 +207,37 @@ If a service uses some custom data, put it to the service's `./data` subfolder. 
 
 If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder.
 
+## Deployment
+
+Setup a machine with Docker and Docker Compose installed.
+
+Requirements: Docker v 19.03, Docker Compose v 1.24 or later.
+
+[Read more on how to create a VM on AWS here](README-provisioner.md)
+
+Open `smf-deploy.json`, specify Docker Hub and remote machine credentials:
+```
+{
+  "registry": {
+    "username": "Docker Hub username",
+    "password": "Docker Hub password"
+  },
+  "remote": {
+    "host": "ec2-x-x-x-x.compute-1.amazonaws.com",
+    "username": "ubuntu",
+    "privateKey": "/Users/me/.ssh/aws.pem",
+    "passphrase": ""
+  }  
+}
+```
+
+Build Docker images, push them to the registry, build the deployment package, upload it to the remote machine and run the stack there:
+```
+smf deploy
+```
+
+Deployment to Docker Swarm, AWS ECS, Kubernetes is on the roadmap.
+
 ## Debug
 
 In the current version you can debug only one service at a time due to the shared .env file issue.

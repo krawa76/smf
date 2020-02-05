@@ -17,5 +17,7 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 ```
 
+Re-login to your user account.
+
 Install Docker Compose:
 https://docs.docker.com/compose/install/

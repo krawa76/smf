@@ -255,6 +255,10 @@ VSCode users: click `Debug and Run > Start Debugging (Control-F5)` in the editor
 
 Other IDEs: run `tsc` to build the source code and use `./build/core/index-debug.js` as the starting script.
 
+## Dockerfile overload
+
+Create a custom Dockerfile in the service folder in order to overload the generic one from the project root directory.
+
 ## Demos
 
 - [Message broker](https://github.com/krawa76/smf/tree/master/services/demo-message-broker)

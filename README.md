@@ -131,6 +131,7 @@ All environment variables are specified in `smf-env.json` file, e.g.:
 - `./services`: user-defined custom services.
 - `.env`: local .env file for debug purpose.
 - `Dockerfile`: a generic one for all services.
+- `smf-deploy.json`: deployment credentials.
 - `smf-docker-base.yml`: docker-compose file for third-party services (auto-generated).
 - `smf-docker.yml`: docker-compose file for services (auto-generated).
 - `smf-env.json`: environment variables.

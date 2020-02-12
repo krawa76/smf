@@ -19,13 +19,20 @@ class Core {
   async start() {
     this.logger.debug('SMF core starting...');
 
-    this.logger.debug('loading config...');
-    const data = fs.readFileSync(config.STACK_CONFIG);
-    const stackConfig = JSON.parse(data);
-
-    await clientRegistry.start(stackConfig.services[config.SERVICE]);
-
-    this.logger.debug('SMF core started');
+    try {
+      this.logger.debug('loading config...');
+      const data = fs.readFileSync(config.STACK_CONFIG);
+      const stackConfig = JSON.parse(data);
+  
+      await clientRegistry.start(stackConfig.services[config.SERVICE]);
+  
+      this.logger.debug('SMF core started');  
+    }
+    catch(error) {
+      this.logger.error('Core start error');
+      this.logger.error(error);
+      process.exit(1);
+    }
   }
 
   client(name: string) {

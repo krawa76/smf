@@ -5,15 +5,18 @@ export class MongooseConnection {
   static async connect(config) {
     mongoose.Promise = Promise;
 
+    /*
     mongoose.connection.on('error', (err) => {
       Logger.error('Mongoose error: ' + err);
       process.exit(0);
     });
+    */
 
     mongoose.connection.on('connected', () => {
       Logger.info('Mongoose connected');
     });
 
+    /*
     mongoose.connection.on('disconnected', () => {
       Logger.error('Mongoose disconnected');
     });
@@ -38,6 +41,7 @@ export class MongooseConnection {
         Logger.error('SIGINT: Mongoose disconnected (app termination)');
       });
     });
+    */
 
     await mongoose.connect(
       config.MONGODB_URI,

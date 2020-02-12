@@ -12,7 +12,10 @@ export async function getConnection(config) {
       passphrase: config.RABBITMQ_SSL_PASSPHRASE ? config.RABBITMQ_SSL_PASSPHRASE : undefined,
     },
   );
+
   Logger.info("Connected to RabbitMQ");
+
+  /*
   connection.on("error", (error) => {
     Logger.error("RabbitMQ connection with error, exiting", error);
     process.exit(1);
@@ -25,6 +28,7 @@ export async function getConnection(config) {
     Logger.info("SIGINT: RabbitMQ: closing the connection...");
     connection.close();
   });
+  */
 
   return connection;
 }

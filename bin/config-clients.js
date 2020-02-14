@@ -10,5 +10,7 @@ module.exports = {
   ALL: [
     {'id': 'rabbitmq-amqp',    category: 'message broker', name: 'RabbitMQ'},
     {'id': 'mongodb-mongoose', category: 'database',       name: 'MongoDB'},
+  //{'id': 'mysql',            category: 'database',       name: 'MySQL'},
+    {'id': 'mysql-mysql2',     category: 'database',       name: 'MySQL'},
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "docker": {
+    "image": "mysql:latest",
+    "ports": [3306],
+    "volume": "/var/lib/mysql",
+    "env": {
+      "start": {
+        "MYSQL_ROOT_PASSWORD": "root",
+        "MYSQL_DATABASE": "db",
+        "MYSQL_USER": "admin",
+        "MYSQL_PASSWORD": "password"
+      },
+      "connect": {
+        "MYSQL_URI": "mysql://admin:password@{hostname}/db"
+      }
+    }
+  }
+}

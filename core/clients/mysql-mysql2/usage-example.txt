@@ -1,0 +1,14 @@
+import core from 'smf-core';
+
+// https://github.com/sidorares/node-mysql2
+
+const client = core.client('mysql-mysql2');
+const connection = client.connection;
+
+setInterval(async () => {
+  const [rows, fields] = await connection.execute('select 2 + 2 as solution');
+  core.log('query executed successfully');
+  core.log(rows);
+  // core.log(fields);
+},
+5000);

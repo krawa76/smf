@@ -1,6 +1,6 @@
 {
   "name": "sokyra-microservice-factory",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Microservice Factory",
   "main": "./core/index.js",
   "bin": {
@@ -24,6 +24,7 @@
     "js-yaml": "^3.13.1",
     "minio": "^7.0.12",
     "mongoose": "^5.7.5",
+    "mysql2": "^2.1.0",
     "node-ssh": "^7.0.0",
     "prompt": "^1.0.0",
     "winston": "^3.2.1"

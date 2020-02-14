@@ -1,4 +1,4 @@
-import core from './Core';
+import core from './core';
 import config from './config';
 
 // (global as any).smfCore = core;
@@ -6,7 +6,7 @@ import config from './config';
 (async () => {
   await core.start();
 
-  const service = require(`../services/${config.SERVICE}/Main`);
+  const service = require(`../services/${config.SERVICE}/main`);
   const main = new service.default();
   main.run(core);
 })();

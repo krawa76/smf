@@ -142,7 +142,7 @@ All environment variables are specified in `smf-env.json` file, e.g.:
 
 See `./services/service-name` folder.
 
-- `Main.ts`: service entry point code, e.g.:
+- `main.ts`: service entry point code, e.g.:
 ```
 export default class Main {
   run(core) {
@@ -198,7 +198,7 @@ Create JS modules with common code or config/constants which are accessible in a
 
 1. Add a JS module to `core/shared` folder (see `config & module1` examples).
 2. Add the JS module reference to import & export in `core/shared/index.ts`.
-3. Call the module functions as `core.shared.module.func` in a service (see `./services/demo/Main.ts`).
+3. Call the module functions as `core.shared.module.func` in a service (see `./services/demo/main.ts`).
 
 ## Copy custom data
 

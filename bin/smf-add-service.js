@@ -137,7 +137,7 @@ async function addService() {
   }
 
   if (codeHeader.length > 0 || codeBody.length > 0) {
-    updateMain(`./${dirName}/Main.ts`, codeHeader, codeBody);
+    updateMain(`./${dirName}/main.ts`, codeHeader, codeBody);
   }
 
   //========== info ===============================================
@@ -148,7 +148,7 @@ async function addService() {
   console.info('');
   console.info(`\t smf up - to see how the demo code is working`);
   console.info(`\t cd .${path.sep}services${path.sep}${serviceName}`);
-  console.info(`\t (start coding: install new libs using npm install <...>, edit Main.ts file, etc.)`);
+  console.info(`\t (start coding: install new libs using npm install <...>, edit main.ts file, etc.)`);
   console.info('');
 }
 

@@ -21,6 +21,7 @@
     "@types/node": "^12.7.2",
     "amqplib": "^0.5.5",
     "copyfiles": "^2.1.1",
+    "couchbase": "^3.0.0",
     "js-yaml": "^3.13.1",
     "minio": "^7.0.12",
     "mongoose": "^5.7.5",

@@ -1,0 +1,10 @@
+import core from 'smf-core';
+
+// https://github.com/couchbase/couchnode
+
+const client = core.client('couchbase');
+
+setInterval(async () => {
+  //
+},
+5000);

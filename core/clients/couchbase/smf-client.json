@@ -1,0 +1,14 @@
+{
+  "docker": {
+    "image": "couchbase:latest",
+    "ports": ["8091-8096"],
+    "volume": "/opt/couchbase/var",
+    "env": {
+      "start": {
+      },
+      "connect": {
+        "COUCHBASE_URI": "couchbase://{hostname}"
+      }
+    }
+  }
+}

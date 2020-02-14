@@ -1,0 +1,12 @@
+import core from 'smf-core';
+
+// // https://github.com/brianc/node-postgres
+
+const client = core.client('postgresql-pg');
+const pgClient = client.client;
+
+setInterval(async () => {
+  const res = await pgClient.query('SELECT $1::text as message', ['postgres: hello world!']);
+  console.log(res.rows[0].message);
+},
+5000);

@@ -12,5 +12,6 @@ module.exports = {
     {'id': 'mongodb-mongoose', category: 'database',       name: 'MongoDB'},
   //{'id': 'mysql',            category: 'database',       name: 'MySQL'},
     {'id': 'mysql-mysql2',     category: 'database',       name: 'MySQL'},
+    {'id': 'postgresql-pg',    category: 'database',       name: 'PostgreSQL'},
   ]
 }

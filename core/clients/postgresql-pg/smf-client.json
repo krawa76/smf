@@ -1,0 +1,17 @@
+{
+  "docker": {
+    "image": "postgres:latest",
+    "ports": [5432],
+    "volume": "/var/lib/postgresql/data",
+    "env": {
+      "start": {
+        "POSTGRES_DB": "db",
+        "POSTGRES_USER": "admin",
+        "POSTGRES_PASSWORD": "password"
+      },
+      "connect": {
+        "POSTGRES_URI": "postgresql://admin:password@{hostname}/db"
+      }
+    }
+  }
+}

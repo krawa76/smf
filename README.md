@@ -214,7 +214,7 @@ Setup a machine with Docker and Docker Compose installed.
 
 Requirements: Docker v 19.03, Docker Compose v 1.24 or later.
 
-[Read more on how to create a VM on AWS here](README-provisioner.md)
+[Read more on how to create a VM on AWS](README-provisioner.md)
 
 Open `smf-deploy.json`, specify Docker Hub and remote machine credentials:
 ```

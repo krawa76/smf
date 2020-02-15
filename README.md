@@ -275,8 +275,11 @@ Create a custom Dockerfile in the service folder in order to overload the generi
 
 Existing clients:
 
-- mongodb-mongoose
-- rabbitmq-amqp
+- MongoDB
+- MySQL
+- PostgreSQL
+- RabbitMQ
+- Redis
 
 In order to add a new client run:
 ```

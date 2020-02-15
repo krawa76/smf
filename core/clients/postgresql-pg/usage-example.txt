@@ -1,6 +1,6 @@
 import core from 'smf-core';
 
-// // https://github.com/brianc/node-postgres
+// https://github.com/brianc/node-postgres
 
 const client = core.client('postgresql-pg');
 const pgClient = client.client;

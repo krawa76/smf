@@ -1,0 +1,16 @@
+import core from 'smf-core';
+import {promisify} from 'util';
+
+// https://github.com/NodeRedis/node-redis
+
+const client = core.client('redis').client;
+
+const getAsync = promisify(client.get).bind(client);
+const setAsync = promisify(client.set).bind(client);
+
+setInterval(async () => {
+  await setAsync('key', 'value');
+  const value = await getAsync('key');
+  core.log(`redis: ${value}`);
+},
+5000);

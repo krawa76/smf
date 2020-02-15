@@ -1,0 +1,13 @@
+{
+  "docker": {
+    "image": "redis:latest",
+    "ports": [6379],
+    "env": {
+      "start": {
+      },
+      "connect": {
+        "REDIS_URI": "redis://@{hostname}"
+      }
+    }
+  }
+}

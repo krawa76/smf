@@ -13,5 +13,6 @@ module.exports = {
   //{'id': 'mysql',            category: 'database',       name: 'MySQL'},
     {'id': 'mysql-mysql2',     category: 'database',       name: 'MySQL'},
     {'id': 'postgresql-pg',    category: 'database',       name: 'PostgreSQL'},
+    {'id': 'redis',            category: 'database',       name: 'Redis'},
   ]
 }

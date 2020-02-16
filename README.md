@@ -275,6 +275,7 @@ Create a custom Dockerfile in the service folder in order to overload the generi
 
 Existing clients:
 
+- Memcached
 - MongoDB
 - MySQL
 - PostgreSQL

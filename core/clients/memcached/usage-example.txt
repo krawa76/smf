@@ -1,0 +1,17 @@
+import core from 'smf-core';
+
+// https://github.com/3rd-Eden/memcached
+
+const client = core.client('memcached').client;
+
+setInterval(async () => {
+  client.set('key', 'value', 10, err => {
+    if (err) core.log(err);
+  });
+
+  client.get('key', function (err, data) {
+    if (err) core.log(err);
+    core.log(`memcached: ${data}`);
+  });
+},
+5000);

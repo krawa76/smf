@@ -1,0 +1,13 @@
+{
+  "docker": {
+    "image": "memcached:latest",
+    "ports": [11211],
+    "env": {
+      "start": {
+      },
+      "connect": {
+        "MEMCACHED_URI": "{hostname}:11211"
+      }
+    }
+  }
+}

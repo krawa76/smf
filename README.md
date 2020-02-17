@@ -290,7 +290,7 @@ smf add client client-name
 ...then go to `./core/clients/client-name` and edit `main.ts` file.
 
 Client config is stored in `smf-client.json` manifest file, e.g. see the mongodb one:
-```
+```javascript
 {
   "docker": {
     "image": "mongo:latest",

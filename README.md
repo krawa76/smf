@@ -42,7 +42,7 @@ smf up
 
 See `smf-stack.json` file, e.g:
 
-```
+```javascript
 {
   "name": "project-name",
   "services": {
@@ -84,7 +84,7 @@ See `smf-stack.json` file, e.g:
 
 All environment variables are specified in `smf-env.json` file, e.g.:
 
-```
+```javascript
 {
   "services": {
     "demo": {},
@@ -143,7 +143,7 @@ All environment variables are specified in `smf-env.json` file, e.g.:
 See `./services/service-name` folder.
 
 - `main.ts`: service entry point code, e.g.:
-```
+```javascript
 export default class Main {
   run(core) {
     core.log('demo-main');
@@ -159,7 +159,7 @@ export default class Main {
 - npm's `package.json` & `package-lock.json`. Run `npm install ...` in the service folder to add service specific libraries.
 - `Dockerfile`: (optional) overwrites the default Dockerfile if any build customization needed(see [React frontend demo](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react)).
 - use SMF core from any source code module (folder independent):
-```
+```javascript
 import core from 'smf-core';
 ...
 core.log(...);
@@ -173,7 +173,7 @@ Select a broker (`RabbitMQ` by default) when creating a new service (`smf add se
 
 Usage example:
 
-```
+```javascript
 import core from 'smf-core';
 
 const messageBroker = core.client('rabbitmq-amqp');
@@ -217,7 +217,7 @@ Requirements: Docker v 19.03, Docker Compose v 1.24 or later.
 [Read more on how to create a VM on AWS](README-provisioner.md)
 
 Open `smf-deploy.json`, specify Docker Hub and remote machine credentials:
-```
+```javascript
 {
   "registry": {
     "username": "Docker Hub username",

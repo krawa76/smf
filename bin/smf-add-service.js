@@ -127,12 +127,22 @@ async function addService() {
       codeBody.push('');
       codeBody.push(`//========== ${client.name} ==========`);
 
+      clientCodeBody = [];
+
       for (const l of lines) {
         if (l.startsWith('import')) {
           if (!codeHeader.includes(l)) codeHeader.push(l)
         }
-        else codeBody.push(l);
+        else clientCodeBody.push(l);
       }
+
+      if (clientCodeBody.length > 0 && clientCodeBody[0].trim() === '') clientCodeBody.shift();
+
+      clientCodeBodyScoped = clientCodeBody.map(l => `  ${l}`);
+      clientCodeBodyScoped.unshift('{');
+      clientCodeBodyScoped.push('}');
+
+      codeBody.push(...clientCodeBodyScoped);
     }
   }
 
@@ -202,6 +212,8 @@ function updateMain(fileName, codeHeader, codeBody) {
     }
 
     const codeBodyIndented = codeBody.map(l => `${indent}${l}`);
+    // codeBodyIndented.unshift(`${indent}{`);
+    // codeBodyIndented.push(`${indent}}`);
   
     let newContent = data
       .replace(config.SERVICE_IMPORTS, codeHeader.join("\n"))

@@ -1,0 +1,32 @@
+import core from 'smf-core';
+
+// https://github.com/elastic/elasticsearch-js
+
+const client = core.client('elasticsearch').client;
+
+setInterval(async () => {
+  // index a document
+  await client.index({
+    index: 'kitten',
+    body: {
+      name: 'Fluffy',
+    }
+  });
+
+  // refresh index
+  await client.indices.refresh({index: 'kitten'});
+
+  // search
+  const {body} = await client.search({
+    index: 'kitten',
+    body: {
+      query: {
+        match: {name: 'Fluffy'}
+      }
+    },
+    size: 100,
+  });
+
+  core.log(`elasticsearch: ${body.hits.hits.length}`);
+},
+5000);

@@ -16,5 +16,7 @@ module.exports = {
     {'id': 'mysql-mysql2',     category: 'database',       name: 'MySQL'},
     {'id': 'postgresql-pg',    category: 'database',       name: 'PostgreSQL'},
     {'id': 'redis',            category: 'database',       name: 'Redis'},
+
+    {'id': 'elasticsearch',    category: 'search engine',  name: 'Elasticsearch'},
   ]
 }

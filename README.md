@@ -281,6 +281,7 @@ Existing clients:
 - PostgreSQL
 - RabbitMQ
 - Redis
+- Elasticsearch
 
 In order to add a new client run:
 ```

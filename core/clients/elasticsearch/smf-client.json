@@ -1,0 +1,15 @@
+{
+  "docker": {
+    "image": "elasticsearch:7.6.0",
+    "ports": [9200, 9300],
+    "volume": "/usr/share/elasticsearch/data",
+    "env": {
+      "start": {
+        "discovery.type": "single-node"
+      },
+      "connect": {
+        "ELASTICSEARCH_URI": "http://@{hostname}:9200"
+      }
+    }
+  }
+}

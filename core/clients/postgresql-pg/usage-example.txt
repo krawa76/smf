@@ -7,6 +7,6 @@ const pgClient = client.client;
 
 setInterval(async () => {
   const res = await pgClient.query('SELECT $1::text as message', ['postgres: hello world!']);
-  console.log(res.rows[0].message);
+  core.log(res.rows[0].message);
 },
 5000);

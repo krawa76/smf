@@ -19,8 +19,9 @@ Automates development and deployment of containerized microservice stacks in Nod
 
 ## Requirements
 
-- Docker
-- Node.js
+- Docker, version 19.X or later.
+- Docker Compose, version 1.24.X or later. 
+- Node.js, version 10.X or later.
 
 ## Getting started
 

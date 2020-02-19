@@ -1,5 +1,6 @@
 {
   "name": "smf demo",
+  "smfVersion": "1.0.0",
   "services": {
     "demo": {
       "clients": {

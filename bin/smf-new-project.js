@@ -56,11 +56,15 @@ async function newProject() {
   await utils.copyFilesRootAsync(`templates/new-project/${config.STACK_DEPLOY}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
   await utils.copyFilesRootAsync(`templates/new-project/${config.STACK_CONFIG}`, `./${projectName}`, 2 /* slice out "templates/new-project" */);
 
+  //========== get SMF version =======================================
+  let data = fs.readFileSync(`${utils.smfDir()}/package.json`); 
+  let json = JSON.parse(data);
+  const smfVersion = json.version;
+
   updateStackConfig(`./${projectName}/${config.STACK_CONFIG}`, {
     projectName,
+    smfVersion,
   });
-
-  // todo: readme.md ?
 
   //========== npm install ===============================================
   utils.hr();
@@ -102,7 +106,8 @@ function updateStackConfig(fileName, options) {
   const data = fs.readFileSync(fileName);
   const json = JSON.parse(data);
 
-  json.name = options.projectName;
+  json.name       = options.projectName;
+  json.smfVersion = options.smfVersion;
 
   fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
 }

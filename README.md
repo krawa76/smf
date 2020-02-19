@@ -80,7 +80,7 @@ See `smf-stack.json` file, e.g:
 - `services > service-name > clients`: third-party services dependencies.
 - `services > service-name > ports`: Docker ports mapping (host:container).
 - `clients > client-name > external`: if `false` SMF is responsible for starting the dependency service.
-- can start & connect multiple third-party services of the same type, e.g. 2 mongodb. In this case the client name has to be prefixed, e.g. `db1@mongodb-mongoose`, `db2@mongodb-mongoose`. 
+- can start & connect multiple third-party services of the same type, e.g. 2 MongoDBs. In this case the client name has to be prefixed, e.g. `db1@mongodb-mongoose`, `db2@mongodb-mongoose`. 
 
 ## Environment variables
 

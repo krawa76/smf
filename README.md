@@ -19,9 +19,9 @@ Automates development and deployment of containerized microservice stacks in Nod
 
 ## Requirements
 
-- Docker, version 19.X or later.
-- Docker Compose, version 1.24.X or later. 
-- Node.js, version 10.X or later.
+- Docker, version 19.03.* or later.
+- Docker Compose, version 1.24.* or later. 
+- Node.js, version 10.* or later.
 
 ## Getting started
 
@@ -158,7 +158,7 @@ export default class Main {
 }
 ```
 
-- npm's `package.json` & `package-lock.json`. Run `npm install ...` in the service folder to add service specific libraries.
+- npm's `package.json` & `package-lock.json`. Run `npm install ...` in the service folder to add the service specific libraries.
 - `Dockerfile`: (optional) overwrites the default Dockerfile if any build customization needed(see [React frontend demo](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react)).
 - use SMF core from any source code module (folder independent):
 ```javascript
@@ -198,7 +198,7 @@ Event-driven routes naming convention is recommended, e.g. route = `user.created
 
 Create JS modules with common code or config/constants which are accessible in all the services in the stack:
 
-1. Add a JS module to `core/shared` folder (see `config & module1` examples).
+1. Add a JS module to `core/shared` folder (see auto-generated `config & module1` examples there).
 2. Add the JS module reference to import & export in `core/shared/index.ts`.
 3. Call the module functions as `core.shared.module.func` in a service (see `./services/demo/main.ts`).
 
@@ -214,7 +214,7 @@ If a service needs to run a custom script (e.g. download & install extra depende
 
 Setup a machine with Docker and Docker Compose installed.
 
-Requirements: Docker v 19.03, Docker Compose v 1.24 or later.
+Requirements: Docker v19.03, Docker Compose v1.24 or later.
 
 [Read more on how to create a VM on AWS](README-provisioner.md)
 
@@ -234,7 +234,7 @@ Open `smf-deploy.json`, specify Docker Hub and remote machine credentials:
 }
 ```
 
-Build Docker images, push them to the registry, build the deployment package, upload it to the remote machine and run the stack there:
+Use this command to build Docker images, push them to Docker Hub registry, build the deployment package, upload it to the remote machine and run the stack there:
 ```
 smf deploy
 ```

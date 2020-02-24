@@ -298,7 +298,10 @@ Client config is stored in `smf-client.json` manifest file, e.g. see the mongodb
   "docker": {
     "image": "mongo:latest",
     "ports": [27017],
-    "volume": "/data/db",
+    "volume": {
+      "containerPath": "/data/db",
+      "named": false 
+    },
     "env": {
       "start": {
       },
@@ -312,7 +315,8 @@ Client config is stored in `smf-client.json` manifest file, e.g. see the mongodb
 
 - `image`: Docker image.
 - `ports`: container ports to open.
-- `volume`: Docker volume path in the container.
+- `volume > containerPath`: Docker volume path in the container.
+- `volume > named`: if true use a Docker named volume vs the host mounted path.
 - `env > start`: default env variables for starting the container (e.g. see [RabbitMQ client manifest](https://github.com/krawa76/smf/blob/master/core/services/rabbitmq-amqp/smf-service.json))
 - `env > connect`: default env variables for connecting to the service from custom services.
 

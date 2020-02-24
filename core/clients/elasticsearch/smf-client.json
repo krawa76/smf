@@ -2,7 +2,10 @@
   "docker": {
     "image": "elasticsearch:7.6.0",
     "ports": [9200, 9300],
-    "volume": "/usr/share/elasticsearch/data",
+    "volume": {
+      "containerPath": "/usr/share/elasticsearch/data",
+      "named": true
+    },
     "env": {
       "start": {
         "discovery.type": "single-node"

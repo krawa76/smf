@@ -2,7 +2,9 @@
   "docker": {
     "image": "mongo:latest",
     "ports": [27017],
-    "volume": "/data/db",
+    "volume": {
+      "containerPath": "/data/db"
+    },
     "env": {
       "start": {
       },

@@ -2,7 +2,9 @@
   "docker": {
     "image": "postgres:latest",
     "ports": [5432],
-    "volume": "/var/lib/postgresql/data",
+    "volume": {
+      "containerPath": "/var/lib/postgresql/data"
+    },
     "env": {
       "start": {
         "POSTGRES_DB": "db",

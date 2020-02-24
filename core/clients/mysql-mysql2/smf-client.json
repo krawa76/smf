@@ -2,7 +2,9 @@
   "docker": {
     "image": "mysql:latest",
     "ports": [3306],
-    "volume": "/var/lib/mysql",
+    "volume": {
+      "containerPath": "/var/lib/mysql"
+    },
     "env": {
       "start": {
         "MYSQL_ROOT_PASSWORD": "root",

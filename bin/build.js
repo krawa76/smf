@@ -42,6 +42,7 @@ async function buildAll() {
     const dockerComposeBase = {
       version: '3.5',
       services: {},
+      volumes: {},
       networks: {
         main: {
           name: context.networkName,
@@ -67,14 +68,23 @@ async function buildAll() {
           if (clientManifest.docker.ports) {
             dockerComposeBase.services[clientNameNormalized].ports = clientManifest.docker.ports.map(port => `${port}:${port}`);
           }
-          if (clientManifest.docker.volume) {
-            const sourcePath = `./data/${clientNameNormalized}`;
+          if (clientManifest.docker.volume && clientManifest.docker.volume.containerPath) {
+            let sourcePath = '';
+            if (clientManifest.docker.volume.named) {
+              sourcePath = clientNameNormalized;
+              dockerComposeBase.volumes[clientNameNormalized] = {driver: 'local'}
+            }
+            else {
+              sourcePath = `./data/${clientNameNormalized}`;
+            }
             fs.mkdirSync(sourcePath, {recursive: true});
-            dockerComposeBase.services[clientNameNormalized].volumes = [`${sourcePath}:${clientManifest.docker.volume}`];
+            dockerComposeBase.services[clientNameNormalized].volumes = [`${sourcePath}:${clientManifest.docker.volume.containerPath}`];
           }
         }
       }
     }
+
+    if (Object.keys(dockerComposeBase.volumes).length === 0) delete dockerComposeBase.volumes;
   
     // write yaml
     const dockerComposeBaseDoc = yaml.dump(dockerComposeBase);

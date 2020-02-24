@@ -143,6 +143,7 @@ function buildServicesDockerCompose(stacksConfig, options) {
       },
       // env_file: ["env/mongo.env", "env/jwt.env", "env/redis-live.env", "env/redis-stats.env", "env/minio.env", "env/rabbitmq.env"]
       env_file: envFiles,
+      restart: 'on-failure',
       networks: [config.STACK_DOCKER_NETWORK],
     }
 

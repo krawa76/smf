@@ -1,6 +1,6 @@
 ## Provisioning
 
-Login to AWS, create a virtual machine:
+Login to AWS > EC2, create an instance:
 - OS: ubuntu 18.04 or later
 - type: e.g. t2.medium
 - disk: e.g. 8Gb
@@ -20,4 +20,11 @@ sudo systemctl start docker.service
 Re-login to your user account.
 
 Install Docker Compose:
-https://docs.docker.com/compose/install/
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+More info here (see "Ubuntu" tab): https://docs.docker.com/compose/install/

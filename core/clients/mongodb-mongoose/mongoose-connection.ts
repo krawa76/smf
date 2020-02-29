@@ -47,9 +47,10 @@ export class MongooseConnection {
       config.MONGODB_URI,
       {
         poolSize: 20,
-        reconnectInterval: 3000,
-        reconnectTries: 20,
+        // reconnectInterval: 3000,
+        // reconnectTries: 20,
         useNewUrlParser: true,
+        useUnifiedTopology: true,
       },
     );
 

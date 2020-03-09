@@ -206,6 +206,10 @@ Create JS modules with common code or config/constants which are accessible in a
 
 If a service uses some custom data, put it to the service's `./data` subfolder. After the Docker image is built, the data is in the image's `/data` folder.
 
+## Run custom script
+
+If a service runs custom scripts at runtime, put them to the service's `./library` subfolder. After the Docker image is built, the scripts are in the image's `/library` folder.
+
 ## Run custom script (Docker build time)
 
 If a service needs to run a custom script (e.g. download & install extra dependencies) when the Docker image is being built, create `install.sh` file with bash commands in the service folder.

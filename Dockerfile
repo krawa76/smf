@@ -45,6 +45,15 @@ COPY core/smf-core-docker.js ./node_modules/smf-core.js
 # (optional) copy service data
 COPY docker-temp.txt ./services/${SERVICE}/data* /data/
 
+# (optional) copy service libs
+COPY docker-temp.txt ./services/${SERVICE}/library* /library/
+
+##################################################################################################
+# todo: move AI env vars to a service Dockerfile include, when implemented
+
+ENV CONDA_DIR=/opt/conda
+ENV PATH=$CONDA_DIR/bin:$PATH
+
 ##################################################################################################
 # (optional) install service files
 COPY docker-temp.txt ./services/${SERVICE}/install.sh* ./services/${SERVICE}/

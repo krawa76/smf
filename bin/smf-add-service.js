@@ -133,9 +133,22 @@ async function addService() {
       serviceName,
     });
   
-    //========== add service with deps to stack config file ========================
+    //========== update project config ========================
+    let serviceAttrs;
+    const templateConfigFile = `${dirName}/${config.STACK_SERVICE_TEMPLATE_MANIFEST}`;
+    if (fs.existsSync(templateConfigFile)) {
+      const data = fs.readFileSync(templateConfigFile);
+      const json = JSON.parse(data);
+
+      serviceAttrs = json.smfStack;
+
+      fs.unlinkSync(templateConfigFile);
+    }
+      
+
     updateStackConfig(`./${config.STACK_CONFIG}`, {
       serviceName,
+      serviceAttrs,
       clients: selectedClients,
     });
   
@@ -180,6 +193,14 @@ async function addService() {
     }  
   }
 
+
+  //========== npm install ===============================================
+  console.info('Running "npm install"...');
+  utils.exec('npm install', {
+    cwd: `./${dirName}`,
+  });
+
+
   //========== info ===============================================
   utils.hr();
   console.info(`Success! Created ${serviceName} service in ${fs.realpathSync(dirName)}`);
@@ -217,6 +238,7 @@ function updateStackConfig(fileName, options) {
   const json = JSON.parse(data);
 
   json.services[options.serviceName] = {
+    ...options.serviceAttrs,
     clients: {}
   }
 

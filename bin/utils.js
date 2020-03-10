@@ -5,9 +5,10 @@ const {execSync} = require('child_process');
 
 const config = require('./config');
 
-function exec(cmd) {
+function exec(cmd, options = null) {
   return execSync(cmd, {
     stdio: 'inherit',
+    ...options,
   });
 }
 

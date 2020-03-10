@@ -1,3 +1,4 @@
+import * as express from 'express';
 // {imports}
 
 export default class Main {
@@ -8,10 +9,12 @@ export default class Main {
     core.log(`shared const value: ${core.shared.config.const1}`);
     core.shared.module1.func1();
 
-    setInterval(async () => {
-      core.log('ping');
-    },
-    5000);
+    const app = express();
+    app.get('/', (req, res) => {
+      res.send('Hello world!');
+    });
+
+    app.listen(3000, () => {core.log('Example app listening on port 3000')});
 
     // clients usage demos
     // {clients usage code}

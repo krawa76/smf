@@ -5,6 +5,7 @@ const util = require('util');
 
 const config = require('./config');
 const configClients = require('./config-clients');
+const configServices = require('./config-services');
 const utils = require('./utils');
 const validators = require('./validators');
 
@@ -32,13 +33,6 @@ async function addService() {
   }
 
   const smfRoot = utils.smfDir();
-  const allClients = configClients.ALL;
-  const selectedClients = [];
-
-  //========== select clients ==================================================
-  console.info('');
-  console.info(`Select the third-party services clients that your service "${serviceName}" connects to (one at a time),`);
-  console.info("(don't forget to select one of the message broker clients if you want your services communicate with each other):");
 
   const properties = [
     {
@@ -50,104 +44,140 @@ async function addService() {
     }
   ];
   
-  prompt.start();
-
   let input;
   
-  do {
-    formatClient(0, 'exit selection');
+  //========== select template ==================================================
+  const allTemplates = configServices.ALL;
 
-    for (const i in allClients) {
-      const client = allClients[i];
-      formatClient(Number(i) + 1, `(${client.category}) ${client.name}`);
-    }
-
-    try {
-      input = await promptGetAsync(properties);
-      // console.info(input);
-    }
-    catch(err) {
-      return console.error(err);
-    }
-
-    if (input.number !== '0') {
-      const selectedClient = allClients[input.number - 1];
-
-      if (!selectedClient) {
-        console.error(`No client for option ${input.number}`);
-      }
-      else {
-        // console.info(selectedClient);
-        if (!selectedClients.includes(selectedClient)) {
-          selectedClients.push(selectedClient);
-        }
-      }
-
-      console.info('');
-      console.info('Selected clients: ');
-      console.info(`[${selectedClients.map(client => client.name).join(', ')}]`);
-      console.info('Select another client: ');
-      console.info('');
-    }
-  }
-  while (input.number !== '0');
-
-  //=============================================================================
-  fs.mkdirSync(dirName, {recursive: true});
-
-  //========== copy content =====================================================
+  console.info('');
   utils.hr();
-  console.info('Copying components...');
+  console.info(`Select service template:`);
 
-  await utils.copyFilesRootAsync('templates/add-service/*', `./${dirName}`, 2);
-  updatePackageJson(`${dirName}/package.json`, {
-    serviceName,
-  });
+  prompt.start();
 
-  //========== add service with deps to stack config file ========================
-  updateStackConfig(`./${config.STACK_CONFIG}`, {
-    serviceName,
-    clients: selectedClients,
-  });
-
-  //========== generate client usage code ======================================
-  utils.hr();
-  console.info('Generate client usage demo code...');
-
-  const codeHeader = [];
-  const codeBody   = [];
-
-  for (const client of selectedClients) {
-    const usageFileName = `${smfRoot}/core/clients/${client.id}/${config.STACK_USAGE_EXAMPLE}`;
-    console.info(usageFileName);
-    if (fs.existsSync(usageFileName)) {
-      const data = fs.readFileSync(usageFileName, 'utf8');
-      const lines = data.trim().split("\n");
-
-      codeBody.push('');
-      codeBody.push(`//========== ${client.name} ==========`);
-
-      clientCodeBody = [];
-
-      for (const l of lines) {
-        if (l.startsWith('import')) {
-          if (!codeHeader.includes(l)) codeHeader.push(l)
-        }
-        else clientCodeBody.push(l);
-      }
-
-      if (clientCodeBody.length > 0 && clientCodeBody[0].trim() === '') clientCodeBody.shift();
-
-      clientCodeBodyScoped = clientCodeBody.map(l => `  ${l}`);
-      clientCodeBodyScoped.unshift('{');
-      clientCodeBodyScoped.push('}');
-
-      codeBody.push(...clientCodeBodyScoped);
-    }
+  for (const i in allTemplates) {
+    const template = allTemplates[i];
+    formatTemplate(Number(i) + 1, template.name);
   }
 
-  if (codeHeader.length > 0 || codeBody.length > 0) {
-    updateMain(`./${dirName}/main.ts`, codeHeader, codeBody);
+  try {
+    input = await promptGetAsync(properties);
+  }
+  catch(err) {
+    console.info('');
+    return /* console.error(err) */;
+}
+
+  const selectedTemplate = allTemplates[input.number - 1];
+
+  //========== select clients ==================================================
+  if (selectedTemplate.selectClients) {
+    const allClients = configClients.ALL;
+    const selectedClients = [];
+  
+    console.info('');
+    utils.hr();
+    console.info(`Select third-party services clients that your service "${serviceName}" connects to (one at a time),`);
+    console.info("(don't forget to select one of the message broker clients if you want your services communicate with each other):");
+  
+    prompt.start();
+  
+    do {
+      formatClient(0, 'exit selection');
+  
+      for (const i in allClients) {
+        const client = allClients[i];
+        formatClient(Number(i) + 1, `(${client.category}) ${client.name}`);
+      }
+  
+      try {
+        input = await promptGetAsync(properties);
+        // console.info(input);
+      }
+      catch(err) {
+        console.info('');
+        return /* console.error(err) */;
+      }
+  
+      if (input.number !== '0') {
+        const selectedClient = allClients[input.number - 1];
+  
+        if (!selectedClient) {
+          console.error(`No client for option ${input.number}`);
+        }
+        else {
+          // console.info(selectedClient);
+          if (!selectedClients.includes(selectedClient)) {
+            selectedClients.push(selectedClient);
+          }
+        }
+  
+        console.info('');
+        console.info('Selected clients: ');
+        console.info(`[${selectedClients.map(client => client.name).join(', ')}]`);
+        console.info('Select another client: ');
+        console.info('');
+      }
+    }
+    while (input.number !== '0');
+  
+    //=============================================================================
+    fs.mkdirSync(dirName, {recursive: true});
+  
+    //========== copy content =====================================================
+    utils.hr();
+    console.info('Copying components...');
+  
+    await utils.copyFilesRootAsync('templates/add-service/*', `./${dirName}`, 2);
+    updatePackageJson(`${dirName}/package.json`, {
+      serviceName,
+    });
+  
+    //========== add service with deps to stack config file ========================
+    updateStackConfig(`./${config.STACK_CONFIG}`, {
+      serviceName,
+      clients: selectedClients,
+    });
+  
+    //========== generate client usage code ======================================
+    utils.hr();
+    console.info('Generate client usage demo code...');
+  
+    const codeHeader = [];
+    const codeBody   = [];
+  
+    for (const client of selectedClients) {
+      const usageFileName = `${smfRoot}/core/clients/${client.id}/${config.STACK_USAGE_EXAMPLE}`;
+      console.info(usageFileName);
+      if (fs.existsSync(usageFileName)) {
+        const data = fs.readFileSync(usageFileName, 'utf8');
+        const lines = data.trim().split("\n");
+  
+        codeBody.push('');
+        codeBody.push(`//========== ${client.name} ==========`);
+  
+        clientCodeBody = [];
+  
+        for (const l of lines) {
+          if (l.startsWith('import')) {
+            if (!codeHeader.includes(l)) codeHeader.push(l)
+          }
+          else clientCodeBody.push(l);
+        }
+  
+        if (clientCodeBody.length > 0 && clientCodeBody[0].trim() === '') clientCodeBody.shift();
+  
+        clientCodeBodyScoped = clientCodeBody.map(l => `  ${l}`);
+        clientCodeBodyScoped.unshift('{');
+        clientCodeBodyScoped.push('}');
+  
+        codeBody.push(...clientCodeBodyScoped);
+      }
+    }
+  
+    if (codeHeader.length > 0 || codeBody.length > 0) {
+      updateMain(`./${dirName}/main.ts`, codeHeader, codeBody);
+    }  
   }
 
   //========== info ===============================================
@@ -164,6 +194,10 @@ async function addService() {
 
 function formatClient(number, name) {
   console.info(`${number/*.toString().padStart(2, '0')*/}) ${name}`);
+}
+
+function formatTemplate(number, name) {
+  console.info(`${number}) ${name}`);
 }
 
 function updatePackageJson(fileName, options) {

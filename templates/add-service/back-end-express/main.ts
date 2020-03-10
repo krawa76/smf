@@ -2,7 +2,7 @@
 
 export default class Main {
   async run(core) {
-    core.log('custom module');
+    core.log('service (back-end-express) starting...');
 
     // shared modules calls examples
     core.log(`shared const value: ${core.shared.config.const1}`);

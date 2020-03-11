@@ -1,4 +1,5 @@
 import * as express from 'express';
+import demo from './demo';
 // {imports}
 
 export default class Main {
@@ -13,6 +14,9 @@ export default class Main {
     app.get('/', (req, res) => {
       res.send('Hello world!');
     });
+
+    // connect demo router
+    app.use('/demo', demo);
 
     app.listen(3000, () => {core.log('Example app listening on port 3000')});
 

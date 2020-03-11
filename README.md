@@ -36,9 +36,22 @@ Stop the stack, add a new service, start the stack again:
 ```
 smf down
 smf add service service-name
-(select third-party services dependencies)
+(select a template and third-party services dependencies)
 smf up
 ```
+
+## Service templates
+
+#1: Basic worker.
+
+Minimal boilerplate code, suited for a generic worker service.
+
+#2: Back-end (Express.js).
+
+Web server with a demo route module. Use this URL to test when started:
+
+http://localhost:3000/demo
+
 
 ## Project configuration
 

@@ -46,7 +46,7 @@ smf up
 
 Minimal boilerplate code, suited for a generic worker service.
 
-**2: Back-end (Express.js):**
+**2. Back-end (Express.js):**
 
 Web server with a demo route module. Use this URL to test when started:
 

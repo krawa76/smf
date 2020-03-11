@@ -52,6 +52,11 @@ Web server with a demo route module. Use this URL to test when started:
 
 http://localhost:3000/demo
 
+**3. Front-end (React.js):**
+
+Web server (NGINX) with React app. Use this URL to test when started:
+
+http://localhost:80
 
 ## Project configuration
 
@@ -348,13 +353,7 @@ smf debug service-name
 smf add client client-name (inputs: docker image name)
 ```
 
-## Bonus #1: React web app integration
-
-- run `smf add service` (skip service dependencies) to create the service boilerplate code.
-- cd to the new service folder, run `npx create-react-app app` to generate the React app code.
-- copy `Dockerfile` from [React frontend demo](https://github.com/krawa76/smf/tree/master/services/demo-frontend-react) to the service folder.
-
-## Bonus #2: Sails web app integration
+## Bonus: Sails web app integration
 
 - run `smf add service` (skip service dependencies) to create the service boilerplate code.
 - cd to the new service folder, run run `sails new web-sails` to generate the Sails app code (don't change the app name).

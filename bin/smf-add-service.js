@@ -71,9 +71,10 @@ async function addService() {
   const selectedTemplate = allTemplates[input.number - 1];
 
   //========== select clients ==================================================
+  const selectedClients = [];
+
   if (selectedTemplate.selectClients) {
     const allClients = configClients.ALL;
-    const selectedClients = [];
   
     console.info('');
     utils.hr();
@@ -120,79 +121,87 @@ async function addService() {
       }
     }
     while (input.number !== '0');
+  }
   
-    //=============================================================================
-    fs.mkdirSync(dirName, {recursive: true});
-  
-    //========== copy content =====================================================
+  //=============================================================================
+  fs.mkdirSync(dirName, {recursive: true});
+
+  //========== before create =====================================================
+  if (selectedTemplate.beforeCreate) {
     utils.hr();
-    console.info('Copying components...');
-  
-    await utils.copyFilesRootAsync(`templates/add-service/${selectedTemplate.id}/*`, `./${dirName}`, 3);
-    updatePackageJson(`${dirName}/package.json`, {
-      serviceName,
+    console.info('Running beforeCreate command....');
+
+    utils.exec(selectedTemplate.beforeCreate, {
+      cwd: `./${dirName}`,
     });
-  
-    //========== update project config ========================
-    let serviceAttrs;
-    const templateConfigFile = `${dirName}/${config.STACK_SERVICE_TEMPLATE_MANIFEST}`;
-    if (fs.existsSync(templateConfigFile)) {
-      const data = fs.readFileSync(templateConfigFile);
-      const json = JSON.parse(data);
-
-      serviceAttrs = json.smfStack;
-
-      fs.unlinkSync(templateConfigFile);
-    }
-      
-
-    updateStackConfig(`./${config.STACK_CONFIG}`, {
-      serviceName,
-      serviceAttrs,
-      clients: selectedClients,
-    });
-  
-    //========== generate client usage code ======================================
-    utils.hr();
-    console.info('Generate client usage demo code...');
-  
-    const codeHeader = [];
-    const codeBody   = [];
-  
-    for (const client of selectedClients) {
-      const usageFileName = `${smfRoot}/core/clients/${client.id}/${config.STACK_USAGE_EXAMPLE}`;
-      console.info(usageFileName);
-      if (fs.existsSync(usageFileName)) {
-        const data = fs.readFileSync(usageFileName, 'utf8');
-        const lines = data.trim().split("\n");
-  
-        codeBody.push('');
-        codeBody.push(`//========== ${client.name} ==========`);
-  
-        clientCodeBody = [];
-  
-        for (const l of lines) {
-          if (l.startsWith('import')) {
-            if (!codeHeader.includes(l)) codeHeader.push(l)
-          }
-          else clientCodeBody.push(l);
-        }
-  
-        if (clientCodeBody.length > 0 && clientCodeBody[0].trim() === '') clientCodeBody.shift();
-  
-        clientCodeBodyScoped = clientCodeBody.map(l => `  ${l}`);
-        clientCodeBodyScoped.unshift('{');
-        clientCodeBodyScoped.push('}');
-  
-        codeBody.push(...clientCodeBodyScoped);
-      }
-    }
-  
-    if (codeHeader.length > 0 || codeBody.length > 0) {
-      updateMain(`./${dirName}/main.ts`, codeHeader, codeBody);
-    }  
   }
 
+  //========== copy content =====================================================
+  utils.hr();
+  console.info('Copying components...');
+
+  await utils.copyFilesRootAsync(`templates/add-service/${selectedTemplate.id}/*`, `./${dirName}`, 3);
+  updatePackageJson(`${dirName}/package.json`, {
+    serviceName,
+  });
+
+  //========== update project config ========================
+  let serviceAttrs;
+  const templateConfigFile = `${dirName}/${config.STACK_SERVICE_TEMPLATE_MANIFEST}`;
+  if (fs.existsSync(templateConfigFile)) {
+    const data = fs.readFileSync(templateConfigFile);
+    const json = JSON.parse(data);
+
+    serviceAttrs = json['smf-stack'];
+
+    fs.unlinkSync(templateConfigFile);
+  }
+    
+  updateStackConfig(`./${config.STACK_CONFIG}`, {
+    serviceName,
+    serviceAttrs,
+    clients: selectedClients,
+  });
+
+  //========== generate client usage code ======================================
+  utils.hr();
+  console.info('Generate client usage demo code...');
+
+  const codeHeader = [];
+  const codeBody   = [];
+
+  for (const client of selectedClients) {
+    const usageFileName = `${smfRoot}/core/clients/${client.id}/${config.STACK_USAGE_EXAMPLE}`;
+    console.info(usageFileName);
+    if (fs.existsSync(usageFileName)) {
+      const data = fs.readFileSync(usageFileName, 'utf8');
+      const lines = data.trim().split("\n");
+
+      codeBody.push('');
+      codeBody.push(`//========== ${client.name} ==========`);
+
+      clientCodeBody = [];
+
+      for (const l of lines) {
+        if (l.startsWith('import')) {
+          if (!codeHeader.includes(l)) codeHeader.push(l)
+        }
+        else clientCodeBody.push(l);
+      }
+
+      if (clientCodeBody.length > 0 && clientCodeBody[0].trim() === '') clientCodeBody.shift();
+
+      clientCodeBodyScoped = clientCodeBody.map(l => `  ${l}`);
+      clientCodeBodyScoped.unshift('{');
+      clientCodeBodyScoped.push('}');
+
+      codeBody.push(...clientCodeBodyScoped);
+    }
+  }
+
+  if (codeHeader.length > 0 || codeBody.length > 0) {
+    updateMain(`./${dirName}/main.ts`, codeHeader, codeBody);
+  }  
 
   //========== npm install ===============================================
   console.info('Running "npm install"...');

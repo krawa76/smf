@@ -58,6 +58,8 @@ Web server (NGINX) with React app. Use this URL to test when started:
 
 http://localhost:80
 
+Debug: cd to a service `app` subfolder, run `npm start`.
+
 ## Project configuration
 
 See `smf-stack.json` file, e.g:

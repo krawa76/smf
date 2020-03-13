@@ -18,7 +18,15 @@ module.exports = {
       category: '',
       name: 'Front-end (React.js)',
       selectClients: false,
-      beforeCreate: 'npx create-react-app app',
+      beforeCreate: [
+        {
+          cmd: 'npx create-react-app app',
+        },
+        {
+          cmd: 'npm install react-router-dom',
+          dir: '/app',
+        },
+      ],
     },
   ]
 }

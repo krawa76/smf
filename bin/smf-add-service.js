@@ -129,11 +129,16 @@ async function addService() {
   //========== before create =====================================================
   if (selectedTemplate.beforeCreate) {
     utils.hr();
-    console.info('Running beforeCreate command....');
+    console.info('Running beforeCreate commands....');
 
-    utils.exec(selectedTemplate.beforeCreate, {
-      cwd: `./${dirName}`,
-    });
+    for (let i = 0; i < selectedTemplate.beforeCreate.length; i++) {
+      const command = selectedTemplate.beforeCreate[i];
+      console.info(`run: ${command.cmd}`);
+
+      utils.exec(command.cmd, {
+        cwd: `./${dirName}${command.dir || ''}`,
+      });  
+    }
   }
 
   //========== copy content =====================================================

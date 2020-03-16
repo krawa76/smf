@@ -7,15 +7,15 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
-import Kitten from './pages/Kitten';
+import Kittens from './pages/Kittens';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Switch>
-          <Route path="/kitten">
-            <Kitten/>
+          <Route path="/kittens">
+            <Kittens/>
           </Route>
           <Route path="/">
             <Home/>

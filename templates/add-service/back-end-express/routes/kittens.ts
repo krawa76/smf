@@ -1,7 +1,7 @@
 const express = require('express');
-const kitten = express.Router();
+const kittens = express.Router();
 
-kitten.get('/', function (req, res) {
+kittens.get('/', function (req, res) {
   res.json([
     {id: 1, name: 'Fluffy 1'},
     {id: 2, name: 'Fluffy 2'},
@@ -9,4 +9,4 @@ kitten.get('/', function (req, res) {
   ]);
 });
 
-export default kitten;
+export default kittens;

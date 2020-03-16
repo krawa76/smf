@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import kitten from './routes/kitten';
+import kittens from './routes/kittens';
 // {imports}
 
 const PORT = 3010;
@@ -21,7 +21,7 @@ export default class Main {
     });
 
     // connect a router
-    app.use('/kitten', kitten);
+    app.use('/kittens', kittens);
 
     app.listen(PORT, () => {core.log(`Example app listening on port ${PORT}`)});
 

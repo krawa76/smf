@@ -8,7 +8,7 @@ class Api {
   */
 
   async call(url) {
-    const res = await axios.get('http://localhost:3010/demo');
+    const res = await axios.get('http://localhost:3010/kittens');
     return res;
   }
 }

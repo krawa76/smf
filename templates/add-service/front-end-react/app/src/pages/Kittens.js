@@ -1,7 +1,7 @@
 import React from 'react';
 import Api from '../Api';
 
-export default class Kitten extends React.Component {
+export default class Kittens extends React.Component {
   constructor() {
     super();
     this.state = {kittens: []}

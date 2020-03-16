@@ -133,6 +133,7 @@ async function addService() {
 
     for (let i = 0; i < selectedTemplate.beforeCreate.length; i++) {
       const command = selectedTemplate.beforeCreate[i];
+      console.info('----------------------------------');
       console.info(`run: ${command.cmd}`);
 
       utils.exec(command.cmd, {

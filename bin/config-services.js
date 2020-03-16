@@ -26,6 +26,10 @@ module.exports = {
           cmd: 'npm install react-router-dom',
           dir: '/app',
         },
+        {
+          cmd: 'npm install axios',
+          dir: '/app',
+        },
       ],
     },
   ]

@@ -1,5 +1,6 @@
 import * as express from 'express';
-import demo from './demo';
+import * as cors from 'cors';
+import kitten from './routes/kitten';
 // {imports}
 
 const PORT = 3010;
@@ -13,12 +14,14 @@ export default class Main {
     core.shared.module1.func1();
 
     const app = express();
+    app.use(cors());
+
     app.get('/', (req, res) => {
       res.send('Hello world!');
     });
 
-    // connect demo router
-    app.use('/demo', demo);
+    // connect a router
+    app.use('/kitten', kitten);
 
     app.listen(PORT, () => {core.log(`Example app listening on port ${PORT}`)});
 

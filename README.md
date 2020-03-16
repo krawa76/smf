@@ -50,7 +50,7 @@ Minimal boilerplate code, suited for a generic worker service.
 
 Web server with a demo route module. Use this URL to test when started:
 
-http://localhost:3000/demo
+http://localhost:3010/demo
 
 **3. Front-end (React.js):**
 

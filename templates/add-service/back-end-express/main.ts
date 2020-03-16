@@ -2,6 +2,8 @@ import * as express from 'express';
 import demo from './demo';
 // {imports}
 
+const PORT = 3010;
+
 export default class Main {
   async run(core) {
     core.log('service (back-end-express) starting...');
@@ -18,7 +20,7 @@ export default class Main {
     // connect demo router
     app.use('/demo', demo);
 
-    app.listen(3000, () => {core.log('Example app listening on port 3000')});
+    app.listen(PORT, () => {core.log(`Example app listening on port ${PORT}`)});
 
     // clients usage demos
     // {clients usage code}

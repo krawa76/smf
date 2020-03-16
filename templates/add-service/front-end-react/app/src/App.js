@@ -3,19 +3,19 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  // Link
 } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
-import Demo from './pages/Demo';
+import Kitten from './pages/Kitten';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Switch>
-          <Route path="/demo">
-            <Demo/>
+          <Route path="/kitten">
+            <Kitten/>
           </Route>
           <Route path="/">
             <Home/>

@@ -7,8 +7,10 @@ class Api {
   }
   */
 
-  async call(url) {
-    const res = await axios.get('http://localhost:3010/kittens');
+  async call(endpoint) {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const res = await axios.get(`${apiUrl}${endpoint}`);
+    
     return res;
   }
 }

@@ -153,12 +153,15 @@ async function addService() {
 
   //========== update project config ========================
   let serviceAttrs;
+  let serviceEnv;
+
   const templateConfigFile = `${dirName}/${config.STACK_SERVICE_TEMPLATE_MANIFEST}`;
   if (fs.existsSync(templateConfigFile)) {
     const data = fs.readFileSync(templateConfigFile);
     const json = JSON.parse(data);
 
     serviceAttrs = json['smf-stack'];
+    serviceEnv   = json['smf-env'];
 
     fs.unlinkSync(templateConfigFile);
   }
@@ -168,6 +171,22 @@ async function addService() {
     serviceAttrs,
     clients: selectedClients,
   });
+
+  {
+    // sync stack & env configs
+    const data = fs.readFileSync(`./${config.STACK_CONFIG}`);
+    const json = JSON.parse(data);  
+    utils.updateStackEnvFile(json);  
+  }
+
+  updateEnvConfig(`./${config.STACK_ENV}`, {
+    serviceName,
+    serviceEnv,
+  });
+
+  if (serviceEnv && serviceEnv.debugEnvFile) {
+    // write to env file
+  }
 
   //========== generate client usage code ======================================
   utils.hr();
@@ -214,7 +233,6 @@ async function addService() {
   utils.exec('npm install', {
     cwd: `./${dirName}`,
   });
-
 
   //========== info ===============================================
   utils.hr();
@@ -265,6 +283,18 @@ function updateStackConfig(fileName, options) {
   }
 
   fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+}
+
+function updateEnvConfig(fileName, options) {
+  if (options.serviceEnv && options.serviceEnv.vars) {
+    const data = fs.readFileSync(fileName);
+    const json = JSON.parse(data);
+      json.services[options.serviceName] = {
+      ...options.serviceEnv.vars,
+    }
+
+    fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+  }
 }
 
 function updateMain(fileName, codeHeader, codeBody) {

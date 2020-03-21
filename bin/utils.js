@@ -26,7 +26,8 @@ function buildEnvFiles() {
   }
 
   for(const service of Object.keys(stackEnv.services)) {
-    createEnvFile(serviceEnvFileName(service), stackEnv.services[service]);
+    const vars = runTimeEnvVars(stackEnv.services[service]);
+    createEnvFile(serviceEnvFileName(service), vars);
   }
   
   for(const client of Object.keys(stackEnv.clients)) {
@@ -34,10 +35,12 @@ function buildEnvFiles() {
     const clientNameNormalized = client.replace(config.STACK_CLIENT_NAME_SEPARATOR, '-');
 
     if (stackEnv.clients[client].start) {
-      createEnvFile(clientEnvFileName(client, 'start'), stackEnv.clients[client].start, /* varPreffix */ null);
+      const vars = runTimeEnvVars(stackEnv.clients[client].start);
+      createEnvFile(clientEnvFileName(client, 'start'), vars, /* varPreffix */ null);
     }
     if (stackEnv.clients[client].connect) {
-      createEnvFile(clientEnvFileName(client, 'connect'), stackEnv.clients[client].connect, varPreffix, (value) => {
+      const vars = runTimeEnvVars(stackEnv.clients[client].connect);
+      createEnvFile(clientEnvFileName(client, 'connect'), vars, varPreffix, (value) => {
         return value
           .replace('{hostname}', config.session.debug ? 'localhost' : clientNameNormalized);
       });
@@ -256,6 +259,22 @@ function copyFilesAsync(src, dst = '', up = 0) {
 function copyFilesRootAsync(src, dst = '', up = 0) {
   const root = smfDir();
   return copyFilesAsync(`${root}/${src}`, dst, root.split(path.sep).length + up);
+}
+
+function filterEnvVars(vars, buildTime = false) {
+  const res = {...vars}
+  Object.keys(res).forEach(attr => {
+    if (attr.includes(config.BUILD_ARG_PREFIX) ? !buildTime : buildTime) delete res[attr];
+  });
+  return res;
+}
+
+function buildTimeEnvVars(vars) {
+  return filterEnvVars(vars, true);
+}
+
+function runTimeEnvVars(vars) {
+  return filterEnvVars(vars);
 }
 
 //===================================================================================

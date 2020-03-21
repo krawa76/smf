@@ -184,7 +184,8 @@ async function addService() {
     });
     
     if (serviceEnv.debugEnvFile) {
-      utils.createEnvFile(`${dirName}${serviceEnv.debugEnvFile}`, serviceEnv.vars);
+      const vars = convertBuildVars(serviceEnv.vars);
+      utils.createEnvFile(`${dirName}${serviceEnv.debugEnvFile}`, vars);
     }
   }
 
@@ -320,6 +321,17 @@ function updateMain(fileName, codeHeader, codeBody) {
   
     fs.writeFileSync(fileName, newContent);
   }
+}
+
+function convertBuildVars(vars) {
+  const res = {...vars}
+  Object.keys(res).forEach(attr => {
+    if (attr.includes(config.BUILD_ARG_PREFIX)) {
+      res[attr.replace(config.BUILD_ARG_PREFIX, '')] = res[attr];
+      delete res[attr];
+    }
+  });
+  return res;
 }
 
 module.exports = addService;

@@ -7,7 +7,7 @@
   "smf-env": {
     "debugEnvFile": "/app/.env",
     "vars": {
-      "REACT_APP_API_URL": "http://localhost:3010"
+      "BUILD_REACT_APP_API_URL": "http://localhost:3010"
     }
   }
 }

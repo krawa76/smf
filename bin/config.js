@@ -21,6 +21,8 @@ module.exports = {
   SERVICE_CLIENT_USAGE_CODE:        '// {clients usage code}',
   SERVICE_IMPORTS:                  '// {imports}',
 
+  BUILD_ARG_PREFIX:                 'BUILD_',
+
   session: {
     debug: false,
   }

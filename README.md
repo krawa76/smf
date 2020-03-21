@@ -141,6 +141,7 @@ All environment variables are specified in `smf-env.json` file, e.g.:
 - `clients > client-name > connect > ...`: variables needed to connect to the dependency service from a custom one.
 - system placeholders (e.g. `{hostname}`) are replaced automatically at build time depending on the deployment circumstances.
 - some default `clients > ...` values are automatically added to the env config from the clients manifests when adding dependencies.
+- env vars which start with `BUILD_` are passed as Docker build-time ARG vars.
 
 ## Project structure
 

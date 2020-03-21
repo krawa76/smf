@@ -12,7 +12,7 @@
   },
   "smf-deploy": {
     "env": {
-      "BUILD_REACT_APP_API_URL": "http://hostname:80"
+      "BUILD_REACT_APP_API_URL": "http://hostname/api"
     }
   }
 }

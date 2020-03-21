@@ -15,15 +15,7 @@ function exec(cmd, options = null) {
 function buildEnvFiles() {
   fs.mkdirSync(stackBuildEnvPath(), {recursive: true});
 
-  let stackEnv;
-  try {
-    const data = fs.readFileSync(config.STACK_ENV);
-    stackEnv = JSON.parse(data);
-  }
-  catch(error) {
-    console.error(`File not found: ${config.STACK_ENV}`);
-    return;
-  }
+  const stackEnv = loadStackEnv();
 
   for(const service of Object.keys(stackEnv.services)) {
     const vars = runTimeEnvVars(stackEnv.services[service]);
@@ -277,11 +269,37 @@ function runTimeEnvVars(vars) {
   return filterEnvVars(vars);
 }
 
+function loadStackEnv() {
+  try {
+    const data = fs.readFileSync(config.STACK_ENV);
+    return JSON.parse(data);
+  }
+  catch(error) {
+    console.error(`File not found: ${config.STACK_ENV}`);
+    return;
+  }
+
+}
+
+function convertBuildVars(vars) {
+  const res = {...vars}
+  Object.keys(res).forEach(attr => {
+    if (attr.includes(config.BUILD_ARG_PREFIX)) {
+      res[attr.replace(config.BUILD_ARG_PREFIX, '')] = res[attr];
+      delete res[attr];
+    }
+  });
+  return res;
+}
+
 //===================================================================================
 module.exports = {
   buildEnvFiles,
   buildLocalEnvFile,
+  buildTimeEnvVars,
+  convertBuildVars,
   createEnvFile,
+  loadStackEnv,
   serviceEnvFileName,
   clientEnvFileName,
   exec,

@@ -135,11 +135,15 @@ function buildServicesDockerCompose(stacksConfig, options) {
     }
 
     //=======================================================
+    const stackEnv = utils.loadStackEnv();
+    const vars = utils.convertBuildVars(utils.buildTimeEnvVars(stackEnv.services[service]));
+    const buildArgs = Object.keys(vars).map(key => `${key}=${vars[key]}`);
+
     const dockerService = {
       container_name: `${context.containerPrefix}${service}`,
       build: {
         context: fs.existsSync(`./services/${service}/Dockerfile`) ? `./services/${service}` : '.',
-        args: [`SERVICE=${service}`],
+        args: [`SERVICE=${service}`, ...buildArgs],
       },
       // env_file: ["env/mongo.env", "env/jwt.env", "env/redis-live.env", "env/redis-stats.env", "env/minio.env", "env/rabbitmq.env"]
       env_file: envFiles,

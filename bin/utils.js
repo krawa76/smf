@@ -262,6 +262,7 @@ function copyFilesRootAsync(src, dst = '', up = 0) {
 module.exports = {
   buildEnvFiles,
   buildLocalEnvFile,
+  createEnvFile,
   serviceEnvFileName,
   clientEnvFileName,
   exec,

@@ -172,20 +172,20 @@ async function addService() {
     clients: selectedClients,
   });
 
-  {
+  if (serviceEnv && serviceEnv.vars) {
     // sync stack & env configs
     const data = fs.readFileSync(`./${config.STACK_CONFIG}`);
     const json = JSON.parse(data);  
     utils.updateStackEnvFile(json);  
-  }
-
-  updateEnvConfig(`./${config.STACK_ENV}`, {
-    serviceName,
-    serviceEnv,
-  });
-
-  if (serviceEnv && serviceEnv.debugEnvFile) {
-    // write to env file
+  
+    updateEnvConfig(`./${config.STACK_ENV}`, {
+      serviceName,
+      vars: serviceEnv.vars,
+    });
+    
+    if (serviceEnv.debugEnvFile) {
+      utils.createEnvFile(`${dirName}${serviceEnv.debugEnvFile}`, serviceEnv.vars);
+    }
   }
 
   //========== generate client usage code ======================================
@@ -286,15 +286,13 @@ function updateStackConfig(fileName, options) {
 }
 
 function updateEnvConfig(fileName, options) {
-  if (options.serviceEnv && options.serviceEnv.vars) {
-    const data = fs.readFileSync(fileName);
-    const json = JSON.parse(data);
-      json.services[options.serviceName] = {
-      ...options.serviceEnv.vars,
-    }
-
-    fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+  const data = fs.readFileSync(fileName);
+  const json = JSON.parse(data);
+    json.services[options.serviceName] = {
+    ...options.vars,
   }
+
+  fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
 }
 
 function updateMain(fileName, codeHeader, codeBody) {

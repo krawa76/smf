@@ -154,6 +154,7 @@ async function addService() {
   //========== update project config ========================
   let serviceAttrs;
   let serviceEnv;
+  let deployAtts;
 
   const templateConfigFile = `${dirName}/${config.STACK_SERVICE_TEMPLATE_MANIFEST}`;
   if (fs.existsSync(templateConfigFile)) {
@@ -162,6 +163,7 @@ async function addService() {
 
     serviceAttrs = json['smf-stack'];
     serviceEnv   = json['smf-env'];
+    deployAttrs  = json['smf-deploy'];
 
     fs.unlinkSync(templateConfigFile);
   }
@@ -187,6 +189,10 @@ async function addService() {
       const vars = utils.convertBuildVars(serviceEnv.vars);
       utils.createEnvFile(`${dirName}${serviceEnv.debugEnvFile}`, vars);
     }
+  }
+
+  if (deployAttrs) {
+    updateDeployConfig(`./${config.STACK_DEPLOY}`, deployAttrs);
   }
 
   //========== generate client usage code ======================================
@@ -289,8 +295,21 @@ function updateStackConfig(fileName, options) {
 function updateEnvConfig(fileName, options) {
   const data = fs.readFileSync(fileName);
   const json = JSON.parse(data);
-    json.services[options.serviceName] = {
+
+  json.services[options.serviceName] = {
     ...options.vars,
+  }
+
+  fs.writeFileSync(fileName, JSON.stringify(json, null, 2));
+}
+
+function updateDeployConfig(fileName, options) {
+  const data = fs.readFileSync(fileName);
+  const json = JSON.parse(data);
+
+  json.env = {
+    ...json.env,
+    ...options.env,
   }
 
   fs.writeFileSync(fileName, JSON.stringify(json, null, 2));

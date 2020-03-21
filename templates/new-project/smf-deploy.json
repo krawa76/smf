@@ -8,5 +8,7 @@
     "username": "ubuntu",
     "privateKey": "/Users/me/.ssh/aws-key.pem",
     "passphrase": ""
-  }  
+  },
+  "env": {
+  }
 }

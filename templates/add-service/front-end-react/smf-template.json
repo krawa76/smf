@@ -9,5 +9,10 @@
     "vars": {
       "BUILD_REACT_APP_API_URL": "http://localhost:3010"
     }
+  },
+  "smf-deploy": {
+    "env": {
+      "REACT_APP_API_URL": "http://hostname:80"
+    }
   }
 }

@@ -23,7 +23,7 @@ export default class Main {
     // connect a router
     app.use('/kittens', kittens);
 
-    app.listen(PORT, () => {core.log(`Example app listening on port ${PORT}`)});
+    app.listen(PORT, () => {core.log(`Back-end listening on port ${PORT}`)});
 
     // clients usage demos
     // {clients usage code}

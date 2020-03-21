@@ -15,7 +15,6 @@ export default class Kittens extends React.Component {
   render() {
     return(
       <div>
-        <h1>URL = {process.env.REACT_APP_API_URL}</h1>
         <h1>Kittens</h1>
 
         {this.state.kittens.map(kitten => <h3 key={kitten.id}>{kitten.name}</h3>)}

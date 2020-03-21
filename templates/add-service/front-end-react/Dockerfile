@@ -9,6 +9,7 @@ COPY ./app/package-lock.json /app/package-lock.json
 RUN npm install
 RUN npm install react-scripts@3.0.1 -g --silent
 COPY app /app
+ARG REACT_APP_API_URL
 RUN npm run build
 
 # production environment

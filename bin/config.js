@@ -25,5 +25,6 @@ module.exports = {
 
   session: {
     debug: false,
+    deploy: false,
   }
 }

@@ -8,6 +8,8 @@ const build = require('./build');
 async function deploy() {
   console.info('Deploying...');
 
+  config.session.deploy = true;
+
   let stackDeploy = {};
   let stackConfig = {};
 

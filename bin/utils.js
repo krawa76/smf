@@ -272,13 +272,19 @@ function runTimeEnvVars(vars) {
 function loadStackEnv() {
   try {
     const data = fs.readFileSync(config.STACK_ENV);
-    return JSON.parse(data);
+    const json = JSON.parse(data);
+
+    if (config.session.deploy) {
+      const deployConfig = readDeployConfig();
+      if (deployConfig.env) transformDeployEnvs(json, deployConfig.env);
+    }
+
+    return json;
   }
   catch(error) {
     console.error(`File not found: ${config.STACK_ENV}`);
     return;
   }
-
 }
 
 function convertBuildVars(vars) {
@@ -290,6 +296,31 @@ function convertBuildVars(vars) {
     }
   });
   return res;
+}
+
+function readDeployConfig() {
+  try {
+    const data = fs.readFileSync(config.STACK_DEPLOY);
+    return JSON.parse(data);
+  }
+  catch(error) {
+    console.error(`File not found: ${config.STACK_DEPLOY}`);
+    return;
+  }
+}
+
+function transformDeployEnvs(node, deployEnv) {
+  Object.keys(node).forEach(key => {
+    const attr = node[key];
+
+    if (typeof(attr) === 'object') {
+      // recursion
+      transformDeployEnvs(attr, deployEnv);
+    }
+    else {
+      if (deployEnv[key]) node[key] = deployEnv[key];
+    }
+  });
 }
 
 //===================================================================================

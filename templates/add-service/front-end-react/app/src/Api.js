@@ -9,9 +9,15 @@ class Api {
 
   async call(endpoint) {
     const apiUrl = process.env.REACT_APP_API_URL;
-    const res = await axios.get(`${apiUrl}${endpoint}`);
-    
-    return res;
+    try {
+      const res = await axios.get(`${apiUrl}${endpoint}`);
+      return res;
+    }
+    catch(err) {
+      console.error(err.message);
+      window.flash(err.message, 'error');
+      return null;
+    }    
   }
 }
 

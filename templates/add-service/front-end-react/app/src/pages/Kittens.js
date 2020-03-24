@@ -9,7 +9,7 @@ export default class Kittens extends React.Component {
 
   async componentDidMount() {
     const res = await Api.call('/kittens');
-    this.setState({kittens: res.data});
+    if (res) this.setState({kittens: res.data});
   }  
 
   render() {

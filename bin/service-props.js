@@ -27,7 +27,7 @@ async function serviceName() {
 
   const stackConfig = utils.readStackConfig();
 
-  if (!stackConfig.services) {
+  if (!Object.keys(stackConfig.services).length) {
     console.error('No services found');
     return null;
   }

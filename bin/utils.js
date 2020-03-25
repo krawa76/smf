@@ -309,6 +309,17 @@ function readDeployConfig() {
   }
 }
 
+function readStackConfig() {
+  try {
+    const data = fs.readFileSync(config.STACK_CONFIG);
+    return JSON.parse(data);
+  }
+  catch(error) {
+    console.error(`File not found: ${config.STACK_CONFIG}`);
+    return;
+  }
+}
+
 function transformDeployEnvs(node, deployEnv) {
   Object.keys(node).forEach(key => {
     const attr = node[key];
@@ -331,6 +342,8 @@ module.exports = {
   convertBuildVars,
   createEnvFile,
   loadStackEnv,
+  readDeployConfig,
+  readStackConfig,
   serviceEnvFileName,
   clientEnvFileName,
   exec,

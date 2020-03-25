@@ -6,6 +6,7 @@ const util = require('util');
 const config = require('./config');
 const configClients = require('./config-clients');
 const configServices = require('./config-services');
+const serviceProps = require('./service-props');
 const utils = require('./utils');
 const validators = require('./validators');
 
@@ -66,9 +67,36 @@ async function addService() {
   catch(err) {
     console.info('');
     return /* console.error(err) */;
-}
+  }
 
   const selectedTemplate = allTemplates[input.number - 1];
+
+  //========== set props =======================================================
+  const props = [];
+
+  // init default props
+  props.push({
+    name: 'PROJECT',
+    value: serviceProps.projectName(),
+  });
+
+  // query custom props
+  if (selectedTemplate.props) {
+    for (const prop of selectedTemplate.props) {
+      console.info('');
+      console.info(`${prop.prompt}:`);
+      const value = await prop.func();
+
+      if (!value) return;
+
+      props.push({
+        name: prop.name,
+        value,
+      });
+    };
+  }
+
+  // console.info(props);
 
   //========== select clients ==================================================
   const selectedClients = [];

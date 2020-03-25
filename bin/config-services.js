@@ -1,3 +1,5 @@
+const serviceProps = require('./service-props');
+
 module.exports = {
   ALL: [
     {
@@ -17,6 +19,14 @@ module.exports = {
       'id': 'front-end-react',
       category: '',
       name: 'Front-end (React.js)',
+      props: [
+        {
+          name: 'BACK_END_SERVICE',
+          func: serviceProps.serviceName,
+          prompt: 'Select a back-end service to connect to',
+          // optional: false,
+        }
+      ],
       selectClients: false,
       beforeCreate: [
         {

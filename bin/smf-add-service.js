@@ -179,6 +179,11 @@ async function addService() {
     serviceName,
   });
 
+  //========== service props =====================================================
+  utils.hr();
+  console.info('Updating service properties...');
+  serviceProps.replaceProps(dirName, props);
+
   //========== update project config ========================
   let serviceAttrs;
   let serviceEnv;

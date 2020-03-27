@@ -50,7 +50,7 @@ Minimal boilerplate code, suited for a generic worker service.
 
 Web server with a demo route module. Use this URL to test when started:
 
-http://localhost:3010/demo
+http://localhost:3010/kittens
 
 **3. Front-end (React.js):**
 
@@ -59,6 +59,17 @@ Web server (NGINX) with React app. Use this URL to test when started:
 http://localhost:80
 
 Debug: cd to a service `app` subfolder, run `npm start`.
+
+`BUILD_REACT_APP_API_URL` environment variable controls how the front-end app is connected to the back-end service.
+
+Local environment: 
+`BUILD_REACT_APP_API_URL=http://localhost:3010` by default,
+the React app connects to the back-end service directly.
+
+Remote environment:
+`BUILD_REACT_APP_API_URL=http://your-website-hostname/api` by default,
+the React app connects to NGINX server, which redirects the requests
+to the back-end service.
 
 ## Project configuration
 
@@ -255,9 +266,15 @@ Open `smf-deploy.json`, specify Docker Hub and remote machine credentials:
     "username": "ubuntu",
     "privateKey": "/Users/me/.ssh/aws.pem",
     "passphrase": ""
-  }  
+  },
+  "env": {
+    "BUILD_REACT_APP_API_URL": "http://www.your-website.com/api"
+  }
 }
 ```
+
+The `env` attribute overwrites environment variables with values
+specific for the remote configuration at the deployment time.
 
 Use this command to build Docker images, push them to Docker Hub registry, build the deployment package, upload it to the remote machine and run the stack there:
 ```

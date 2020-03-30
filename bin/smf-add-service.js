@@ -187,7 +187,7 @@ async function addService() {
   //========== update project config ========================
   let serviceAttrs;
   let serviceEnv;
-  let deployAtts;
+  let deployAttrs;
 
   const templateConfigFile = `${dirName}/${config.STACK_SERVICE_TEMPLATE_MANIFEST}`;
   if (fs.existsSync(templateConfigFile)) {

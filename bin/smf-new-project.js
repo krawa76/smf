@@ -69,10 +69,14 @@ async function newProject() {
   //========== npm install ===============================================
   utils.hr();
   console.info('Running "npm install"...');
-  /* const stdout = */ execSync('npm install', {
-    cwd: `./${projectName}`,
-    stdio: 'inherit',
-  });
+  utils.exec('npm install', {cwd: `./${projectName}`});
+
+  //========== npm install ===============================================
+  utils.hr();
+  console.info('Initializing git...');
+  utils.exec('git init', {cwd: `./${projectName}`});
+  utils.exec('git add .', {cwd: `./${projectName}`});
+  utils.exec('git commit -m "Init"', {cwd: `./${projectName}`});
 
   //========== post-install info ===============================================
   utils.hr();

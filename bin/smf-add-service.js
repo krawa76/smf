@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 const prompt = require('prompt');
 const util = require('util');
@@ -274,6 +275,11 @@ async function addService() {
     cwd: `./${dirName}`,
   });
 
+  //========== cleanup ============================================
+  utils.hr();
+  console.info('Cleaning up...');
+  cleanup(dirName);
+
   //========== info ===============================================
   utils.hr();
   console.info(`Success! Created ${serviceName} service in ${fs.realpathSync(dirName)}`);
@@ -373,6 +379,28 @@ function updateMain(fileName, codeHeader, codeBody) {
   
     fs.writeFileSync(fileName, newContent);
   }
+}
+
+function cleanup(dir) {
+  const exclude = [];
+  const removeDirs = ['.git'];
+  const files = fs.readdirSync(dir);
+
+  files.forEach(name => {
+    if (exclude.includes(name)) return;
+
+    const file = path.join(dir, name);
+    
+    if (removeDirs.includes(name)) {
+      // console.info(`Remove: ${file}`);
+      fse.removeSync(file);
+    }
+    else {
+      if (fs.lstatSync(file).isDirectory()) {
+        cleanup(file);
+      }
+    }
+  });
 }
 
 module.exports = addService;

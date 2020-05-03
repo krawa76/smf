@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import messages from '../../messages';
 
-import './index.css';
-
 export const Flash = () => {
   let [visibility, setVisibility] = useState(false);
   let [message, setMessage] = useState('');
@@ -30,9 +28,11 @@ export const Flash = () => {
   });
 
   return (
-    visibility && <div className={`alert alert-${type}`}>
-        <span className="close"><strong>X</strong></span>
-        <p>{message}</p>
+    visibility && <div className={`alert alert-${type} alert-dismissible`} role="alert">
+        {message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
   );
 }

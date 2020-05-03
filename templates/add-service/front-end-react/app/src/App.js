@@ -6,8 +6,8 @@ import {
   Route,
   // Link
 } from 'react-router-dom';
-import './App.css';
 import Flash from './components/Flash';
+import Nav from './components/Nav';
 import Home from './pages/Home';
 import Kittens from './pages/Kittens';
 
@@ -16,8 +16,9 @@ window.flash = (message, type= 'success') => messages.emit('flash', ({message, t
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="container pt-4">
         <Flash/>
+        <Nav/>
         <Switch>
           <Route path="/kittens">
             <Kittens/>

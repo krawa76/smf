@@ -15,7 +15,7 @@ class Api {
     }
     catch(err) {
       console.error(err.message);
-      window.flash(err.message, 'error');
+      window.flash(err.message, 'danger');
       return null;
     }    
   }

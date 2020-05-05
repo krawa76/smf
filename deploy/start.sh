@@ -7,4 +7,5 @@ if test -e smf-docker-base.yml; then
 fi
 
 echo "Starting main services..."
+docker-compose -f smf-docker.yml pull
 docker-compose -f smf-docker.yml up -d

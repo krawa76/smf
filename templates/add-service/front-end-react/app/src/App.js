@@ -10,6 +10,7 @@ import Flash from './components/Flash';
 import Nav from './components/Nav';
 import Home from './pages/Home';
 import Kittens from './pages/Kittens';
+import NotFound from './pages/NotFound';
 
 window.flash = (message, type= 'success') => messages.emit('flash', ({message, type}));
 
@@ -20,12 +21,9 @@ function App() {
         <Flash/>
         <Nav/>
         <Switch>
-          <Route path="/kittens">
-            <Kittens/>
-          </Route>
-          <Route path="/">
-            <Home/>
-          </Route>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/kittens" component={Kittens} />
+          <Route path="*" component={NotFound} />
         </Switch>
       </div>
     </Router>

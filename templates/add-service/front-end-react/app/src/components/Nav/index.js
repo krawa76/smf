@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Nav = () => {
+const Nav = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light mb-2">
     <div className="collapse navbar-collapse" id="navbarNav">

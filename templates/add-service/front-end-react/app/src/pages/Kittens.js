@@ -10,7 +10,7 @@ const Kittens = () => {
       if (res) setKittens(res.data);  
     }
     fetchData();
-  });
+  }, []);
 
   return(
     <div>

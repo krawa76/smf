@@ -2,7 +2,7 @@ import React from 'react';
 import messages from './messages';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   // Link
 } from 'react-router-dom';
@@ -20,11 +20,11 @@ function App() {
       <div className="container pt-4">
         <Flash/>
         <Nav/>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/kittens" component={Kittens} />
-          <Route path="*" component={NotFound} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={Home} />
+          <Route path="/kittens" element={Kittens} />
+          <Route path="*" element={NotFound} />
+        </Routes>
       </div>
     </Router>
   );

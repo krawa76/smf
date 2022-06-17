@@ -30,7 +30,7 @@ module.exports = {
       selectClients: false,
       beforeCreate: [
         {
-          cmd: 'npx create-react-app app',
+          cmd: 'npx create-react-app@5.0.1 app',
         },
         {
           cmd: 'npm install react-router-dom',
